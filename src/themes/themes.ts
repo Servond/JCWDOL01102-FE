@@ -6,7 +6,8 @@ export const globalTheme = extendTheme({
     primaryColor: "#53B175",
     secondaryColor: "#B1B1B1",
     thirdColor: "#FCFCFC",
-    forthColor: "#F2F3F2",
+    forthColor: "#7C7C7C",
+    successColor: "#53B175",
   },
   styles: {
     global: {
