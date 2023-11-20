@@ -1,7 +1,7 @@
 import { Grid } from "@chakra-ui/react";
-import ButtonDetail from "../../molecules/MyDetails/Grid/ButtonDetail";
-import LabelDetail from "../../molecules/MyDetails/Grid/LabelDetail";
-import ValueDetail from "../../molecules/MyDetails/Grid/ValueDetail";
+import ButtonDetail from "./Grid/ButtonDetail";
+import LabelDetail from "./Grid/LabelDetail";
+import ValueDetail from "./Grid/ValueDetail";
 
 interface Props {
   label: string;

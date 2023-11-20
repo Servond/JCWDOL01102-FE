@@ -9,7 +9,7 @@ import {
   PiShoppingBagOpenDuotone,
   PiTicket,
 } from "react-icons/pi";
-import ProfileSubMenu from "../../molecules/menu/ProfileSubMenu";
+import ProfileSubMenu from "../../molecules/Menu/ProfileSubMenu";
 
 export default function ProfileMenu() {
   return (

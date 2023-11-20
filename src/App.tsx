@@ -8,7 +8,7 @@ import "@fontsource/roboto/900.css";
 import { Route, Routes } from "react-router";
 import SignupPage from "./pages/SignupPage";
 import AppWrapper from "./components/atoms/AppWrapper";
-import MenuPage from "./pages/menu/ProfilePage";
+import MenuPage from "./pages/Menu/ProfilePage";
 import MyDetailsPage from "./pages/MyDetails/MyDetails";
 
 function App() {

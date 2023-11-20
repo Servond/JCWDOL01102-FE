@@ -1,5 +1,5 @@
 import { VStack } from "@chakra-ui/react";
-import SubProfileInfo from "../../organism/MyDetails/subProfileInfo";
+import SubProfileInfo from "../../molecules/MyDetails/SubProfileInfo";
 
 export default function DetailProfile() {
   return (
