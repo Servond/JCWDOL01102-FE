@@ -8,12 +8,14 @@ import "@fontsource/roboto/900.css";
 import { Route, Routes } from "react-router";
 import SignupPage from "./pages/SignupPage";
 import AppWrapper from "./components/atoms/AppWrapper";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 function App() {
   return (
     <Routes>
       <Route element={<AppWrapper />}>
-        <Route path="/" element={<SignupPage />} />
+        <Route path='/' element={<SignupPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
       </Route>
     </Routes>
   );
