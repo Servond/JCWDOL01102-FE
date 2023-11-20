@@ -1,3 +1,4 @@
+import { Divider } from "@chakra-ui/react";
 import {
   PiCreditCard,
   PiIdentificationCardLight,
@@ -8,8 +9,7 @@ import {
   PiShoppingBagOpenDuotone,
   PiTicket,
 } from "react-icons/pi";
-import ProfileSubMenu from "../../molecules/profile/ProfileSubMenu";
-import { Divider } from "@chakra-ui/react";
+import ProfileSubMenu from "../../molecules/menu/ProfileSubMenu";
 
 export default function ProfileMenu() {
   return (
@@ -18,6 +18,7 @@ export default function ProfileMenu() {
       <ProfileSubMenu
         icon={<PiIdentificationCardLight />}
         menu={"My Details"}
+        href='/my-details'
       />
       <ProfileSubMenu icon={<PiMapPin />} menu={"My Addresses"} />
       <ProfileSubMenu icon={<PiCreditCard />} menu={"Payment Methods"} />

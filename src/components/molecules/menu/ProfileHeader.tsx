@@ -3,11 +3,17 @@ import { FaRegEdit } from "react-icons/fa";
 
 export default function ProfileHeader() {
   return (
-    <Box height={"65px"} my={"35px"}>
+    <Box height={"69px"} my={"35px"}>
       <HStack>
-        <Box marginLeft={"25px"} height={"65px"} width={"65px"}>
+        <Box
+          marginLeft={"25px"}
+          height={"69px"}
+          width={"69px"}
+          border={"2px solid #53B175"}
+          borderRadius={"50%"}
+        >
           <img
-            src='https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2023/04/03/Azizi-Zee-1774448471.jpeg'
+            src='http://203.175.11.82:9001/api/v1/buckets/grocery/objects/download?preview=true&prefix=cHJvZmlsZS9Beml6aS1aZWUtMTc3NDQ0ODQ3MS53ZWJw&version_id=null'
             alt='profile'
             style={{
               borderRadius: "50%",
@@ -28,7 +34,7 @@ export default function ProfileHeader() {
             >
               Azizi Asadel
             </Text>
-            <FaRegEdit color={"primaryColor"} />
+            <FaRegEdit color={"#53B175"} style={{ cursor: "pointer" }} />
           </HStack>
           <Text fontSize={"14px"} lineHeight={0} my={1}>
             azizi.asadel@gmail.com
