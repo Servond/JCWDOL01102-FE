@@ -1,8 +1,9 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/input";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MdOutlineCall } from "react-icons/md";
+import { IAppInputProps } from "../../data/interfaces";
 
-export default function AppInputPhoneNumber() {
+export default function AppInputPhoneNumber(props: IAppInputProps) {
   const [isFocus, setFocus] = useState<boolean>(false);
   const [number, setNumber] = useState<string>("");
   const beforeLength = useRef<number>(0);
@@ -52,7 +53,11 @@ export default function AppInputPhoneNumber() {
         borderColor={"#E2E2E2"}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        onChange={onChangeHandller}
+        onChange={(e) => {
+          onChangeHandller(e);
+          props.onChange?.(e);
+        }}
+        name="number"
         // placeholder="Number"
       />
     </InputGroup>

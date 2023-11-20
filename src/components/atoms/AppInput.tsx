@@ -10,10 +10,12 @@ import React, { useState } from "react";
 interface IAppInputProp {
   placeholder: string | undefined;
   onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
   type: React.HTMLInputTypeAttribute | undefined;
   letterSpacing: ResponsiveValue<number> | string | undefined;
   prefixIcon: React.ReactElement | undefined;
   suffixIcon: React.ReactElement | undefined;
+  name: string | undefined;
 }
 
 export default function AppInput(props: IAppInputProp) {
@@ -35,13 +37,21 @@ export default function AppInput(props: IAppInputProp) {
         type={props.type}
         onChange={props.onChange}
         onFocus={props.prefixIcon ? () => setFocus(true) : undefined}
-        onBlur={props.prefixIcon ? () => setFocus(false) : undefined}
+        onBlur={
+          props.prefixIcon
+            ? () => {
+                setFocus(false);
+              }
+            : undefined
+        }
         variant={"flushed"}
         focusBorderColor="primaryColor"
         placeholder={props.placeholder}
         fontSize={"18px"}
         borderColor={"#E2E2E2"}
         letterSpacing={props.letterSpacing}
+        name={props.name}
+        id="name"
       />
       {props.prefixIcon ? (
         <InputRightElement
@@ -76,4 +86,5 @@ AppInput.defaultProps = {
   letterSpacing: undefined,
   prefixIcon: undefined,
   suffixIcon: undefined,
+  name: "",
 };
