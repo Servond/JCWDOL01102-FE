@@ -28,7 +28,7 @@ export default function ProfileHeader() {
             >
               Azizi Asadel
             </Text>
-            <FaRegEdit color={"#53B175"} />
+            <FaRegEdit color={"primaryColor"} />
           </HStack>
           <Text fontSize={"14px"} lineHeight={0} my={1}>
             azizi.asadel@gmail.com
