@@ -9,13 +9,13 @@ import AppInputEmail from "../atoms/AppInputEmail";
 import { useFormik } from "formik";
 import { signupValidator } from "../../app/validation/signupValidation.schema";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
-import PrimaryButton from "../atoms/primaryButton";
 import SignupPolicy from "./SignupPolicy";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser } from "../../app/redux/slice/userSlicer";
 import { UserCreationAttributes } from "../../data/user/interfaces";
 import { AppDispatch, RootState } from "../../app/redux/store";
 import Loading from "../atoms/Loading";
+import PrimaryButton from "../atoms/PrimaryButton";
 
 export default function CredetialInputs() {
   const dispatch = useDispatch<AppDispatch>();
