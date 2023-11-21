@@ -9,27 +9,41 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import AddressFormField from "../../molecules/AddressList/AddressFormField";
 
-export default function AddressDetail() {
+interface AddressDetailProps {
+  isUpdate?: boolean;
+  receiverName?: string;
+  phoneNumber?: string;
+  addressLabel?: string;
+  province?: string;
+  city?: string;
+  address?: string;
+  isDefault?: boolean;
+}
+
+export default function AddressDetail(props: AddressDetailProps) {
   const addressSchema = Yup.object().shape({
     receiverName: Yup.string().required("Wajib diisi !"),
     phoneNumber: Yup.string().required("Wajib diisi !"),
     addressLabel: Yup.string().required("Wajib diisi !"),
     province: Yup.string().required("Wajib diisi !"),
     city: Yup.string().required("Wajib diisi !"),
-    address: Yup.string().required("Wajib diisi !"),
+    address: Yup.string()
+      .required("Wajib diisi !")
+      .max(200, "Max 200 karakter"),
     isDefault: Yup.boolean(),
     agree: Yup.boolean().oneOf([true], "Wajib diisi !"),
   });
 
   const initialValues = {
-    receiverName: "",
-    phoneNumber: "",
-    addressLabel: "",
-    province: "",
-    city: "",
-    address: "",
-    isDefault: false,
+    receiverName: props.receiverName ?? "",
+    phoneNumber: props.phoneNumber ?? "",
+    addressLabel: props.addressLabel ?? "",
+    province: props.province ?? "",
+    city: props.city ?? "",
+    address: props.address ?? "",
+    isDefault: props.isDefault ?? false,
     agree: false,
   };
 
@@ -43,45 +57,38 @@ export default function AddressDetail() {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <FormControl
-        isInvalid={!!formik.errors.receiverName && formik.touched.receiverName}
-      >
-        <FormLabel>Nama Penerima</FormLabel>
-        <Input
-          type='text'
-          placeholder='Nama Penerima'
-          name='receiverName'
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <FormErrorMessage>{formik.errors.receiverName}</FormErrorMessage>
-      </FormControl>
-      <FormControl
-        isInvalid={!!formik.errors.phoneNumber && formik.touched.phoneNumber}
-      >
-        <FormLabel>Nomor Handphone</FormLabel>
-        <Input
-          type='text'
-          placeholder='Nomor Handphone'
-          name='phoneNumber'
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <FormErrorMessage>{formik.errors.phoneNumber}</FormErrorMessage>
-      </FormControl>
-      <FormControl
-        isInvalid={!!formik.errors.addressLabel && formik.touched.addressLabel}
-      >
-        <FormLabel>Label Alamat</FormLabel>
-        <Input
-          type='text'
-          placeholder='Label Alamat'
-          name='addressLabel'
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <FormErrorMessage>{formik.errors.addressLabel}</FormErrorMessage>
-      </FormControl>
+      <AddressFormField
+        label='Nama Penerima'
+        error={formik.errors.receiverName}
+        touched={formik.touched.receiverName}
+        name='receiverName'
+        placeholder='Nama Penerima'
+        handleChange={formik.handleChange}
+        handleBlur={formik.handleBlur}
+        value={formik.values.receiverName}
+      />
+
+      <AddressFormField
+        label='Nomor Handphone'
+        error={formik.errors.phoneNumber}
+        touched={formik.touched.phoneNumber}
+        name='phoneNumber'
+        placeholder='Nomor Handphone'
+        handleChange={formik.handleChange}
+        handleBlur={formik.handleBlur}
+        value={formik.values.phoneNumber}
+      />
+
+      <AddressFormField
+        label='Label Alamat'
+        error={formik.errors.addressLabel}
+        touched={formik.touched.addressLabel}
+        name='addressLabel'
+        placeholder='Label Alamat'
+        handleChange={formik.handleChange}
+        handleBlur={formik.handleBlur}
+        value={formik.values.addressLabel}
+      />
       <FormControl
         isInvalid={!!formik.errors.province && formik.touched.province}
       >
@@ -106,19 +113,17 @@ export default function AddressDetail() {
         />
         <FormErrorMessage>{formik.errors.city}</FormErrorMessage>
       </FormControl>
-      <FormControl
-        isInvalid={!!formik.errors.address && formik.touched.address}
-      >
-        <FormLabel>Alamat Lengkap</FormLabel>
-        <Input
-          type='text'
-          placeholder='Alamat Lengkap'
-          name='address'
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        <FormErrorMessage>{formik.errors.address}</FormErrorMessage>
-      </FormControl>
+
+      <AddressFormField
+        label='Alamat Lengkap'
+        error={formik.errors.address}
+        touched={formik.touched.address}
+        name='address'
+        placeholder='Alamat Lengkap'
+        handleChange={formik.handleChange}
+        handleBlur={formik.handleBlur}
+        value={formik.values.address}
+      />
       <Checkbox name='isDefault'>Jadikan Alamat Utama</Checkbox>
 
       <Checkbox

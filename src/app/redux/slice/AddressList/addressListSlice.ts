@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Address {
+export interface Address {
   id: number;
   name: string;
   address: string;
@@ -11,6 +11,7 @@ interface Address {
 
 interface AddressListState {
   addressList: Address[];
+  selectedAddressId?: number;
   loading: boolean;
   error: string;
 }
@@ -65,6 +66,7 @@ const addressList: Address[] = [
 
 const initialState: AddressListState = {
   addressList: addressList,
+  selectedAddressId: undefined,
   loading: false,
   error: "",
 };
@@ -72,7 +74,13 @@ const initialState: AddressListState = {
 const addressListSlice = createSlice({
   name: "addressList",
   initialState,
-  reducers: {},
+  reducers: {
+    selectAddress: (state, action) => {
+      state.selectedAddressId = action.payload;
+    },
+  },
 });
 
 export default addressListSlice.reducer;
+
+export const { selectAddress } = addressListSlice.actions;

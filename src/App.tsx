@@ -12,6 +12,7 @@ import AddressListPage from "./pages/AddressList/AddressListPage";
 import MenuPage from "./pages/Menu/ProfilePage";
 import MyDetailsPage from "./pages/MyDetails/MyDetails";
 import SignupPage from "./pages/SignupPage";
+import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/my-details' element={<MyDetailsPage />} />
         <Route path='/my-address' element={<AddressListPage />} />
         <Route path='/add-address' element={<AddAddressPage />} />
+        <Route path='/update-address/:id' element={<UpdateAddressPage />} />
       </Route>
     </Routes>
   );

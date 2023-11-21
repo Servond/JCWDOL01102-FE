@@ -1,7 +1,12 @@
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { FaRegEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfileHeader() {
+  const navigate = useNavigate();
+  const handleEdit = () => {
+    navigate("/my-details");
+  };
   return (
     <Box height={"69px"} my={"35px"}>
       <HStack>
@@ -34,7 +39,11 @@ export default function ProfileHeader() {
             >
               Azizi Asadel
             </Text>
-            <FaRegEdit color={"#53B175"} style={{ cursor: "pointer" }} />
+            <FaRegEdit
+              color={"#53B175"}
+              style={{ cursor: "pointer" }}
+              onClick={handleEdit}
+            />
           </HStack>
           <Text fontSize={"14px"} lineHeight={0} my={1}>
             azizi.asadel@gmail.com

@@ -1,9 +1,11 @@
-import { Box, Divider, Text, VStack } from "@chakra-ui/react";
+import { Box, Divider, Input, Text, VStack } from "@chakra-ui/react";
 import TitleHeaderProfile from "./TitleHeaderProfile";
 import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 
 export default function HeaderDetailProfile() {
   const navigate = useNavigate();
+  const fileRef = useRef<HTMLInputElement>(null);
   const handleBack = () => {
     navigate("/menu");
   };
@@ -43,9 +45,19 @@ export default function HeaderDetailProfile() {
           fontSize={"larger"}
           cursor={"pointer"}
           color={"primaryColor"}
+          onClick={() => {
+            fileRef.current?.click();
+          }}
         >
           Ubah Foto Profil
         </Text>
+        <Input
+          type={"file"}
+          display={"none"}
+          ref={fileRef}
+          //image only
+          accept={".jpg,.png,.jpeg,.gif,.svg,.webp"}
+        />
       </Box>
       <Divider />
     </VStack>

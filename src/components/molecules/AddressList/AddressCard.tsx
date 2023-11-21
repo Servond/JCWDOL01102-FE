@@ -6,10 +6,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import AddressLabel from "../../atoms/MyAddress/AddressLabel";
+import AddressName from "../../atoms/MyAddress/AddressName";
 import ChangeAddressBtn from "../../atoms/MyAddress/ChangeAddressButton";
 import AddressTag from "../../atoms/MyAddress/addressTag";
-import AddressName from "../../atoms/MyAddress/AddressName";
+import { selectAddress } from "../../../app/redux/slice/AddressList/addressListSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../app/redux/store";
 
 interface Props {
   addressName: string;
@@ -17,14 +21,27 @@ interface Props {
   phoneNumber: string;
   address: string;
   isDefault: boolean;
+  isSelected: boolean;
+  id: number;
 }
 
 export default function AddressCard(props: Props) {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    dispatch(selectAddress(props.id));
+  };
+
+  const handleUpdate = () => {
+    navigate(`/update-address/${props.id}`);
+  };
+
   return (
     <GridItem>
       <Card
-        border={props.isDefault ? "2px solid #53B175" : "1px solid #E2E8F0"}
-        bgColor={props.isDefault ? "#e0f1e6" : "rgba(226, 232, 240, 0.1)"}
+        border={props.isSelected ? "1px solid #53B175" : "1px solid #E2E8F0"}
+        bgColor={props.isSelected ? "#e0f1e6" : "rgba(226, 232, 240, 0.1)"}
+        onClick={handleClick}
       >
         <CardBody px={"20px"}>
           <VStack spacing={"2px"} alignItems={"start"}>
@@ -35,7 +52,7 @@ export default function AddressCard(props: Props) {
             <AddressName name={props.name} />
             <Text fontSize={"xs"}>{props.phoneNumber}</Text>
             <Text fontSize={"xs"}>{props.address}</Text>
-            <ChangeAddressBtn />
+            <ChangeAddressBtn callback={handleUpdate} />
           </VStack>
         </CardBody>
       </Card>

@@ -13,16 +13,23 @@ export default function AddressList() {
       gap={"10px"}
       pb={"80px"}
     >
-      {addressListState.addressList.map((address, index) => (
-        <AddressCard
-          key={index}
-          addressName={address.addressName}
-          name={address.name}
-          phoneNumber={address.phoneNumber}
-          address={address.address}
-          isDefault={address.isDefault}
-        />
-      ))}
+      {addressListState.addressList.map((address, index) => {
+        const defaultValue = addressListState.selectedAddressId
+          ? addressListState.selectedAddressId === address.id
+          : address.isDefault;
+        return (
+          <AddressCard
+            key={index}
+            addressName={address.addressName}
+            name={address.name}
+            phoneNumber={address.phoneNumber}
+            address={address.address}
+            isDefault={address.isDefault}
+            isSelected={defaultValue}
+            id={address.id}
+          />
+        );
+      })}
     </Grid>
   );
 }
