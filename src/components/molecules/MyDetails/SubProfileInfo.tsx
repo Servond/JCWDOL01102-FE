@@ -7,6 +7,7 @@ interface Props {
   label: string;
   value: string;
   copyIcon?: boolean;
+  field: string;
 }
 
 export default function SubProfileInfo(props: Props) {
@@ -18,6 +19,7 @@ export default function SubProfileInfo(props: Props) {
         copyIcon={props.copyIcon}
         value={props.value}
         label={props.label}
+        field={props.field}
       />
     </Grid>
   );

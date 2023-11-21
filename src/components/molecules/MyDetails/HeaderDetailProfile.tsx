@@ -1,17 +1,16 @@
-import { Box, Divider, HStack, Spacer, Text, VStack } from "@chakra-ui/react";
-import { PiArrowLeft } from "react-icons/pi";
-import { Link } from "react-router-dom";
+import { Box, Divider, Text, VStack } from "@chakra-ui/react";
+import TitleHeaderProfile from "./TitleHeaderProfile";
+import { useNavigate } from "react-router-dom";
 
 export default function HeaderDetailProfile() {
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate("/menu");
+  };
+
   return (
     <VStack>
-      <HStack p={"10px"} width={"100%"}>
-        <Link to={"/menu"}>
-          <PiArrowLeft size={"24px"} cursor={"pointer"} />
-        </Link>
-        <Text fontWeight={"bold"}>Ubah Profil</Text>
-        <Spacer />
-      </HStack>
+      <TitleHeaderProfile title={"Ubah Profil"} callback={handleBack} />
       <Divider />
       <Box w={"100%"}>
         <Box
