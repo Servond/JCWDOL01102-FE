@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { closeChangeProfile } from "../../../app/redux/slice/MyDetails/Profile/changeProfileSlice";
 import { RootState } from "../../../app/redux/store";
-import TitleHeaderProfile from "./TitleHeaderProfile";
+import TitleHeaderProfile from "../../molecules/MyDetails/TitleHeaderProfile";
 import { DateTime } from "luxon";
 
 export default function ChangeProfileField() {
@@ -135,13 +135,6 @@ export default function ChangeProfileField() {
           value={formik.values.value}
           isInvalid={!!formik.errors.value && formik.touched.value}
         />
-        {/* <Input
-          mt={"18px"}
-          mb={"5px"}
-          type='date'
-          max={DateTime.now().toISODate()?.toString()}
-          display={changeProfile.field === "birthdate" ? "block" : "none"}
-        /> */}
         <Text
           color={"red"}
           fontSize={"small"}

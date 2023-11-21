@@ -1,7 +1,7 @@
 import { Box, keyframes, usePrefersReducedMotion } from "@chakra-ui/react";
 import DetailProfile from "../../components/organism/MyDetails/DetailProfile";
 import HeaderDetailProfile from "../../components/molecules/MyDetails/HeaderDetailProfile";
-import ChangeProfileField from "../../components/molecules/MyDetails/ChangeProfileField";
+import ChangeProfileField from "../../components/organism/MyDetails/ChangeProfileField";
 
 export default function MyDetailsPage() {
   const zoom = keyframes`

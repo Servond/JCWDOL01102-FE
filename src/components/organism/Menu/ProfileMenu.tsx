@@ -20,7 +20,11 @@ export default function ProfileMenu() {
         menu={"My Details"}
         href='/my-details'
       />
-      <ProfileSubMenu icon={<PiMapPin />} menu={"My Addresses"} />
+      <ProfileSubMenu
+        icon={<PiMapPin />}
+        menu={"My Addresses"}
+        href='/my-address'
+      />
       <ProfileSubMenu icon={<PiCreditCard />} menu={"Payment Methods"} />
       <ProfileSubMenu icon={<PiTicket />} menu={"Promo Cards"} />
       <ProfileSubMenu icon={<PiNotification />} menu={"Notifications"} />
