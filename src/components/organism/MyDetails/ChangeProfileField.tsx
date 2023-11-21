@@ -43,23 +43,23 @@ export default function ChangeProfileField() {
       case "name":
         return Yup.string()
           .min(3, "Name must be at least 3 characters long")
-          .required("Required");
+          .required("Wajib diisi !");
       case "email":
         return Yup.string()
           .matches(/^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/g, "Invalid email format")
           .email("Invalid email format")
-          .required("Required");
+          .required("Wajib diisi !");
       case "phoneNumber":
-        return Yup.string().required("Required");
+        return Yup.string().required("Wajib diisi !");
       case "birthdate":
-        return Yup.string().required("Required");
+        return Yup.string().required("Wajib diisi !");
       default:
-        return Yup.string().required("Required");
+        return Yup.string().required("Wajib diisi !");
     }
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Required"),
+    name: Yup.string().required("Wajib diisi !"),
     value: schemaSwitcher(changeProfile.field),
   });
 
@@ -72,7 +72,7 @@ export default function ChangeProfileField() {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      alert(JSON.stringify(values, null, 2));
     },
   });
 

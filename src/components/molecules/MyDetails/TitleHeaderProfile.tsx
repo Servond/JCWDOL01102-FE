@@ -21,7 +21,11 @@ export default function TitleHeaderProfile(props: Props) {
       <Text fontWeight={"bold"}>{props.title}</Text>
       <Spacer />
       {props.subMenu ? (
-        <Text color={"primaryColor"} onClick={props.callbackSubmenu}>
+        <Text
+          color={"primaryColor"}
+          onClick={props.callbackSubmenu}
+          cursor={"pointer"}
+        >
           {props.subMenu}
         </Text>
       ) : null}
