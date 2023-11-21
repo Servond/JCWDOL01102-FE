@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function TitleHeaderProfile(props: Props) {
-  console.log(props);
   const handleBack = () => {
     if (props.callback) {
       props.callback();

@@ -23,12 +23,12 @@ export default function AddressListPage() {
   const animation = motion ? undefined : `${zoom} 0.2s ease-in-out`;
 
   const handleAddAddress = () => {
-    alert("Add Address Clicked");
+    navigate("/add-address");
   };
 
   return (
     <>
-      <VStack py={"15px"} animation={animation} height={"100vh"}>
+      <VStack pb={"15px"} animation={animation} height={"100vh"}>
         <TitleHeaderProfile
           title={"Daftar Alamat"}
           callback={handleBack}

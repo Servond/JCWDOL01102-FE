@@ -80,6 +80,7 @@ export default function ChangeProfileField() {
     formik.setFieldValue("value", changeProfile.value);
     formik.setFieldValue("name", changeProfile.field);
     formik.setFieldError("value", "");
+    formik.setFieldTouched("value", false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changeProfile]);
 
@@ -142,7 +143,7 @@ export default function ChangeProfileField() {
           mb={"10px"}
           lineHeight={1}
         >
-          {formik.errors.value && formik.touched.value}
+          {formik.touched.value && formik.errors.value}
         </Text>
         <Button
           width={"100%"}
