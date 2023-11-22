@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import SubProfileInfo from "../../molecules/MyDetails/SubProfileInfo";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
@@ -17,6 +17,9 @@ export default function DetailProfile() {
 
   return (
     <VStack>
+      {!user2?.user?.isVerified && (
+        <Text color='red.500'>Akun belum diverifikasi</Text>
+      )}
       <SubProfileInfo
         label={"Nama Lengkap"}
         value={user2?.user?.name ?? "a"}
@@ -37,6 +40,7 @@ export default function DetailProfile() {
         value={user2?.user?.birthdate ?? "Belum diisi"}
         field='birthdate'
       />
+
       <SubProfileInfo
         field='refferalCode'
         label={"Refferal Code"}
