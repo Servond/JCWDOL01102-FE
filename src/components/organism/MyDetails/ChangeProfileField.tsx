@@ -6,19 +6,23 @@ import {
   VStack,
   keyframes,
   usePrefersReducedMotion,
+  useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { closeChangeProfile } from "../../../app/redux/slice/MyDetails/Profile/changeProfileSlice";
-import { RootState } from "../../../app/redux/store";
+import { AppDispatch, RootState } from "../../../app/redux/store";
 import TitleHeader from "../../molecules/MyDetails/TitleHeader";
 import { DateTime } from "luxon";
+import { updateUser } from "../../../api/user";
+import { fetchUserById_ } from "../../../app/redux/slice/User/user";
 
 export default function ChangeProfileField() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const changeProfile = useSelector((state: RootState) => state.changeProfile);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBack = () => {
     dispatch(closeChangeProfile());
@@ -50,9 +54,17 @@ export default function ChangeProfileField() {
           .email("Invalid email format")
           .required("Wajib diisi !");
       case "phoneNumber":
-        return Yup.string().required("Wajib diisi !");
+        return Yup.string()
+          .matches(/^[0-9]+$/, "Must be only digits")
+          .min(10, "Must be exactly 10 digits")
+          .required("Wajib diisi !");
       case "birthdate":
-        return Yup.string().required("Wajib diisi !");
+        return Yup.string()
+          .matches(
+            /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/,
+            "Invalid date format"
+          )
+          .required("Wajib diisi !");
       default:
         return Yup.string().required("Wajib diisi !");
     }
@@ -63,16 +75,52 @@ export default function ChangeProfileField() {
     value: schemaSwitcher(changeProfile.field),
   });
 
-  const initialValues = {
+  interface FormValues {
+    name: string;
+    value: string;
+  }
+
+  const initialValues: FormValues = {
     name: changeProfile.field,
     value: "",
+  };
+
+  const toast = useToast();
+
+  const handleSubmit = async (values: FormValues) => {
+    try {
+      setIsLoading(true);
+      await updateUser(1, {
+        [values.name]: values.value,
+      });
+      setIsLoading(false);
+      dispatch(fetchUserById_(1));
+      toast({
+        title: "Success",
+        description: "Data berhasil diubah",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+    }
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      handleSubmit(values);
     },
   });
 
@@ -149,6 +197,7 @@ export default function ChangeProfileField() {
           color={"primaryColor"}
           isDisabled={!!formik.errors.value && formik.touched.value}
           type={"submit"}
+          isLoading={isLoading}
         >
           Simpan
         </Button>

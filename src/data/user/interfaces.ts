@@ -31,12 +31,12 @@ export interface IEmailCheckInput {
 
 export interface UserCreationAttributes {
   image_id?: number | null;
-  name: string;
-  email: string;
-  address: string;
-  phoneNumber: string;
-  role_id: number;
-  password: string;
+  name?: string;
+  email?: string;
+  address?: string;
+  phoneNumber?: string;
+  role_id?: number;
+  password?: string;
 }
 export type CreateUserResponse = IApiResponse<UserResponseData>;
 export interface GetUserByEmailResponse extends IApiResponseStatic {
