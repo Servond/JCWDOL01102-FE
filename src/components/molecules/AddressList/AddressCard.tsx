@@ -23,6 +23,7 @@ interface Props {
   isDefault: boolean;
   isSelected: boolean;
   id: number;
+  isDisabled?: boolean;
 }
 
 export default function AddressCard(props: Props) {
@@ -52,7 +53,10 @@ export default function AddressCard(props: Props) {
             <AddressName name={props.name} />
             <Text fontSize={"xs"}>{props.phoneNumber}</Text>
             <Text fontSize={"xs"}>{props.address}</Text>
-            <ChangeAddressBtn callback={handleUpdate} />
+            <ChangeAddressBtn
+              callback={handleUpdate}
+              isDisabled={props.isDisabled}
+            />
           </VStack>
         </CardBody>
       </Card>
