@@ -4,7 +4,7 @@ import {
   keyframes,
   usePrefersReducedMotion,
 } from "@chakra-ui/react";
-import TitleHeaderProfile from "../../components/molecules/MyDetails/TitleHeaderProfile";
+import TitleHeader from "../../components/molecules/MyDetails/TitleHeader";
 import AddressDetail from "../../components/organism/AddressDetails/AddressDetail";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ export default function AddAddressPage() {
   };
   return (
     <VStack animation={animation}>
-      <TitleHeaderProfile title='Detail Alamat' callback={handleBack} />
+      <TitleHeader title='Detail Alamat' callback={handleBack} />
       <Divider />
       <AddressDetail />
     </VStack>

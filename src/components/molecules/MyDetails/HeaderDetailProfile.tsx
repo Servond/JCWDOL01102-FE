@@ -1,5 +1,5 @@
 import { Box, Divider, Input, Text, VStack } from "@chakra-ui/react";
-import TitleHeaderProfile from "./TitleHeaderProfile";
+import TitleHeader from "./TitleHeader";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
@@ -12,7 +12,7 @@ export default function HeaderDetailProfile() {
 
   return (
     <VStack>
-      <TitleHeaderProfile title={"Ubah Profil"} callback={handleBack} />
+      <TitleHeader title={"Ubah Profil"} callback={handleBack} />
       <Divider />
       <Box w={"100%"}>
         <Box

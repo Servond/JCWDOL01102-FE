@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { closeChangeProfile } from "../../../app/redux/slice/MyDetails/Profile/changeProfileSlice";
 import { RootState } from "../../../app/redux/store";
-import TitleHeaderProfile from "../../molecules/MyDetails/TitleHeaderProfile";
+import TitleHeader from "../../molecules/MyDetails/TitleHeader";
 import { DateTime } from "luxon";
 
 export default function ChangeProfileField() {
@@ -104,7 +104,7 @@ export default function ChangeProfileField() {
       }}
       zIndex={1000}
     >
-      <TitleHeaderProfile title={changeProfile.label} callback={handleBack} />
+      <TitleHeader title={changeProfile.label} callback={handleBack} />
       <Divider marginY={"8px"} />
       <Text textAlign={"justify"} lineHeight={1.1}>
         Pastikan anda mengisi data dengan benar, karena data yang anda isi akan
@@ -132,7 +132,6 @@ export default function ChangeProfileField() {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           name={"value"}
-          defaultValue={changeProfile.value}
           value={formik.values.value}
           isInvalid={!!formik.errors.value && formik.touched.value}
         />

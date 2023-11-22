@@ -9,7 +9,7 @@ interface Props {
   callback?: () => void;
 }
 
-export default function TitleHeaderProfile(props: Props) {
+export default function TitleHeader(props: Props) {
   const handleBack = () => {
     if (props.callback) {
       props.callback();

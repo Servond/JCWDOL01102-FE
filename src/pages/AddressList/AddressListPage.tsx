@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import AddressButton from "../../components/molecules/AddressList/AddressButton";
-import TitleHeaderProfile from "../../components/molecules/MyDetails/TitleHeaderProfile";
+import TitleHeader from "../../components/molecules/MyDetails/TitleHeader";
 import AddressList from "../../components/organism/AddressList/AddressList";
 
 export default function AddressListPage() {
@@ -29,7 +29,7 @@ export default function AddressListPage() {
   return (
     <>
       <VStack pb={"15px"} animation={animation} height={"100vh"}>
-        <TitleHeaderProfile
+        <TitleHeader
           title={"Daftar Alamat"}
           callback={handleBack}
           subMenu='Tambah Alamat'

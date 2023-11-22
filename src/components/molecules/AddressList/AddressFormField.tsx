@@ -12,6 +12,7 @@ interface AddressFormFieldProps {
   name: string;
   placeholder: string;
   value: string;
+  isDisabled?: boolean;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
@@ -27,6 +28,7 @@ export default function AddressFormField(props: AddressFormFieldProps) {
         onChange={props.handleChange}
         onBlur={props.handleBlur}
         value={props.value}
+        isDisabled={props.isDisabled}
       />
       <FormErrorMessage>{props.error}</FormErrorMessage>
     </FormControl>

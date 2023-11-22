@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Address } from "../../app/redux/slice/AddressList/addressListSlice";
 import { RootState } from "../../app/redux/store";
-import TitleHeaderProfile from "../../components/molecules/MyDetails/TitleHeaderProfile";
+import TitleHeader from "../../components/molecules/MyDetails/TitleHeader";
 import AddressDetail from "../../components/organism/AddressDetails/AddressDetail";
 
 export default function UpdateAddressPage() {
@@ -45,7 +45,7 @@ export default function UpdateAddressPage() {
   };
   return (
     <VStack animation={animation}>
-      <TitleHeaderProfile title='Detail Alamat' callback={handleBack} />
+      <TitleHeader title='Detail Alamat' callback={handleBack} />
       <Divider />
       <AddressDetail
         isUpdate={true}
