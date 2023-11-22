@@ -49,12 +49,14 @@ export default function UpdateAddressPage() {
       <Divider />
       <AddressDetail
         isUpdate={true}
-        addressLabel={address?.addressName}
-        receiverName={address?.name}
+        addressLabel={address?.name}
+        receiverName={address?.receiverName}
         phoneNumber={address?.phoneNumber}
         address={address?.address}
-        city={" "}
-        province={" "}
+        city={address?.cityId.toString()}
+        province={address?.provinceId.toString()}
+        latitude={address?.latitude}
+        longitude={address?.longitude}
       />
     </VStack>
   );

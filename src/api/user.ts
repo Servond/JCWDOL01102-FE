@@ -22,3 +22,7 @@ export const getUserByEmail = (param: IEmailCheckInput) => {
 export const postUser = (data: UserCreationAttributes) => {
   return server.post<CreateUserResponse>("api/users", data);
 };
+
+export const updateUser = (id: number, data: UserCreationAttributes) => {
+  return server.put(`api/users/${id}`, data);
+};

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   Checkbox,
@@ -9,7 +10,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { createAddress, updateAddress } from "../../../api/address";
+import { fetchCities } from "../../../app/redux/slice/MasterData/CitiesSlice";
+import { fetchProvinces } from "../../../app/redux/slice/MasterData/ProvinceSlice";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import { AddressAttributes } from "../../../data/address/interface";
 import AddressFormField from "../../molecules/AddressList/AddressFormField";
 
 interface AddressDetailProps {
@@ -41,7 +50,19 @@ export default function AddressDetail(props: AddressDetailProps) {
     longitude: Yup.string().required("Wajib diisi !"),
   });
 
-  const initialValues = {
+  interface AddressFormValues {
+    receiverName: string;
+    phoneNumber: string;
+    addressLabel: string;
+    latitude: string;
+    longitude: string;
+    province: string;
+    city: string;
+    address: string;
+    isDefault: boolean;
+    agree: boolean;
+  }
+  const initialValues: AddressFormValues = {
     receiverName: props.receiverName ?? "",
     phoneNumber: props.phoneNumber ?? "",
     addressLabel: props.addressLabel ?? "",
@@ -53,12 +74,63 @@ export default function AddressDetail(props: AddressDetailProps) {
     isDefault: props.isDefault ?? false,
     agree: false,
   };
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const addressListState = useSelector((state: RootState) => state.addressList);
+  const handleFormSubmit = async (values: AddressFormValues) => {
+    try {
+      setIsLoading(true);
+      const data: AddressAttributes = {
+        name: values.addressLabel,
+        receiverName: values.receiverName,
+        phoneNumber: values.phoneNumber,
+        cityId: parseInt(values.city),
+        provinceId: parseInt(values.province),
+        address: values.address,
+        isDefault: values.isDefault,
+        isDeleted: false,
+        latitude: values.latitude,
+        longitude: values.longitude,
+        userId: 1,
+      };
+      let response: any;
+      if (!props.isUpdate) {
+        response = await createAddress(1, data);
+      } else {
+        response = await updateAddress(
+          1,
+          addressListState.selectedAddressId!,
+          data
+        );
+      }
+      setIsLoading(false);
+      toast({
+        title: "Success",
+        description: response.data?.message ?? "Berhasil menambahkan alamat",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      navigate("/my-address");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error?.response?.data?.message ?? "Terjadi Kesalahan",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+  };
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: addressSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      handleFormSubmit(values);
     },
   });
   const toast = useToast();
@@ -99,6 +171,24 @@ export default function AddressDetail(props: AddressDetailProps) {
         position: "top",
       });
     }
+  };
+
+  const dispatch = useDispatch<AppDispatch>();
+  const provinces = useSelector((state: RootState) => state.province);
+  const cities = useSelector((state: RootState) => state.cities);
+
+  useEffect(() => {
+    dispatch(fetchProvinces());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchCities(parseInt(formik.values.province)));
+  }, [dispatch, formik.values.province]);
+
+  const handleProvinceChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    dispatch(fetchCities(parseInt(event.target.value)));
   };
 
   return (
@@ -168,13 +258,18 @@ export default function AddressDetail(props: AddressDetailProps) {
         <Select
           placeholder='Pilih Provinsi'
           name='province'
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            handleProvinceChange(e);
+            formik.handleChange(e);
+          }}
           onBlur={formik.handleBlur}
           value={formik.values.province}
         >
-          <option value='option1'>Option 1</option>
-          <option value='option2'>Option 2</option>
-          <option value='option3'>Option 3</option>
+          {provinces.data.map((province) => (
+            <option key={province.province_id} value={province.province_id}>
+              {province.province_name}
+            </option>
+          ))}
         </Select>
         <FormErrorMessage>{formik.errors.province}</FormErrorMessage>
       </FormControl>
@@ -187,9 +282,11 @@ export default function AddressDetail(props: AddressDetailProps) {
           onBlur={formik.handleBlur}
           value={formik.values.city}
         >
-          <option value='option1'>Option 1</option>
-          <option value='option2'>Option 2</option>
-          <option value='option3'>Option 3</option>
+          {cities.data.map((city) => (
+            <option key={city.city_id} value={city.city_id}>
+              {city.city_name}
+            </option>
+          ))}
         </Select>
         <FormErrorMessage>{formik.errors.city}</FormErrorMessage>
       </FormControl>
@@ -204,7 +301,13 @@ export default function AddressDetail(props: AddressDetailProps) {
         handleBlur={formik.handleBlur}
         value={formik.values.address}
       />
-      <Checkbox name='isDefault'>Jadikan Alamat Utama</Checkbox>
+      <Checkbox
+        name='isDefault'
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+      >
+        Jadikan Alamat Utama
+      </Checkbox>
 
       <Checkbox
         name='agree'
@@ -220,7 +323,7 @@ export default function AddressDetail(props: AddressDetailProps) {
         }{" "}
         serta Kebijakan Privasi pengaturan alamat
       </Checkbox>
-      <Button width={"100%"} my={"15px"} type='submit'>
+      <Button width={"100%"} my={"15px"} type='submit' isLoading={isLoading}>
         Simpan Alamat
       </Button>
     </form>

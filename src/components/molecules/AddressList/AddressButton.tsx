@@ -1,11 +1,41 @@
-import { Box, Button } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/redux/store";
+import { Box, Button, useToast } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import { useState } from "react";
+import { changeDefaultAddress } from "../../../api/address";
+import { fetchAddressList } from "../../../app/redux/slice/AddressList/addressListSlice";
 
 export default function AddressButton() {
   const addressListState = useSelector((state: RootState) => state.addressList);
-  const handleSave = () => {
-    alert(`Alamat yang dipilih adalah ${addressListState.selectedAddressId}`);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const toast = useToast();
+  const handleSave = async () => {
+    try {
+      setIsLoading(true);
+      await changeDefaultAddress(1, addressListState.selectedAddressId!);
+      setIsLoading(false);
+      dispatch(fetchAddressList(1));
+      toast({
+        title: "Berhasil",
+        description: "Alamat berhasil diubah",
+        status: "success",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      setIsLoading(false);
+      toast({
+        title: "Error",
+        description: error.response.data.message ?? "Terjadi Kesalahan",
+        status: "error",
+        duration: 2000,
+        isClosable: true,
+        position: "top",
+      });
+    }
   };
 
   return (
@@ -24,6 +54,7 @@ export default function AddressButton() {
         color={"gray.100"}
         _hover={{ color: "gray.800" }}
         isDisabled={addressListState.selectedAddressId === undefined}
+        isLoading={isLoading}
       >
         Pilih Alamat
       </Button>
