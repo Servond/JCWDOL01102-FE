@@ -16,6 +16,7 @@ interface IAppInputProp {
   prefixIcon: React.ReactElement | undefined;
   suffixIcon: React.ReactElement | undefined;
   name: string | undefined;
+  value: string | undefined;
 }
 
 export default function AppInput(props: IAppInputProp) {
@@ -52,6 +53,7 @@ export default function AppInput(props: IAppInputProp) {
         letterSpacing={props.letterSpacing}
         name={props.name}
         id="name"
+        value={props.value}
       />
       {props.prefixIcon ? (
         <InputRightElement

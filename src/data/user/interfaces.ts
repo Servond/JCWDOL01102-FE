@@ -29,6 +29,20 @@ export interface IEmailCheckInput {
   controller: AbortController;
 }
 
+export interface ISendEmailResponse {
+  from?: string;
+  message: string;
+  to: string;
+  subject?: string;
+  status: string;
+}
+
+export interface ISendEmailCheckInput {
+  name?: string;
+  email?: string;
+  id?: number;
+}
+
 export interface UserCreationAttributes {
   image_id?: number | null;
   name?: string;
@@ -38,7 +52,10 @@ export interface UserCreationAttributes {
   role_id?: number;
   password?: string;
 }
+
 export type CreateUserResponse = IApiResponse<UserResponseData>;
+export type SendEmailVerificationResponse = IApiResponse<ISendEmailResponse>;
+
 export interface GetUserByEmailResponse extends IApiResponseStatic {
   data?: IEmailCheckResponse;
 }

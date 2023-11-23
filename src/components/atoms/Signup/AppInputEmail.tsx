@@ -10,16 +10,16 @@ import {
   MdOutlineCheck,
   MdOutlineClose,
 } from "react-icons/md";
-import { IAppInputProps } from "../../data/interfaces";
+import { IAppInputProps } from "../../../data/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../app/redux/store";
-import Loading from "./Loading";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import Loading from "../Loading";
 import { Box } from "@chakra-ui/react";
 import {
   fetchUserByEmail,
   setGetEmailState,
-} from "../../app/redux/slice/userSlicer";
-import { isEmailValid } from "../../utils/function/isEmailValid";
+} from "../../../app/redux/slice/userSlicer";
+import { isEmailValid } from "../../../utils/function/isEmailValid";
 
 const generateEmailStatus = (
   status: string,
@@ -48,7 +48,6 @@ const generateEmailStatus = (
 
 export default function AppInputEmail(props: IAppInputProps) {
   const [isFocus, setFocus] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const getEmailstate = useSelector(
     (store: RootState) => store.user.getEmailState
@@ -57,14 +56,16 @@ export default function AppInputEmail(props: IAppInputProps) {
     (store: RootState) => store.user.getEmailResp?.data?.available
   );
   useEffect(() => {
-    if (!isEmailValid(email)) {
+    if (!isEmailValid(props.value as string)) {
       dispatch(setGetEmailState());
       return;
     }
     const controller = new AbortController();
-    dispatch(fetchUserByEmail({ email: email, controller: controller }));
+    dispatch(
+      fetchUserByEmail({ email: props.value as string, controller: controller })
+    );
     return () => controller.abort();
-  }, [email, dispatch]);
+  }, [dispatch, props.value]);
 
   return (
     <InputGroup>
@@ -83,12 +84,11 @@ export default function AppInputEmail(props: IAppInputProps) {
         onBlur={() => setFocus(false)}
         onChange={(e) => {
           props.onChange?.(e);
-          setEmail(e.target.value);
         }}
         fontSize={"18px"}
         borderColor={"#E2E2E2"}
         name="email"
-        value={email}
+        value={props.value}
       />
       <InputRightElement
         fontSize={"22px"}

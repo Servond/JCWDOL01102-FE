@@ -11,7 +11,7 @@ import {
   MdLockOutline,
 } from "react-icons/md";
 import { useState } from "react";
-import { IAppInputProps } from "../../data/interfaces";
+import { IAppInputProps } from "../../../data/interfaces";
 
 export default function AppInputPasword(props: IAppInputProps) {
   const [isVisible, setVisibility] = useState<boolean>(false);
@@ -32,11 +32,12 @@ export default function AppInputPasword(props: IAppInputProps) {
         focusBorderColor="primaryColor"
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        onChange={props.onChange}
+        onChange={(e) => props.onChange?.(e)}
         fontSize={"18px"}
         borderColor={"#E2E2E2"}
         letterSpacing={isVisible ? undefined : "3px"}
         name="password"
+        value={props.value}
       />
       <InputRightElement
         fontSize={"22px"}
