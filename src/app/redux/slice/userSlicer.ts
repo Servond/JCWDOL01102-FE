@@ -1,18 +1,33 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUserByEmail, getUserById, postUser } from "../../../api/user";
+import {
+  getEmailVerification,
+  getUserByEmail,
+  getUserById,
+  postUser,
+  verifyUserByEmail,
+} from "../../../api/user";
 import { AxiosError } from "axios";
 import {
   CreateUserResponse,
   GetUserByEmailResponse,
   IEmailCheckInput,
+  ISendEmailCheckInput,
+  SendEmailVerificationResponse,
   UserCreationAttributes,
 } from "../../../data/user/interfaces";
+import { IApiResponseStatic } from "../../../data/interfaces";
 
 interface userState {
   getEmailState: "idle" | "pending" | "done" | "rejected";
   postUserState: "idle" | "pending" | "done" | "rejected";
   postUserResp: CreateUserResponse | undefined;
   getEmailResp: GetUserByEmailResponse | undefined;
+  sendEmailVerificationResp: SendEmailVerificationResponse | undefined;
+  nameInputValue: string | undefined;
+  passwordInputValue: string | undefined;
+  emailInputValue: string | undefined;
+  numberInputValue: string | undefined;
+  verifyUserResp: IApiResponseStatic | undefined;
 }
 
 export const fetchUserById = createAsyncThunk(
@@ -51,6 +66,29 @@ export const createUser = createAsyncThunk<
   }
 });
 
+export const sendEmailVerification = createAsyncThunk<
+  SendEmailVerificationResponse,
+  ISendEmailCheckInput,
+  { rejectValue: SendEmailVerificationResponse }
+>("user/sendEmail", async (payload: ISendEmailCheckInput, thunkApi) => {
+  try {
+    const res = await getEmailVerification(
+      payload.name,
+      payload.email,
+      payload.id
+    );
+    return res.data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      return thunkApi.rejectWithValue({
+        statusCode: e.response?.status,
+        message: e.response?.statusText,
+      });
+    }
+    return thunkApi.rejectWithValue(e as SendEmailVerificationResponse);
+  }
+});
+
 export const fetchUserByEmail = createAsyncThunk<
   GetUserByEmailResponse,
   IEmailCheckInput,
@@ -70,6 +108,25 @@ export const fetchUserByEmail = createAsyncThunk<
   }
 });
 
+export const verifyUser = createAsyncThunk<
+  IApiResponseStatic,
+  number,
+  { rejectValue: GetUserByEmailResponse }
+>("user/verify", async (id, thunkApi) => {
+  try {
+    const res = await verifyUserByEmail(id);
+    return res.data;
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      return thunkApi.rejectWithValue({
+        statusCode: e.response?.status,
+        message: e.response?.statusText,
+      });
+    }
+    return thunkApi.rejectWithValue(e as IApiResponseStatic);
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -77,10 +134,45 @@ const userSlice = createSlice({
     postUserState: "idle",
     postUserResp: {},
     getEmailResp: {},
+    sendEmailVerificationResp: {},
+    emailInputValue: "",
+    passwordInputValue: "",
+    numberInputValue: "",
+    nameInputValue: "",
+    verifyUserResp: {},
   } as userState,
   reducers: {
     setGetEmailState: (state) => {
       state.getEmailState = "idle";
+    },
+    setEmailInputValue: (state, action) => {
+      state.emailInputValue = action.payload;
+    },
+    setPasswordInputValue: (state, action) => {
+      state.passwordInputValue = action.payload;
+    },
+    setNameInputValue: (state, action) => {
+      state.nameInputValue = action.payload;
+    },
+    setNumberInput: (state, action) => {
+      state.numberInputValue = action.payload;
+    },
+    resetInput: (state) => {
+      state.emailInputValue = "";
+      state.numberInputValue = "";
+      state.nameInputValue = "";
+      state.passwordInputValue = "";
+    },
+    resetUserState: (state) => {
+      state.getEmailState = "idle";
+      state.postUserState = "idle";
+      state.postUserResp = {};
+      state.getEmailResp = {};
+      state.sendEmailVerificationResp = {};
+      state.emailInputValue = "";
+      state.numberInputValue = "";
+      state.nameInputValue = "";
+      state.passwordInputValue = "";
     },
   },
   extraReducers: (builder) => {
@@ -115,8 +207,36 @@ const userSlice = createSlice({
       state.postUserState = "rejected";
       state.postUserResp = action.payload;
     });
+
+    builder.addCase(sendEmailVerification.fulfilled, (state, action) => {
+      if (action.payload?.statusCode?.toString().startsWith("2")) {
+        state.sendEmailVerificationResp = action.payload;
+      }
+    });
+
+    builder.addCase(sendEmailVerification.rejected, (state, action) => {
+      state.verifyUserResp = action.payload;
+    });
+
+    builder.addCase(verifyUser.fulfilled, (state, action) => {
+      if (action.payload?.statusCode?.toString().startsWith("2")) {
+        state.verifyUserResp = action.payload;
+      }
+    });
+
+    builder.addCase(verifyUser.rejected, (state, action) => {
+      state.verifyUserResp = action.payload;
+    });
   },
 });
 
-export const { setGetEmailState } = userSlice.actions;
+export const {
+  setGetEmailState,
+  setEmailInputValue,
+  setPasswordInputValue,
+  setNameInputValue,
+  setNumberInput,
+  resetInput,
+  resetUserState,
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -1,21 +1,26 @@
 import { VStack } from "@chakra-ui/layout";
-import AppInput from "../atoms/AppInput";
-import { constants } from "../../data/constants";
+import AppInput from "../../atoms/AppInput";
+import { constants } from "../../../data/constants";
 import React from "react";
-import AppInputPasword from "../atoms/AppInputPassword";
-import AppInputPhoneNumber from "../atoms/AppInputPhoneNumber";
+import AppInputPasword from "../../atoms/Signup/AppInputPassword";
+import AppInputPhoneNumber from "../../atoms/Signup/AppInputPhoneNumber";
 import { MdOutlinePerson } from "react-icons/md";
-import AppInputEmail from "../atoms/AppInputEmail";
+import AppInputEmail from "../../atoms/Signup/AppInputEmail";
 import { useFormik } from "formik";
-import { signupValidator } from "../../app/validation/signupValidation.schema";
+import { signupValidator } from "../../../app/validation/signupValidation.schema";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
-import PrimaryButton from "../atoms/primaryButton";
-import SignupPolicy from "./SignupPolicy";
+import PrimaryButton from "../../atoms/PrimaryButton";
+import SignupPolicy from "../../atoms/Signup/SignupPolicy";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser } from "../../app/redux/slice/userSlicer";
-import { UserCreationAttributes } from "../../data/user/interfaces";
-import { AppDispatch, RootState } from "../../app/redux/store";
-import Loading from "../atoms/Loading";
+import {
+  createUser,
+  setEmailInputValue,
+  setNameInputValue,
+  setPasswordInputValue,
+} from "../../../app/redux/slice/userSlicer";
+import { UserCreationAttributes } from "../../../data/user/interfaces";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import Loading from "../../atoms/Loading";
 
 export default function CredetialInputs() {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,6 +33,16 @@ export default function CredetialInputs() {
   const postUserStatus = useSelector(
     (state: RootState) => state.user.postUserState
   );
+  const nameInputValue = useSelector(
+    (state: RootState) => state.user.nameInputValue
+  );
+  const emailInputValue = useSelector(
+    (state: RootState) => state.user.emailInputValue
+  );
+  const passwordInputValue = useSelector(
+    (state: RootState) => state.user.passwordInputValue
+  );
+
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "", number: "" },
     onSubmit: (val) => {
@@ -49,15 +64,21 @@ export default function CredetialInputs() {
       case "Password":
         return (
           <AppInputPasword
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              dispatch(setPasswordInputValue(e.target.value));
+              formik.handleChange(e);
+            }}
             onBlur={formik.handleBlur}
+            value={passwordInputValue}
           />
         );
       case "Number":
         return (
           <AppInputPhoneNumber
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            onChange={(e) => {
+              formik.handleChange(e);
+            }}
+            onBlur={() => formik.handleBlur}
           />
         );
       case "Name":
@@ -65,15 +86,23 @@ export default function CredetialInputs() {
           <AppInput
             prefixIcon={<MdOutlinePerson />}
             name="name"
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              dispatch(setNameInputValue(e.target.value));
+              formik.handleChange(e);
+            }}
             onBlur={formik.handleBlur}
+            value={nameInputValue}
           />
         );
       case "Email":
         return (
           <AppInputEmail
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              dispatch(setEmailInputValue(e.target.value));
+              formik.handleChange(e);
+            }}
             onBlur={formik.handleBlur}
+            value={emailInputValue}
           />
         );
       default:

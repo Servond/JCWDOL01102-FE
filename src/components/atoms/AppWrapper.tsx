@@ -25,7 +25,7 @@ export default function AppWrapper() {
       h={"100dvh"}
       bg={"thirdColor"}
       shadow={"xl"}
-      overflowY={"scroll"}
+      overflowY={"auto"}
       sx={{
         "::-webkit-scrollbar": {
           display: "none",
@@ -33,7 +33,7 @@ export default function AppWrapper() {
       }}
       px={"1.5rem"}
     >
-      <Outlet/>
+      <Outlet />
     </Box>
   );
 }
