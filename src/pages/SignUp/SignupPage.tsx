@@ -1,16 +1,21 @@
 import { Text, VStack } from "@chakra-ui/layout";
-import SignupCaption from "../components/atoms/Signup/SignupCaption";
-import CredetialInputs from "../components/molecules/Signup/CredentialInputs";
+import SignupCaption from "../../components/atoms/Signup/SignupCaption";
+import CredetialInputs from "../../components/molecules/Signup/CredentialInputs";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../app/redux/store";
-import { useDisclosure, useToast } from "@chakra-ui/react";
+import { AppDispatch, RootState } from "../../app/redux/store";
+import {
+  keyframes,
+  useDisclosure,
+  usePrefersReducedMotion,
+  useToast,
+} from "@chakra-ui/react";
 import {
   resetUserState,
   sendEmailVerification,
-} from "../app/redux/slice/userSlicer";
-import RedirectLoading from "../components/molecules/Signup/RedirectLoading";
+} from "../../app/redux/slice/userSlicer";
+import RedirectLoading from "../../components/molecules/Signup/RedirectLoading";
 
 export default function SignupPage() {
   const postUserResp = useSelector(
@@ -64,8 +69,16 @@ export default function SignupPage() {
     }
   }, [postUserResp, toast, dispatch, onOpen]);
 
+  const zoom = keyframes`
+  from {transform: scale(0.95);}
+  to {transform: scale(1);}`;
+
+  const motion = usePrefersReducedMotion();
+
+  const animation = motion ? undefined : `${zoom} 0.2s ease-in-out`;
+
   return (
-    <VStack justify={"center"} py={"1.5rem"}>
+    <VStack justify={"center"} py={"1.5rem"} animation={animation}>
       <SignupCaption />
       <CredetialInputs />
       <Text textAlign={"center"}>

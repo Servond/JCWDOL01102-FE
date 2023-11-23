@@ -6,18 +6,28 @@ import "@fontsource/roboto/700.css";
 import "@fontsource/roboto/900.css";
 
 import { Route, Routes } from "react-router";
-import SignupPage from "./pages/SignupPage";
 import AppWrapper from "./components/atoms/AppWrapper";
-import EmailNoticePage from "./pages/EmailNoticePage";
-import UserVerification from "./pages/UserVerification";
+import EmailNoticePage from "./pages/EmailNotice/EmailNoticePage";
+import UserVerification from "./pages/UserVerification/UserVerification";
+import AddAddressPage from "./pages/AddAddress/AddAddressPage";
+import AddressListPage from "./pages/AddressList/AddressListPage";
+import MenuPage from "./pages/Menu/ProfilePage";
+import MyDetailsPage from "./pages/MyDetails/MyDetails";
+import SignupPage from "./pages/SignUp/SignupPage";
+import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
 
 function App() {
   return (
     <Routes>
       <Route element={<AppWrapper />}>
-        <Route path="/" element={<SignupPage />} />
         <Route path="/email-notice" element={<EmailNoticePage />} />
         <Route path="/user-verification/:id" element={<UserVerification />} />
+        <Route path="/" element={<SignupPage />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/my-details" element={<MyDetailsPage />} />
+        <Route path="/my-address" element={<AddressListPage />} />
+        <Route path="/add-address" element={<AddAddressPage />} />
+        <Route path="/update-address/:id" element={<UpdateAddressPage />} />
       </Route>
     </Routes>
   );

@@ -44,3 +44,7 @@ export const verifyUserByEmail = (id: number) => {
     isVerified: true,
   });
 };
+
+export const updateUser = (id: number, data: UserCreationAttributes) => {
+  return server.put(`api/users/${id}`, data);
+};
