@@ -15,19 +15,21 @@ import MenuPage from "./pages/Menu/ProfilePage";
 import MyDetailsPage from "./pages/MyDetails/MyDetails";
 import SignupPage from "./pages/SignUp/SignupPage";
 import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
     <Routes>
       <Route element={<AppWrapper />}>
-        <Route path="/email-notice" element={<EmailNoticePage />} />
-        <Route path="/user-verification/:id" element={<UserVerification />} />
-        <Route path="/" element={<SignupPage />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/my-details" element={<MyDetailsPage />} />
-        <Route path="/my-address" element={<AddressListPage />} />
-        <Route path="/add-address" element={<AddAddressPage />} />
-        <Route path="/update-address/:id" element={<UpdateAddressPage />} />
+        <Route path='/email-notice' element={<EmailNoticePage />} />
+        <Route path='/user-verification/:id' element={<UserVerification />} />
+        <Route path='/' element={<SignupPage />} />
+        <Route path='/menu' element={<MenuPage />} />
+        <Route path='/my-details' element={<MyDetailsPage />} />
+        <Route path='/my-address' element={<AddressListPage />} />
+        <Route path='/add-address' element={<AddAddressPage />} />
+        <Route path='/update-address/:id' element={<UpdateAddressPage />} />
+        <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
