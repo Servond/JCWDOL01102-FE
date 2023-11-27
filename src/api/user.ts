@@ -41,8 +41,8 @@ export const getEmailVerification = (
 };
 
 export const verifyUserByEmail = (id: number) => {
-  return server.put<IApiResponseStatic>(`api/users/${id}`, {
-    isVerified: true,
+  return server.patch<IApiResponseStatic>(`api/users/verify`, {
+    id: id,
   });
 };
 
