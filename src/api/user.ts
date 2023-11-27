@@ -3,6 +3,7 @@ import {
   CreateUserResponse,
   GetUserByEmailResponse,
   IEmailCheckInput,
+  LoginResponse,
   SendEmailVerificationResponse,
   UserCreationAttributes,
 } from "../data/user/interfaces";
@@ -47,4 +48,11 @@ export const verifyUserByEmail = (id: number) => {
 
 export const updateUser = (id: number, data: UserCreationAttributes) => {
   return server.put(`api/users/${id}`, data);
+};
+
+export const login = (email: string, password: string) => {
+  return server.post<LoginResponse>("api/users/login", {
+    email,
+    password,
+  });
 };

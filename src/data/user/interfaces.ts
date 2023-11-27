@@ -43,6 +43,17 @@ export interface ISendEmailCheckInput {
   id?: number;
 }
 
+export interface ILoginResponse {
+  email: string;
+  password: string;
+  token: string;
+}
+
+export interface ILoginInput {
+  email: string;
+  password: string;
+}
+
 export interface UserCreationAttributes {
   image_id?: number | null;
   name?: string;
@@ -55,6 +66,7 @@ export interface UserCreationAttributes {
 
 export type CreateUserResponse = IApiResponse<UserResponseData>;
 export type SendEmailVerificationResponse = IApiResponse<ISendEmailResponse>;
+export type LoginResponse = IApiResponse<ILoginResponse>;
 
 export interface GetUserByEmailResponse extends IApiResponseStatic {
   data?: IEmailCheckResponse;

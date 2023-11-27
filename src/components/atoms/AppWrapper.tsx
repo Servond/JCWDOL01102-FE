@@ -2,10 +2,13 @@ import { Box } from "@chakra-ui/layout";
 import { useMediaQuery } from "@chakra-ui/media-query";
 import { useRef } from "react";
 import { Outlet } from "react-router";
+import DummyNavBar from "../organism/dummyNavBar";
+import { useLocation } from "react-router-dom";
 
 export default function AppWrapper() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const boxRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
 
   const scrollHandle = () => {
     boxRef.current?.scrollTo({
@@ -31,9 +34,11 @@ export default function AppWrapper() {
           display: "none",
         },
       }}
-      px={"1.5rem"}
     >
-      <Outlet />
+      {location.pathname === "/" ? <DummyNavBar /> : null}
+      <Box px={"1.5rem"}>
+        <Outlet />
+      </Box>
     </Box>
   );
 }
