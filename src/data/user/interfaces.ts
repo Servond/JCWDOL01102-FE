@@ -11,10 +11,10 @@ export interface UserResponseData {
   referral_code: string;
   role_id: number;
   birthdate?: Date;
-  is_deleted: boolean;
-  is_verified: boolean;
-  reset_password_token?: string;
-  verify_token?: string;
+  isDeleted: boolean;
+  isVerified: boolean;
+  resetPassword_token?: string;
+  verifyToken?: string;
   password: string;
   created_at?: Date;
   updated_at?: Date;
@@ -40,7 +40,7 @@ export interface ISendEmailResponse {
 export interface ISendEmailCheckInput {
   name?: string;
   email?: string;
-  id?: number;
+  verifyToken?: string;
 }
 
 export interface ILoginResponse {

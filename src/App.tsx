@@ -24,7 +24,10 @@ function App() {
     <Routes>
       <Route element={<AppWrapper />}>
         <Route path="/email-notice" element={<EmailNoticePage />} />
-        <Route path="/user-verification/:id" element={<UserVerification />} />
+        <Route
+          path="/user-verification/:verifyToken"
+          element={<UserVerification />}
+        />
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="login" element={<DummyLoginPage />} />

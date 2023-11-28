@@ -29,20 +29,20 @@ export const postUser = (data: UserCreationAttributes) => {
 export const getEmailVerification = (
   name?: string,
   email?: string,
-  id?: number
+  verifyToken?: string
 ) => {
   return server.get<SendEmailVerificationResponse>("api/users/email", {
     params: {
       email,
       name,
-      id,
+      verifyToken,
     },
   });
 };
 
-export const verifyUserByEmail = (id: number) => {
+export const verifyUserByEmail = (verifyToken: string) => {
   return server.patch<IApiResponseStatic>(`api/users/verify`, {
-    id: id,
+    verifyToken,
   });
 };
 
