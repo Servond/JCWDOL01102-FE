@@ -39,10 +39,38 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/my-details" element={<MyDetailsPage />} />
-        <Route path="/my-address" element={<AddressListPage />} />
-        <Route path="/add-address" element={<AddAddressPage />} />
-        <Route path="/update-address/:id" element={<UpdateAddressPage />} />
+        <Route
+          path="/my-details"
+          element={
+            <PrivateRoute>
+              <MyDetailsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my-address"
+          element={
+            <PrivateRoute>
+              <AddressListPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/add-address"
+          element={
+            <PrivateRoute>
+              <AddAddressPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/update-address/:id"
+          element={
+            <PrivateRoute>
+              <UpdateAddressPage />
+            </PrivateRoute>
+          }
+        />
       </Route>
     </Routes>
   );
