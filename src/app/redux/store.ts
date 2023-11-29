@@ -5,6 +5,8 @@ import addressListReducer from "../redux/slice/AddressList/addressListSlice";
 import { user2Reducer } from "./slice/User/user";
 import provinceReducer from "./slice/MasterData/ProvinceSlice";
 import citiesReducer from "./slice/MasterData/CitiesSlice";
+import addProductReducer from "./slice/Admin/AddProduct/AddProductSlice";
+import getAdminProductReducer from "./slice/Admin/getProduct/getProductSlice";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -17,5 +19,7 @@ export const store = configureStore({
     user2: user2Reducer,
     province: provinceReducer,
     cities: citiesReducer,
+    addProduct: addProductReducer,
+    getAdminProduct: getAdminProductReducer,
   },
 });
