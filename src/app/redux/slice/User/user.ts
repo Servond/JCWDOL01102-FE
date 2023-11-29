@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
 import { getUserById } from "../../../../api/user";
 
-interface IUser {
+export interface IUser {
   id: number;
   createdAt: string;
   updatedAt: string;
@@ -22,16 +22,24 @@ interface IUser {
   verifyToken: string;
 }
 
+export interface IErrorResponse {
+  status: number;
+  data: any;
+  statusText: string;
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface IUserState {
   status: "idle" | "pending" | "done" | "rejected";
-  user: IUser | null;
+  user: IUser | null | IErrorResponse;
+  statusCode?: number;
   error: any;
 }
 
 const initialState: IUserState = {
   status: "idle",
   user: null,
+  statusCode: undefined,
   error: {},
 };
 
@@ -41,11 +49,8 @@ export const fetchUserById_ = createAsyncThunk(
     try {
       const res = await getUserById(id);
       return res.data?.data;
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        return Promise.reject(e.response);
-      }
-      return Promise.reject(e);
+    } catch (e: any) {
+      return e?.response;
     }
   }
 );
@@ -63,7 +68,13 @@ const user2Slice = createSlice({
         state.status = "done";
         state.user = action.payload;
       })
-      .addCase(fetchUserById_.rejected, (state, action) => {
+      .addCase(fetchUserById_.rejected, (state, action: any) => {
+        if (action.payload === undefined) {
+          state.statusCode = 500;
+        }
+        if (action.payload?.status === 404) {
+          state.statusCode = 404;
+        }
         state.status = "rejected";
         state.error = action.payload;
       });

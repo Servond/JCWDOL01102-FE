@@ -18,6 +18,7 @@ import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
 import DummyLoginPage from "./pages/DummyLogin/DummyLoginPage";
 import LandingPage from "./pages/LadingPage/LandingPage";
 import PrivateRoute from "./components/atoms/PrivateRoute";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -71,6 +72,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
