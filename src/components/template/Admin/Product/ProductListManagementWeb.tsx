@@ -8,18 +8,17 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import TitleAdminProduct from "../../../molecules/Admin/Product/TitleAdminProduct";
-import SearchAdminProduct from "../../../molecules/Admin/Product/SearchAdminProduct";
-import HeaderAdminProduct from "../../../molecules/Admin/Product/HeaderAdminProduct";
-import AdminProductItem from "../../../molecules/Admin/Product/AdminProduct";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../app/redux/store";
 import { useEffect, useState } from "react";
-import { getAdminProduct } from "../../../../app/redux/slice/Admin/getProduct/getProductSlice";
 import { AiOutlineInbox } from "react-icons/ai";
 import ReactPaginate from "react-paginate";
-import "./style.css";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getAdminProduct } from "../../../../app/redux/slice/Admin/getProduct/getProductSlice";
+import { AppDispatch, RootState } from "../../../../app/redux/store";
+import AdminProductItem from "../../../molecules/Admin/Product/AdminProduct";
+import HeaderAdminProduct from "../../../molecules/Admin/Product/HeaderAdminProduct";
+import SearchAdminProduct from "../../../molecules/Admin/Product/SearchAdminProduct";
+import TitleAdminProduct from "../../../molecules/Admin/Product/TitleAdminProduct";
+import "./../../../../paginate-style.css";
 export default function ProductListManagementWeb() {
   const getAdminProductState = useSelector(
     (state: RootState) => state.getAdminProduct
@@ -83,7 +82,7 @@ export default function ProductListManagementWeb() {
           >
             <HeaderAdminProduct />
             <GridItem colSpan={14}>
-              <Divider my={"0px"} />
+              <Divider my={"15px"} />
             </GridItem>
             {getAdminProductState.data.data.length === 0 && (
               <GridItem colSpan={14}>

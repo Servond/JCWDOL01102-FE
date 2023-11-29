@@ -82,13 +82,8 @@ export default function AddProductWeb() {
   });
 
   return (
-    <Flex
-      minW={"800px"}
-      p={"15px"}
-      justifyContent={"center"}
-      overflowX={"scroll"}
-    >
-      <VStack width={"75vw"} minW={"750px"}>
+    <Flex p={"15px"} justifyContent={"center"} overflowX={"scroll"}>
+      <VStack width={"75vw"}>
         <Text
           fontSize={"2xl"}
           fontWeight={"bold"}

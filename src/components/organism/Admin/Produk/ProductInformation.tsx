@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardBody,
+  Center,
   FormControl,
   FormErrorMessage,
   Grid,
@@ -10,13 +11,17 @@ import {
   HStack,
   Input,
   Select,
+  Show,
   Spacer,
   Tag,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { ChangeEvent, FocusEvent } from "react";
-
+import { ChangeEvent, FocusEvent, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../app/redux/store";
+import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
+import "./style.scss";
 interface ProductInformationFormProps {
   handleChange: (e: ChangeEvent<any>) => void;
   handleBlur: (e: FocusEvent<any, Element>) => void;
@@ -28,6 +33,12 @@ interface ProductInformationFormProps {
 export default function ProductInformationForm(
   props: ProductInformationFormProps
 ) {
+  const dispatch = useDispatch<AppDispatch>();
+  const categoryState = useSelector((state: RootState) => state.adminCategory);
+
+  useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
   return (
     <Card my={"1rem"} w={"100%"}>
       <CardBody>
@@ -49,32 +60,32 @@ export default function ProductInformationForm(
             Pastikan produk tidak melanggar Hak Kekayaan Intelektual supaya
             produkmu tidak diturunkan.
           </Text>
-          <Grid
-            templateColumns={"repeat(12, 1fr)"}
-            columnGap={"3rem"}
-            rowGap={"2rem"}
-          >
-            <GridItem colSpan={4}>
+          <Grid className='grid-add-product'>
+            <GridItem className='key-grid-add-product'>
               <VStack gap={"20px"}>
-                <HStack w={"100%"}>
+                <HStack className='h-stack-add-product'>
                   <Text textAlign={"left"} fontWeight={"bold"}>
                     Nama Produk
                   </Text>
                   <Tag>Wajib</Tag>
                 </HStack>
-                <Text textAlign={"left"} fontSize={"small"}>
-                  Nama produk min. 40 karakter dengan memasukkan merek, jenis
-                  produk, warna, bahan, atau tipe.
-                </Text>
-                <Text textAlign={"left"} fontSize={"small"}>
-                  Disarankan untuk tidak menggunakan huruf kapital berlebih,
-                  memasukkan lebih dari 1 merek, dan kata-kata promosi.
-                </Text>
+                <Show above='md'>
+                  <Text textAlign={"left"} fontSize={"small"}>
+                    Nama produk min. 40 karakter dengan memasukkan merek, jenis
+                    produk, warna, bahan, atau tipe.
+                  </Text>
+                  <Text textAlign={"left"} fontSize={"small"}>
+                    Disarankan untuk tidak menggunakan huruf kapital berlebih,
+                    memasukkan lebih dari 1 merek, dan kata-kata promosi.
+                  </Text>
+                </Show>
               </VStack>
             </GridItem>
-            <GridItem colSpan={8}>
+            <GridItem className='value-grid-add-product'>
               <VStack>
-                <FormControl isInvalid={props.errors.name}>
+                <FormControl
+                  isInvalid={props.errors.name && props.touched.name}
+                >
                   <Input
                     placeholder={"Contoh: Kaleng Sarden 650ml"}
                     onChange={props.handleChange}
@@ -94,7 +105,7 @@ export default function ProductInformationForm(
                 </HStack>
               </VStack>
             </GridItem>
-            <GridItem colSpan={4}>
+            <GridItem className='key-grid-add-product'>
               <VStack gap={"20px"}>
                 <Text textAlign={"left"} w={"100%"} fontWeight={"bold"}>
                   Kategori
@@ -105,9 +116,21 @@ export default function ProductInformationForm(
                 </Text>
               </VStack>
             </GridItem>
-            <GridItem colSpan={8}>
-              <HStack alignItems={"start"}>
-                <FormControl isInvalid={props.errors.categoryId} w={"300px"}>
+            <GridItem
+              className='value-grid-add-product'
+              width={"100%"}
+              justifyContent={{
+                base: "center",
+                md: "flex-start",
+              }}
+            >
+              <HStack className='h-stack-add-product'>
+                <FormControl
+                  isInvalid={
+                    props.errors.categoryId && props.touched.categoryId
+                  }
+                  width={"100%"}
+                >
                   <Select
                     placeholder='Pilih Kategori'
                     width={"300px"}
@@ -115,14 +138,26 @@ export default function ProductInformationForm(
                     onBlur={props.handleBlur}
                     name={"categoryId"}
                     value={props.values.categoryId}
+                    margin={{
+                      base: "0 auto",
+                      md: "0",
+                    }}
                   >
-                    <option value='1'>Sayur</option>
-                    <option value='2'>Daging</option>
-                    <option value='3'>Minuman</option>
+                    {categoryState.data.map((category) => (
+                      <option value={category.id}>{category.name}</option>
+                    ))}
                   </Select>
-                  <FormErrorMessage>{props.errors.categoryId}</FormErrorMessage>
+                  <HStack className='h-stack-add-product'>
+                    <FormErrorMessage>
+                      {props.errors.categoryId}
+                    </FormErrorMessage>
+                  </HStack>
                 </FormControl>
-                <Button>Tambah Kategori</Button>
+              </HStack>
+              <HStack className='h-stack-add-product'>
+                <Button my={"1rem"} colorScheme={"blue"}>
+                  Tambah Kategori
+                </Button>
               </HStack>
             </GridItem>
           </Grid>

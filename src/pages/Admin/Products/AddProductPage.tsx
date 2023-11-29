@@ -1,5 +1,4 @@
 import { Box, useMediaQuery } from "@chakra-ui/react";
-import AddProductMobile from "../../../components/template/Admin/Product/AddProductMobile";
 import AddProductWeb from "../../../components/template/Admin/Product/AddProductWeb";
 import "./style.css";
 export default function AddProductPage() {
@@ -12,7 +11,7 @@ export default function AddProductPage() {
       overflowY={"scroll"}
       overflowX={"scroll"}
     >
-      {isMobile ? <AddProductMobile /> : <AddProductWeb />}
+      {isMobile ? <AddProductWeb /> : <AddProductWeb />}
     </Box>
   );
 }

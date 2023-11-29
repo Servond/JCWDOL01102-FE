@@ -8,8 +8,11 @@ import {
   Select,
   Spacer,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PiMagnifyingGlass } from "react-icons/pi";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../app/redux/store";
+import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
 
 interface SearchAdminProductProps {
   handleSearch: (value: string) => void;
@@ -17,6 +20,11 @@ interface SearchAdminProductProps {
 }
 
 export default function SearchAdminProduct(props: SearchAdminProductProps) {
+  const categoryState = useSelector((state: RootState) => state.adminCategory);
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
   const [search, setSearch] = useState("");
   return (
     <HStack w={"100%"} gap={"1rem"}>
@@ -52,9 +60,9 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
           props.setCategoryId(e.target.value as unknown as number);
         }}
       >
-        <option value={1}>Sayur</option>
-        <option value={2}>Daging</option>
-        <option value={3}>Minuman</option>
+        {categoryState.data.map((item) => {
+          return <option value={item.id}>{item.name}</option>;
+        })}
       </Select>
       <Select placeholder='Urutkan' maxW={"200px"}>
         <option value={"nameAZ"}>Nama: A-Z</option>

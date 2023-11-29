@@ -7,6 +7,7 @@ import provinceReducer from "./slice/MasterData/ProvinceSlice";
 import citiesReducer from "./slice/MasterData/CitiesSlice";
 import addProductReducer from "./slice/Admin/AddProduct/AddProductSlice";
 import getAdminProductReducer from "./slice/Admin/getProduct/getProductSlice";
+import adminCategoryReducer from "./slice/Admin/category/AdminCategorySlice";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -21,5 +22,6 @@ export const store = configureStore({
     cities: citiesReducer,
     addProduct: addProductReducer,
     getAdminProduct: getAdminProductReducer,
+    adminCategory: adminCategoryReducer,
   },
 });

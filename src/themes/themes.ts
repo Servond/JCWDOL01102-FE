@@ -22,4 +22,17 @@ export const globalTheme = extendTheme({
   fonts: {
     html: "'Roboto', sans-serif",
   },
+  components: {
+    HStack: {
+      variants: {
+        addProduct: {
+          w: "100%",
+          justifyContent: {
+            base: "center",
+            md: "flex-start",
+          },
+        },
+      },
+    },
+  },
 });
