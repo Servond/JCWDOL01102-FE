@@ -62,7 +62,7 @@ export default function SignupPage() {
         sendEmailVerification({
           email: postUserResp.data?.email,
           name: postUserResp.data?.name,
-          id: postUserResp.data?.id,
+          verifyToken: postUserResp.data?.verifyToken,
         })
       );
       onOpen();

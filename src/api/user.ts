@@ -3,6 +3,7 @@ import {
   CreateUserResponse,
   GetUserByEmailResponse,
   IEmailCheckInput,
+  LoginResponse,
   SendEmailVerificationResponse,
   UserCreationAttributes,
 } from "../data/user/interfaces";
@@ -28,23 +29,30 @@ export const postUser = (data: UserCreationAttributes) => {
 export const getEmailVerification = (
   name?: string,
   email?: string,
-  id?: number
+  verifyToken?: string
 ) => {
   return server.get<SendEmailVerificationResponse>("api/users/email", {
     params: {
       email,
       name,
-      id,
+      verifyToken,
     },
   });
 };
 
-export const verifyUserByEmail = (id: number) => {
-  return server.put<IApiResponseStatic>(`api/users/${id}`, {
-    isVerified: true,
+export const verifyUserByEmail = (verifyToken: string) => {
+  return server.patch<IApiResponseStatic>(`api/users/verify`, {
+    verifyToken,
   });
 };
 
 export const updateUser = (id: number, data: UserCreationAttributes) => {
   return server.put(`api/users/${id}`, data);
+};
+
+export const login = (email: string, password: string) => {
+  return server.post<LoginResponse>("api/users/login", {
+    email,
+    password,
+  });
 };

@@ -75,7 +75,7 @@ export const sendEmailVerification = createAsyncThunk<
     const res = await getEmailVerification(
       payload.name,
       payload.email,
-      payload.id
+      payload.verifyToken
     );
     return res.data;
   } catch (e) {
@@ -110,11 +110,11 @@ export const fetchUserByEmail = createAsyncThunk<
 
 export const verifyUser = createAsyncThunk<
   IApiResponseStatic,
-  number,
+  string,
   { rejectValue: GetUserByEmailResponse }
->("user/verify", async (id, thunkApi) => {
+>("user/verify", async (verifyToken, thunkApi) => {
   try {
-    const res = await verifyUserByEmail(id);
+    const res = await verifyUserByEmail(verifyToken);
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {

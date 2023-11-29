@@ -9,7 +9,7 @@ import { Box, keyframes, usePrefersReducedMotion } from "@chakra-ui/react";
 
 export default function UserVerification() {
   const params = useParams();
-  const id = parseInt(params.id!);
+  const verifyToken = params.verifyToken;
   const dispatch = useDispatch<AppDispatch>();
   const [isFetch, setIsFetch] = useState<boolean>(false);
   const verifyUserResp = useSelector(
@@ -18,11 +18,10 @@ export default function UserVerification() {
 
   useEffect(() => {
     if (!isFetch) {
-      console.log(id);
       setIsFetch(true);
-      dispatch(verifyUser(id));
+      dispatch(verifyUser(verifyToken!));
     }
-  }, [isFetch, dispatch, id]);
+  }, [isFetch, dispatch, verifyToken]);
 
   const zoom = keyframes`
   from {transform: scale(0.95);}
