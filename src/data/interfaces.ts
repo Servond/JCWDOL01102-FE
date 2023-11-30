@@ -20,3 +20,4 @@ export interface IApiResponseStatic {
   statusCode?: number;
   message?: string;
 }
+

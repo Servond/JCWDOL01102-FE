@@ -64,6 +64,15 @@ export interface UserCreationAttributes {
   password?: string;
 }
 
+export interface IUserFromToken {
+  name: string;
+  phoneNumber: string;
+  email: string;
+  referralCode: string;
+  role: string;
+  permission: string[];
+}
+
 export type CreateUserResponse = IApiResponse<UserResponseData>;
 export type SendEmailVerificationResponse = IApiResponse<ISendEmailResponse>;
 export type LoginResponse = IApiResponse<ILoginResponse>;

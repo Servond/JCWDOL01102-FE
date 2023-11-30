@@ -10,6 +10,8 @@ import {
   MdLogin,
   MdOutlineDashboard,
 } from "react-icons/md";
+import { validatePermissions } from "../../../utils/function/validatePermissions";
+import { Permission, Role } from "../../../data/constants";
 
 const drawerAnimations = {
   open: {
@@ -62,6 +64,10 @@ export default function DrawerMenu() {
   );
   const isRender = useSelector((state: RootState) => state.animation.isRender);
   const dispatch = useDispatch<AppDispatch>();
+  const userPermission = useSelector(
+    (state: RootState) => state.login.permission
+  );
+  const userRole = useSelector((state: RootState) => state.login.role);
   return isRender ? (
     <Box
       as={motion.div}
@@ -95,11 +101,18 @@ export default function DrawerMenu() {
           to={"/signup"}
         />
         <MenuItem value="Log In" icon={<MdLogin />} to={"/login"} />
-        <MenuItem
-          value="Dashboard"
-          icon={<MdOutlineDashboard />}
-          to={"/menu"}
-        />
+        {validatePermissions(userPermission, [
+          Permission.MANAGE_BRANCH,
+          Permission.MANAGE_ADMIN,
+          Permission.SUPERADMIN_ACCESS,
+        ]) &&
+        (userRole === Role.BRANCH_ADMIN || userRole === Role.SUPER_ADMIN) ? (
+          <MenuItem
+            value="Dashboard"
+            icon={<MdOutlineDashboard />}
+            to={"/dashboard"}
+          />
+        ) : null}
       </VStack>
     </Box>
   ) : null;
