@@ -19,6 +19,8 @@ import DummyLoginPage from "./pages/DummyLogin/DummyLoginPage";
 import LandingPage from "./pages/LadingPage/LandingPage";
 import PrivateRoute from "./components/atoms/PrivateRoute";
 import NotFoundPage from "./pages/NotFoundPage";
+import DashboardPage from "./pages/Dashboard/DashboardPage";
+import UserManegement from "./pages/UserManagement/UserManagement";
 
 function App() {
   return (
@@ -72,7 +74,13 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path='*' element={<NotFoundPage />} />
+        <Route path="/dashboard" element={<DashboardPage />}>
+          <Route
+            path="/dashboard/user-management"
+            element={<UserManegement />}
+          ></Route>
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

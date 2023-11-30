@@ -1,7 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ILoginInput, LoginResponse } from "../../../../data/user/interfaces";
+import {
+  ILoginInput,
+  IUserFromToken,
+  LoginResponse,
+} from "../../../../data/user/interfaces";
 import { login } from "../../../../api/user";
 import { AxiosError } from "axios";
+import { parseToken } from "../../../../utils/function/parseToken";
 
 interface ILoginState {
   emailValue: string | undefined;
@@ -10,6 +15,8 @@ interface ILoginState {
   loginState: "idle" | "pending" | "done" | "rejected";
   loginResp: LoginResponse | undefined;
   isAuthenticated: boolean;
+  role: string;
+  permission: string[];
 }
 
 export const userLogin = createAsyncThunk<
@@ -40,6 +47,8 @@ const loginSlice = createSlice({
     loginState: "idle",
     loginResp: {},
     isAuthenticated: false,
+    role: "",
+    permission: [],
   } as ILoginState,
   reducers: {
     resetUserLoginCredential: (state) => {
@@ -59,6 +68,12 @@ const loginSlice = createSlice({
     setAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     },
+    setRole: (state, action) => {
+      state.role = action.payload;
+    },
+    setPermission: (state, action) => {
+      state.permission = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.fulfilled, (state, action) => {
@@ -66,6 +81,11 @@ const loginSlice = createSlice({
         state.loginResp = action.payload;
         state.token = action.payload.data?.token;
         state.loginState = "done";
+        state.isAuthenticated = true;
+        const tokenObj = parseToken(state.token!) as IUserFromToken;
+        state.role = tokenObj.role;
+        console.log(state.role);
+        state.permission = tokenObj.permission;
       }
     });
     builder.addCase(userLogin.pending, (state) => {
@@ -84,6 +104,8 @@ export const {
   setLoginEmail,
   setLoginPassword,
   setAuthenticated,
+  setPermission,
+  setRole,
 } = loginSlice.actions;
 
 export default loginSlice.reducer;
