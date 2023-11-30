@@ -2,15 +2,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Flex, Text, VStack, useToast } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { postCreateProduct } from "../../../../api/admin/product";
+import {
+  postCreateProduct,
+  updateProduct,
+  updateProductWithImage,
+} from "../../../../api/admin/product";
 import FooterAddProduct from "../../../molecules/Admin/Product/FooterAddProduct";
 import ProductDetailForm from "../../../organism/Admin/Produk/ProductDetail";
 import ProductInformationForm from "../../../organism/Admin/Produk/ProductInformation";
 
-export default function AddProductWeb() {
+interface AddProductWebProps {
+  id?: number;
+  isUpdate?: boolean;
+  categoryId?: number;
+  name?: string;
+  price?: number;
+  stock?: number;
+  branchId?: number;
+  weight?: number;
+  desc?: string;
+  image?: string;
+}
+
+export default function AddProductWeb(
+  props: AddProductWebProps = { isUpdate: false }
+) {
   const [imageFile, setImageFile] = useState<File | undefined>(undefined);
   const validationSchema = Yup.object({
     categoryId: Yup.number().required("Wajib diisi!"),
@@ -36,31 +55,55 @@ export default function AddProductWeb() {
 
   const formik = useFormik({
     initialValues: {
-      categoryId: null,
-      name: "",
-      price: null,
-      image: null,
-      stock: null,
-      branchId: 1,
-      weight: null,
-      desc: "",
+      categoryId: props.categoryId ?? null,
+      name: props.name ?? "",
+      price: props.price ?? null,
+      image: props.image ?? null,
+      stock: props.stock ?? null,
+      branchId: props.branchId ?? 1,
+      weight: props.weight ?? null,
+      desc: props.desc ?? "",
     },
     validationSchema: validationSchema,
     onSubmit: async () => {
-      // alert(JSON.stringify(formik.values, null, 2));
       try {
-        const response = await postCreateProduct(imageFile!, {
-          branchId: formik.values.branchId,
-          categoryId: formik.values.categoryId!,
-          name: formik.values.name,
-          price: formik.values.price!,
-          stock: formik.values.stock!,
-          weight: formik.values.weight!,
-          desc: formik.values.desc,
-        });
+        let response;
+        if (props.isUpdate) {
+          if (formik.values.image === props.image) {
+            response = await updateProduct(props.id!, {
+              branchId: formik.values.branchId,
+              categoryId: formik.values.categoryId!,
+              name: formik.values.name,
+              price: formik.values.price!,
+              stock: formik.values.stock!,
+              weight: formik.values.weight!,
+              desc: formik.values.desc,
+            });
+          } else {
+            response = await updateProductWithImage(props.id!, imageFile!, {
+              branchId: formik.values.branchId,
+              categoryId: formik.values.categoryId!,
+              name: formik.values.name,
+              price: formik.values.price!,
+              stock: formik.values.stock!,
+              weight: formik.values.weight!,
+              desc: formik.values.desc,
+            });
+          }
+        } else {
+          response = await postCreateProduct(imageFile!, {
+            branchId: formik.values.branchId,
+            categoryId: formik.values.categoryId!,
+            name: formik.values.name,
+            price: formik.values.price!,
+            stock: formik.values.stock!,
+            weight: formik.values.weight!,
+            desc: formik.values.desc,
+          });
+        }
         toast({
           title: "Berhasil menambahkan produk",
-          description: response.data.message,
+          description: response!.data.message ?? response!.data ?? "Sukses",
           status: "success",
           duration: 3000,
           isClosable: true,

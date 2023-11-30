@@ -27,6 +27,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { deleteProduct, updateProduct } from "../../../../api/admin/product";
+import { useNavigate } from "react-router-dom";
 
 interface AdminProductItemProps {
   id: number;
@@ -41,6 +42,7 @@ export default function AdminProductItem(props: AdminProductItemProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [lastStock, setLastStock] = useState(props.stock);
   const toast = useToast();
+  const navigate = useNavigate();
   const handleBlurStock = async (e: React.FocusEvent<HTMLInputElement>) => {
     setIsLoading(true);
     try {
@@ -75,7 +77,9 @@ export default function AdminProductItem(props: AdminProductItemProps) {
   };
   const cancelRef = useRef<HTMLButtonElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const handleEdit = () => {
+    navigate(`/admin/update-product/${props.id}`);
+  };
   const handleDelete = async () => {
     try {
       await deleteProduct(props.id);
@@ -192,7 +196,7 @@ export default function AdminProductItem(props: AdminProductItemProps) {
               Aksi
             </MenuButton>
             <MenuList>
-              <MenuItem>Edit</MenuItem>
+              <MenuItem onClick={handleEdit}>Edit</MenuItem>
               <MenuItem onClick={onOpen}>Delete</MenuItem>
             </MenuList>
           </Menu>

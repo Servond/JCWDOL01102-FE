@@ -7,7 +7,13 @@ export default function FooterAddProduct() {
     navigate("/admin/products");
   };
   return (
-    <HStack w={"100%"} justifyContent={"flex-end"}>
+    <HStack
+      w={"100%"}
+      justifyContent={{
+        base: "center",
+        md: "flex-end",
+      }}
+    >
       <Button onClick={handleCancel} colorScheme={"red"} variant={"outline"}>
         Batal
       </Button>

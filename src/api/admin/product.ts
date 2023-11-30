@@ -1,6 +1,7 @@
 // {{base_url}}/api/product
 
 import { IProductRequest } from "../../app/redux/slice/Admin/AddProduct/AddProductSlice";
+import { IProduct, IResponseApi } from "../../data/interfaces";
 import { server } from "../server";
 
 export const postCreateProduct = (file: File, data: IProductRequest) => {
@@ -35,4 +36,29 @@ export const updateProduct = (id: number, data: Partial<IProductRequest>) => {
 
 export const deleteProduct = (id: number) => {
   return server.delete(`api/product/${id}`);
+};
+
+//get product by id
+
+export const fetchProductById = (id: number) => {
+  return server.get<IResponseApi<IProduct>>(`api/product/${id}`);
+};
+
+//PUT {{base_url}}/api/product/image/:id
+
+export const updateProductWithImage = (
+  id: number,
+  file: File,
+  data: Partial<IProductRequest>
+) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("name", data.name!);
+  formData.append("price", data.price!.toString());
+  formData.append("stock", data.stock!.toString());
+  formData.append("branchId", data.branchId!.toString()!);
+  formData.append("weight", data.weight!.toString()!);
+  formData.append("desc", data.desc!);
+  formData.append("categoryId", data.categoryId!.toString()!);
+  return server.put(`api/product/image/${id}`, formData);
 };

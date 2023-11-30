@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   CardBody,
-  Center,
   FormControl,
   FormErrorMessage,
   Grid,
@@ -19,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { ChangeEvent, FocusEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../app/redux/store";
 import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
+import { AppDispatch, RootState } from "../../../../app/redux/store";
 import "./style.scss";
 interface ProductInformationFormProps {
   handleChange: (e: ChangeEvent<any>) => void;
@@ -47,14 +46,20 @@ export default function ProductInformationForm(
             fontSize={"xl"}
             w={"100%"}
             fontWeight={"bold"}
-            textAlign={"left"}
+            textAlign={{
+              base: "center",
+              md: "left",
+            }}
           >
             Informasi Produk
           </Text>
           <Text
             fontSize={"md"}
             fontWeight={"normal"}
-            textAlign={"left"}
+            textAlign={{
+              base: "center",
+              md: "left",
+            }}
             w={"100%"}
           >
             Pastikan produk tidak melanggar Hak Kekayaan Intelektual supaya
@@ -82,9 +87,19 @@ export default function ProductInformationForm(
               </VStack>
             </GridItem>
             <GridItem className='value-grid-add-product'>
-              <VStack>
+              <VStack
+                justifyContent={{
+                  base: "center",
+                  md: "flex-start",
+                }}
+                width={"100%"}
+              >
                 <FormControl
                   isInvalid={props.errors.name && props.touched.name}
+                  margin={{
+                    base: "0 auto",
+                    md: "0",
+                  }}
                 >
                   <Input
                     placeholder={"Contoh: Kaleng Sarden 650ml"}
@@ -93,10 +108,18 @@ export default function ProductInformationForm(
                     name={"name"}
                     value={props.values.name}
                     maxLength={70}
+                    margin={{
+                      base: "0 30px",
+                      md: "0",
+                    }}
+                    width={{
+                      base: "80%",
+                      md: "100%",
+                    }}
                   />
                   <FormErrorMessage>{props.errors.name}</FormErrorMessage>
                 </FormControl>
-                <HStack w={"100%"}>
+                <HStack>
                   <Text fontSize={"small"}>
                     Tips: Jenis Produk + Merek Produk + Keterangan Tambahan
                   </Text>
@@ -107,10 +130,23 @@ export default function ProductInformationForm(
             </GridItem>
             <GridItem className='key-grid-add-product'>
               <VStack gap={"20px"}>
-                <Text textAlign={"left"} w={"100%"} fontWeight={"bold"}>
+                <Text
+                  textAlign={{
+                    base: "center",
+                    md: "left",
+                  }}
+                  w={"100%"}
+                  fontWeight={"bold"}
+                >
                   Kategori
                 </Text>
-                <Text textAlign={"left"} fontSize={"small"}>
+                <Text
+                  textAlign={{
+                    base: "center",
+                    md: "left",
+                  }}
+                  fontSize={"small"}
+                >
                   Kamu dapat menambah etalase baru atau memilih dari daftar
                   etalase yang ada
                 </Text>
@@ -133,7 +169,10 @@ export default function ProductInformationForm(
                 >
                   <Select
                     placeholder='Pilih Kategori'
-                    width={"300px"}
+                    width={{
+                      base: "80%",
+                      md: "300px",
+                    }}
                     onChange={props.handleChange}
                     onBlur={props.handleBlur}
                     name={"categoryId"}
@@ -144,7 +183,9 @@ export default function ProductInformationForm(
                     }}
                   >
                     {categoryState.data.map((category) => (
-                      <option value={category.id}>{category.name}</option>
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
                     ))}
                   </Select>
                   <HStack className='h-stack-add-product'>

@@ -53,11 +53,7 @@ export default function ImageForm(props: ImageFormProps) {
             base: "0 auto",
             md: "0",
           }}
-          border={
-            props.values.image && props.touched.image
-              ? "1px solid"
-              : "3px dashed "
-          }
+          border={props.values.image ? "0px solid" : "3px dashed "}
           borderColor={
             props.errors.image && props.touched.image ? "red.500" : "gray.400"
           }
@@ -73,6 +69,7 @@ export default function ImageForm(props: ImageFormProps) {
                 <Img
                   as={"img"}
                   src={props.values.image!}
+                  crossOrigin='anonymous'
                   alt={"product"}
                   width={"100%"}
                   height={"100%"}

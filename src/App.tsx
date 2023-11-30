@@ -19,6 +19,7 @@ import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductsPage from "./pages/Admin/Products/ProductsPage";
 import AddProductPage from "./pages/Admin/Products/AddProductPage";
+import UpdateProductPage from "./pages/Admin/Products/UpdateProduct";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
       <Route path='/admin' element={<Outlet />}>
         <Route path='products' element={<ProductsPage />} />
         <Route path='add-product' element={<AddProductPage />} />
+        <Route path='update-product/:id' element={<UpdateProductPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Route>
     </Routes>
