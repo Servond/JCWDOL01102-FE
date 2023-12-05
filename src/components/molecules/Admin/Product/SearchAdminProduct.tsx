@@ -30,7 +30,7 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
     <HStack w={"100%"} gap={"1rem"}>
       <InputGroup width={"500px"}>
         <InputLeftElement>
-          <PiMagnifyingGlass />{" "}
+          <PiMagnifyingGlass key={"PiMagnifyingGlass"} />{" "}
         </InputLeftElement>
         <Input
           placeholder='Cari Nama Produk'

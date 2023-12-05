@@ -1,7 +1,7 @@
 import { Box, useMediaQuery } from "@chakra-ui/react";
 import ProductListManagementWeb from "../../../components/template/Admin/Product/ProductListManagementWeb";
-import AddProductMobile from "../../../components/template/Admin/Product/AddProductMobile";
 import "./style.css";
+import ProductListManagementMobile from "../../../components/template/Admin/Product/ProductListManagementMobile";
 
 export default function ProductsPage() {
   const [isMobile] = useMediaQuery("(max-width: 600px)");
@@ -13,7 +13,11 @@ export default function ProductsPage() {
       overflowY={"scroll"}
       overflowX={"hidden"}
     >
-      {isMobile ? <AddProductMobile /> : <ProductListManagementWeb />}
+      {isMobile ? (
+        <ProductListManagementMobile />
+      ) : (
+        <ProductListManagementWeb />
+      )}
     </Box>
   );
 }
