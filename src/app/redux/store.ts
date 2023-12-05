@@ -8,6 +8,8 @@ import citiesReducer from "./slice/MasterData/CitiesSlice";
 import addProductReducer from "./slice/Admin/AddProduct/AddProductSlice";
 import getAdminProductReducer from "./slice/Admin/getProduct/getProductSlice";
 import adminCategoryReducer from "./slice/Admin/category/AdminCategorySlice";
+import loginReducer from "./slice/User/login";
+import animationReducer from "./slice/Animation/animationSlice";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -23,5 +25,7 @@ export const store = configureStore({
     addProduct: addProductReducer,
     getAdminProduct: getAdminProductReducer,
     adminCategory: adminCategoryReducer,
+    login: loginReducer,
+    animation: animationReducer,
   },
 });
