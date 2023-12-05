@@ -17,6 +17,8 @@ import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCat
 interface SearchAdminProductProps {
   handleSearch: (value: string) => void;
   setCategoryId: (value: number) => void;
+  setSortBy: (value: string) => void;
+  setOrderDirection: (value: string) => void;
 }
 
 export default function SearchAdminProduct(props: SearchAdminProductProps) {
@@ -26,6 +28,45 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
     dispatch(getCategory());
   }, [dispatch]);
   const [search, setSearch] = useState("");
+
+  const handleOrderBy = (value: string) => {
+    switch (value) {
+      case "nameAZ":
+        props.setSortBy("name");
+        props.setOrderDirection("asc");
+        break;
+      case "nameZA":
+        props.setSortBy("name");
+        props.setOrderDirection("desc");
+        break;
+      case "terbaru":
+        props.setSortBy("id");
+        props.setOrderDirection("desc");
+        break;
+      case "terlama":
+        props.setSortBy("id");
+        props.setOrderDirection("asc");
+        break;
+      case "termurah":
+        props.setSortBy("price");
+        props.setOrderDirection("asc");
+        break;
+      case "termahal":
+        props.setSortBy("price");
+        props.setOrderDirection("desc");
+        break;
+      case "stok-terbanyak":
+        props.setSortBy("stock");
+        props.setOrderDirection("desc");
+        break;
+      case "stok-terendah":
+        props.setSortBy("stock");
+        props.setOrderDirection("asc");
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <HStack w={"100%"} gap={"1rem"}>
       <InputGroup width={"500px"}>
@@ -64,15 +105,19 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
           return <option value={item.id}>{item.name}</option>;
         })}
       </Select>
-      <Select placeholder='Urutkan' maxW={"200px"}>
+      <Select
+        placeholder='Urutkan'
+        maxW={"200px"}
+        onChange={(e) => {
+          handleOrderBy(e.target.value as unknown as string);
+        }}
+      >
         <option value={"nameAZ"}>Nama: A-Z</option>
         <option value={"nameZA"}>Nama: Z-A</option>
         <option value={"terbaru"}>Produk Terbaru</option>
         <option value={"terlama"}>Produk Terlama</option>
         <option value={"termurah"}>Produk Termurah</option>
         <option value={"termahal"}>Produk Termahal</option>
-        <option value={"terlaris"}>Produk Terlaris</option>
-        <option value={"kurang-laris"}>Produk Kurang Laris</option>
         <option value={"stok-terbanyak"}>Stok Terbanyak</option>
         <option value={"stok-terendah"}>Stok Terendah</option>
       </Select>

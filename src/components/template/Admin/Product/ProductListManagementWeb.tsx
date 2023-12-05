@@ -23,11 +23,14 @@ export default function ProductListManagementWeb() {
   const getAdminProductState = useSelector(
     (state: RootState) => state.getAdminProduct
   );
+
   const dispatch = useDispatch<AppDispatch>();
   const [productName, setProductName] = useState("");
   const [categoryId, setCategoryId] = useState<string | number>("");
   const [pageOffset, setPageOffset] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
+  const [sortBy, setSortBy] = useState("id");
+  const [orderDirection, setOrderDirection] = useState("asc");
   const handleRefresh = () => {
     setIsRefresh(!isRefresh);
   };
@@ -40,9 +43,19 @@ export default function ProductListManagementWeb() {
         name: productName,
         categoryId: categoryId,
         branchId: 1,
+        sortBy: sortBy,
+        order: orderDirection,
       })
     );
-  }, [dispatch, productName, categoryId, pageOffset, isRefresh]);
+  }, [
+    dispatch,
+    productName,
+    categoryId,
+    pageOffset,
+    isRefresh,
+    sortBy,
+    orderDirection,
+  ]);
 
   const handlePageChange = (selectedItem: any) => {
     setPageOffset(selectedItem.selected + 1);
@@ -53,7 +66,7 @@ export default function ProductListManagementWeb() {
   };
 
   return (
-    <Box w={"100vw"} minH={"100vh"} overflowY={"scroll"} overflowX={"scroll"}>
+    <Box w={"100%"} minH={"100vh"} overflowY={"scroll"} overflowX={"scroll"}>
       <VStack
         w={{ base: "100%", lg: "90%" }}
         m={{ base: "0 auto", lg: "auto" }}
@@ -71,6 +84,9 @@ export default function ProductListManagementWeb() {
           <SearchAdminProduct
             handleSearch={handleSearch}
             setCategoryId={setCategoryId}
+            setSortBy={setSortBy}
+            setOrderDirection={setOrderDirection}
+            key={"SearchAdminProduct"}
           />
           <Divider my={"5px"} />
           <Grid
@@ -105,6 +121,7 @@ export default function ProductListManagementWeb() {
                 price={item.price}
                 stock={item.stock}
                 refresh={handleRefresh}
+                category={item.category.name}
               />
             ))}
           </Grid>

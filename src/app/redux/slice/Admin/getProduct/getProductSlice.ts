@@ -11,6 +11,8 @@ export const getAdminProduct = createAsyncThunk(
       limit: query.limit,
       name: query.name,
       categoryId: query.categoryId,
+      sortBy: query.sortBy,
+      order: query.order,
     });
 
     return response.data;

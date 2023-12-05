@@ -25,7 +25,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { deleteProduct, updateProduct } from "../../../../api/admin/product";
 import { useNavigate } from "react-router-dom";
 
@@ -35,6 +35,7 @@ interface AdminProductItemProps {
   price: number;
   stock: number;
   imageUrl: string;
+  category: string;
   refresh: () => void;
 }
 
@@ -43,6 +44,21 @@ export default function AdminProductItem(props: AdminProductItemProps) {
   const [lastStock, setLastStock] = useState(props.stock);
   const toast = useToast();
   const navigate = useNavigate();
+  const [price, setPrice] = useState(props.price);
+  const [stock, setStock] = useState(props.stock);
+
+  useEffect(() => {
+    setPrice(props.price);
+    setStock(props.stock);
+  }, [props.price, props.stock]);
+
+  const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "price") {
+      setPrice(parseInt(e.target.value));
+    } else {
+      setStock(parseInt(e.target.value));
+    }
+  };
   const handleBlurStock = async (e: React.FocusEvent<HTMLInputElement>) => {
     setIsLoading(true);
     try {
@@ -163,6 +179,8 @@ export default function AdminProductItem(props: AdminProductItemProps) {
               defaultValue={props.price}
               onBlur={handleBlurStock}
               name='price'
+              onChange={handleInputValue}
+              value={price}
               isDisabled={isLoading}
             />
           </InputGroup>
@@ -177,6 +195,8 @@ export default function AdminProductItem(props: AdminProductItemProps) {
             defaultValue={props.stock}
             placeholder='Masukan jumlah stok'
             onBlur={handleBlurStock}
+            onChange={handleInputValue}
+            value={stock}
             isDisabled={isLoading}
           />
           <Spacer />
@@ -184,7 +204,7 @@ export default function AdminProductItem(props: AdminProductItemProps) {
       </GridItem>
       <GridItem colSpan={2}>
         <Center h={"100%"}>
-          <Text>{"sayur"}</Text>
+          <Text>{props.category}</Text>
           <Spacer />
         </Center>
       </GridItem>

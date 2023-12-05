@@ -83,6 +83,12 @@ function App() {
             path='/dashboard/user-management'
             element={<UserManegement />}
           ></Route>
+          <Route path='/dashboard/products' element={<ProductsPage />} />
+          <Route path='/dashboard/add-product' element={<AddProductPage />} />
+          <Route
+            path='/dashboard/update-product/:id'
+            element={<UpdateProductPage />}
+          />
         </Route>
         <Route path='*' element={<NotFoundPage />} />
       </Route>
