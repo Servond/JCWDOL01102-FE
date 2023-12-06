@@ -20,7 +20,8 @@ import LandingPage from "./pages/LadingPage/LandingPage";
 import PrivateRoute from "./components/atoms/PrivateRoute";
 import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
-import UserManegement from "./pages/UserManagement/UserManagement";
+import AdminManagementPage from "./pages/AdminManagement/AdminManagementPage";
+import CreateAdminPage from "./pages/CreateAdmin/CreateAdminPage";
 
 function App() {
   return (
@@ -76,9 +77,10 @@ function App() {
         />
         <Route path="/dashboard" element={<DashboardPage />}>
           <Route
-            path="/dashboard/user-management"
-            element={<UserManegement />}
-          ></Route>
+            path="/dashboard/admin-management"
+            element={<AdminManagementPage />}
+          />
+          <Route path="/dashboard/create-admin" element={<CreateAdminPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>

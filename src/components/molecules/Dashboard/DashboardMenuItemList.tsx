@@ -11,7 +11,7 @@ export default function DashboardMenuItemList() {
         return (
           <DashboardMenuItem
             key={arrIndex}
-            to={"/dashboard/user-management"}
+            to={meta.to}
             icon={<meta.icon />}
             menuIndex={arrIndex}
             indexNow={indexNow}

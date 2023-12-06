@@ -7,6 +7,8 @@ import provinceReducer from "./slice/MasterData/ProvinceSlice";
 import citiesReducer from "./slice/MasterData/CitiesSlice";
 import loginReducer from "./slice/User/login";
 import animationReducer from "./slice/Animation/animationSlice";
+import userManagementReducer from "./slice/User/adminManagement";
+import createAdminReducer from "./slice/User/createAdmin";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -21,5 +23,7 @@ export const store = configureStore({
     cities: citiesReducer,
     login: loginReducer,
     animation: animationReducer,
+    userManagement: userManagementReducer,
+    createAdmin: createAdminReducer,
   },
 });

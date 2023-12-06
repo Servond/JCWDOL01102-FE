@@ -1,4 +1,4 @@
-import { IApiResponse, IApiResponseStatic } from "../interfaces";
+import { IApiResponse, IApiResponseStatic, IPaginate } from "../interfaces";
 
 export interface UserResponseData {
   id: number;
@@ -18,6 +18,8 @@ export interface UserResponseData {
   password: string;
   created_at?: Date;
   updated_at?: Date;
+  role?: { role: string };
+  branch?: { name: string };
 }
 
 export interface IEmailCheckResponse {
@@ -54,6 +56,10 @@ export interface ILoginInput {
   password: string;
 }
 
+export interface IUserPaginateInput {
+  page: number;
+  limit: number;
+}
 export interface UserCreationAttributes {
   image_id?: number | null;
   name?: string;
@@ -62,6 +68,7 @@ export interface UserCreationAttributes {
   phoneNumber?: string;
   role_id?: number;
   password?: string;
+  branch_id?: number;
 }
 
 export interface IUserFromToken {
@@ -76,7 +83,8 @@ export interface IUserFromToken {
 export type CreateUserResponse = IApiResponse<UserResponseData>;
 export type SendEmailVerificationResponse = IApiResponse<ISendEmailResponse>;
 export type LoginResponse = IApiResponse<ILoginResponse>;
-
+export type UserByRoleResponse = IApiResponse<UserResponseData[]>;
+export type UserPaginateResponse = IApiResponse<IPaginate<UserResponseData>>;
 export interface GetUserByEmailResponse extends IApiResponseStatic {
   data?: IEmailCheckResponse;
 }

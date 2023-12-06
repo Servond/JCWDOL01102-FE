@@ -16,6 +16,7 @@ import {
   sendEmailVerification,
 } from "../../app/redux/slice/userSlicer";
 import RedirectLoading from "../../components/molecules/Signup/RedirectLoading";
+import { UserResponseData } from "../../data/user/interfaces";
 
 export default function SignupPage() {
   const postUserResp = useSelector(
@@ -49,7 +50,7 @@ export default function SignupPage() {
       return;
     toast({
       isClosable: true,
-      position: "bottom",
+      position: "top",
       title: "User Sign Up",
       description: postUserResp?.message,
       status: postUserResp?.statusCode === 200 ? "success" : "error",
@@ -60,9 +61,9 @@ export default function SignupPage() {
       dispatch(resetUserState());
       dispatch(
         sendEmailVerification({
-          email: postUserResp.data?.email,
-          name: postUserResp.data?.name,
-          verifyToken: postUserResp.data?.verifyToken,
+          email: (postUserResp.data as UserResponseData).email,
+          name: (postUserResp.data as UserResponseData).name,
+          verifyToken: (postUserResp.data as UserResponseData).verifyToken,
         })
       );
       onOpen();
