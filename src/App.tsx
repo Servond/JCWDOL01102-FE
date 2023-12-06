@@ -22,6 +22,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import AdminManagementPage from "./pages/AdminManagement/AdminManagementPage";
 import CreateAdminPage from "./pages/CreateAdmin/CreateAdminPage";
+import ReportPage from "./pages/Report/ReportPage";
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
             element={<AdminManagementPage />}
           />
           <Route path="/dashboard/create-admin" element={<CreateAdminPage />} />
+          <Route path="/dashboard/report" element={<ReportPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Route>
