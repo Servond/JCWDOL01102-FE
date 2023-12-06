@@ -42,3 +42,15 @@ export interface IProduct {
   desc: string;
   imageUrl: string;
 }
+
+export interface IQuery {
+  [key: string]: string | number | null | undefined;
+}
+
+export interface IPage<T> {
+  data: T[];
+  totalCount: number;
+  pageSize: number;
+  totalPages: number;
+  currentPage: number;
+}

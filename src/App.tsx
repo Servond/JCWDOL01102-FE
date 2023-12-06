@@ -25,6 +25,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import SignupPage from "./pages/SignUp/SignupPage";
 import UserManegement from "./pages/UserManagement/UserManagement";
 import UserVerification from "./pages/UserVerification/UserVerification";
+import CategoryPage from "./pages/Admin/Category/CategoryPage";
 
 function App() {
   return (
@@ -95,15 +96,13 @@ function App() {
             path='/dashboard/update-product/:id'
             element={<BranchAdminProtect children={<UpdateProductPage />} />}
           />
+          <Route
+            path='/dashboard/categories'
+            element={<BranchAdminProtect children={<CategoryPage />} />}
+          />
         </Route>
         <Route path='*' element={<NotFoundPage />} />
       </Route>
-      {/* <Route path='/admin' element={<Outlet />}>
-        <Route path='products' element={<ProductsPage />} />
-        <Route path='add-product' element={<AddProductPage />} />
-        <Route path='update-product/:id' element={<UpdateProductPage />} />
-        <Route path='*' element={<NotFoundPage />} />
-      </Route> */}
     </Routes>
   );
 }
