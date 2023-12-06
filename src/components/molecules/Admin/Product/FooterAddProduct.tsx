@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function FooterAddProduct() {
   const navigate = useNavigate();
   const handleCancel = () => {
-    navigate("/admin/products");
+    navigate("/dashboard/products");
   };
   return (
     <HStack

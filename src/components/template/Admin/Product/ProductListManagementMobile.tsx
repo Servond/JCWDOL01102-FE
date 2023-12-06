@@ -13,11 +13,11 @@ import CardProductMobile from "../../../organism/Admin/Produk/CardProductMobile"
 export default function ProductListManagementMobile() {
   const navigate = useNavigate();
   const callbackBack = () => {
-    navigate("/admin/");
+    navigate("/dashboard/products");
   };
 
   const callbackAdd = () => {
-    navigate("/admin/add-product");
+    navigate("/dashboard/add-product");
   };
 
   const getAdminProductState = useSelector(
@@ -50,7 +50,7 @@ export default function ProductListManagementMobile() {
       <VStack key={"ProductListManagementMobile"} mb={"30px"}>
         <TitleHeader
           title={"Daftar Produk"}
-          href='/admin/products'
+          href='/dashboard/products'
           subMenu='Tambah Produk'
           callback={callbackBack}
           callbackSubmenu={callbackAdd}

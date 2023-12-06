@@ -5,7 +5,7 @@ export default function TitleAdminProduct() {
   const navigate = useNavigate();
 
   const handleAddProduct = () => {
-    navigate("/admin/add-product");
+    navigate("/dashboard/add-product");
   };
   return (
     <HStack w={"100%"} my={"15px"}>

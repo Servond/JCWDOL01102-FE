@@ -94,7 +94,7 @@ export default function AdminProductItem(props: AdminProductItemProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleEdit = () => {
-    navigate(`/admin/update-product/${props.id}`);
+    navigate(`/dashboard/update-product/${props.id}`);
   };
   const handleDelete = async () => {
     try {

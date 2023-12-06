@@ -32,7 +32,7 @@ interface Props {
 export default function CardProductMobile(props: Props) {
   const navigate = useNavigate();
   const onUpdate = () => {
-    navigate(`/admin/update-product/${props.id}`);
+    navigate(`/dashboard/update-product/${props.id}`);
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);

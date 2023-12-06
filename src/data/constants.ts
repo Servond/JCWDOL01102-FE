@@ -6,6 +6,7 @@ import { BiSolidCategoryAlt } from "react-icons/bi";
 interface IDashBoarMeta {
   fieldName: string;
   icon: React.ElementType;
+  path: string;
 }
 
 type DashboardNavMeta = IDashBoarMeta[];
@@ -13,10 +14,18 @@ type DashboardNavMeta = IDashBoarMeta[];
 export const constants = {
   authInputField: ["Name", "Email", "Number", "Password"],
   dashboardField: [
-    { fieldName: "User Management", icon: FaUserGear },
-    { fieldName: "Products", icon: FaBoxes },
-    { fieldName: "Voucher", icon: IoTicket },
-    { fieldName: "Categories", icon: BiSolidCategoryAlt },
+    {
+      fieldName: "User Management",
+      icon: FaUserGear,
+      path: "/dashboard/user-management",
+    },
+    { fieldName: "Products", icon: FaBoxes, path: "/dashboard/products" },
+    { fieldName: "Voucher", icon: IoTicket, path: "/dashboard/voucher" },
+    {
+      fieldName: "Categories",
+      icon: BiSolidCategoryAlt,
+      path: "/dashboard/categories",
+    },
   ] as DashboardNavMeta,
 };
 

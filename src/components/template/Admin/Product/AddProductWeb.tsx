@@ -109,7 +109,7 @@ export default function AddProductWeb(
           isClosable: true,
           position: "top",
         });
-        navigate("/admin/products");
+        navigate("/dashboard/products");
       } catch (error: any) {
         toast({
           title: "Gagal menambahkan produk",
