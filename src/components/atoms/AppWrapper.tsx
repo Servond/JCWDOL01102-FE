@@ -14,7 +14,7 @@ export default function AppWrapper() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const boxRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-  const [isDashboard, setDashboard] = useState<boolean>(false);
+  const [isDashboard, setDashboard] = useState<boolean>(true);
   const userRole = useSelector((state: RootState) => state.login.role);
   const userPermission = useSelector(
     (state: RootState) => state.login.permission
@@ -49,6 +49,7 @@ export default function AppWrapper() {
     }
 
     if (isDashboard && !location.pathname.startsWith("/dashboard")) {
+      console.log("here");
       setDashboard(false);
     }
   }, [location]);

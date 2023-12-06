@@ -6,8 +6,10 @@ import {
   LoginResponse,
   SendEmailVerificationResponse,
   UserCreationAttributes,
+  UserPaginateResponse,
 } from "../data/user/interfaces";
 import { IApiResponseStatic } from "../data/interfaces";
+import { generateAuthToken } from "../utils/function/generateAuthToken";
 
 export const getUserById = (id: number) => {
   return server.get(`api/users/${id}`);
@@ -19,11 +21,30 @@ export const getUserByEmail = (param: IEmailCheckInput) => {
     params: {
       email: param.email,
     },
+    headers: {
+      Authorization: generateAuthToken(localStorage.getItem("token")),
+    },
+  });
+};
+
+export const getUserByRolePaginate = (page: number, limit: number) => {
+  return server.get<UserPaginateResponse>("api/users", {
+    headers: {
+      Authorization: generateAuthToken(localStorage.getItem("token")),
+    },
+    params: {
+      page,
+      limit,
+    },
   });
 };
 
 export const postUser = (data: UserCreationAttributes) => {
-  return server.post<CreateUserResponse>("api/users", data);
+  return server.post<CreateUserResponse>("api/users", data, {
+    headers: {
+      Authorization: generateAuthToken(localStorage.getItem("token")),
+    },
+  });
 };
 
 export const getEmailVerification = (
@@ -37,22 +58,45 @@ export const getEmailVerification = (
       name,
       verifyToken,
     },
+    headers: {
+      Authorization: generateAuthToken(localStorage.getItem("token")),
+    },
   });
 };
 
 export const verifyUserByEmail = (verifyToken: string) => {
-  return server.patch<IApiResponseStatic>(`api/users/verify`, {
-    verifyToken,
-  });
+  return server.patch<IApiResponseStatic>(
+    `api/users/verify`,
+    {
+      verifyToken,
+    },
+    {
+      headers: {
+        Authorization: generateAuthToken(localStorage.getItem("token")),
+      },
+    }
+  );
 };
 
 export const updateUser = (id: number, data: UserCreationAttributes) => {
-  return server.put(`api/users/${id}`, data);
+  return server.put(`api/users/${id}`, data, {
+    headers: {
+      Authorization: generateAuthToken(localStorage.getItem("token")),
+    },
+  });
 };
 
 export const login = (email: string, password: string) => {
-  return server.post<LoginResponse>("api/users/login", {
-    email,
-    password,
-  });
+  return server.post<LoginResponse>(
+    "api/users/login",
+    {
+      email,
+      password,
+    },
+    {
+      headers: {
+        Authorization: generateAuthToken(localStorage.getItem("token")),
+      },
+    }
+  );
 };

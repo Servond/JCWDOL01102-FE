@@ -10,6 +10,7 @@ import {
 } from "../../app/redux/slice/User/login";
 import { useNavigate } from "react-router-dom";
 import { Role } from "../../data/constants";
+import { ILoginResponse } from "../../data/user/interfaces";
 
 export default function DummyLoginPage() {
   const loginResp = useSelector((state: RootState) => state.login.loginResp);
@@ -23,7 +24,7 @@ export default function DummyLoginPage() {
     }
 
     if (loginResp?.statusCode === 200) {
-      localStorage.setItem("token", loginResp.data!.token);
+      localStorage.setItem("token", (loginResp.data! as ILoginResponse).token);
       dispatch(resetUserLoginCredential());
       if (userRole === Role.USER) {
         navigate("/");

@@ -2,10 +2,12 @@ import { FaUserGear } from "react-icons/fa6";
 import { FaBoxes } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
 import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BsClipboard2DataFill } from "react-icons/bs";
 
 interface IDashBoarMeta {
   fieldName: string;
   icon: React.ElementType;
+  to: string;
 }
 
 type DashboardNavMeta = IDashBoarMeta[];
@@ -13,10 +15,31 @@ type DashboardNavMeta = IDashBoarMeta[];
 export const constants = {
   authInputField: ["Name", "Email", "Number", "Password"],
   dashboardField: [
-    { fieldName: "User Management", icon: FaUserGear },
-    { fieldName: "Products", icon: FaBoxes },
-    { fieldName: "Voucher", icon: IoTicket },
-    { fieldName: "Categories", icon: BiSolidCategoryAlt },
+    {
+      fieldName: "Admin Management",
+      icon: FaUserGear,
+      to: "/dashboard/admin-management",
+    },
+    {
+      fieldName: "Products",
+      icon: FaBoxes,
+      to: "/dashboard/product-management",
+    },
+    {
+      fieldName: "Voucher",
+      icon: IoTicket,
+      to: "/dashboard/voucher-management",
+    },
+    {
+      fieldName: "Categories",
+      icon: BiSolidCategoryAlt,
+      to: "/dashboard/category-management",
+    },
+    {
+      fieldName: "Report",
+      icon: BsClipboard2DataFill,
+      to: "/dashboard/report",
+    },
   ] as DashboardNavMeta,
 };
 
