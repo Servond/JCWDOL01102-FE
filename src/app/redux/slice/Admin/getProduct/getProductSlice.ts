@@ -3,6 +3,8 @@ import { fetchAdminProductPage } from "../../../../../api/admin/product";
 interface IPage {
   [key: string]: string | number | null | undefined;
 }
+
+
 export const getAdminProduct = createAsyncThunk(
   "adminGetProduct/getAdminProduct",
   async (query: IPage) => {

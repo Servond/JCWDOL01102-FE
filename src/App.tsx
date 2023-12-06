@@ -6,25 +6,25 @@ import "@fontsource/roboto/700.css";
 import "@fontsource/roboto/900.css";
 
 import { Route, Routes } from "react-router";
-import { Outlet } from "react-router-dom";
 import AppWrapper from "./components/atoms/AppWrapper";
-import EmailNoticePage from "./pages/EmailNotice/EmailNoticePage";
-import UserVerification from "./pages/UserVerification/UserVerification";
-import AddAddressPage from "./pages/AddAddress/AddAddressPage";
-import AddressListPage from "./pages/AddressList/AddressListPage";
-import MenuPage from "./pages/Menu/ProfilePage";
-import MyDetailsPage from "./pages/MyDetails/MyDetails";
-import SignupPage from "./pages/SignUp/SignupPage";
-import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
-import DummyLoginPage from "./pages/DummyLogin/DummyLoginPage";
-import LandingPage from "./pages/LadingPage/LandingPage";
+import BranchAdminProtect from "./components/atoms/BranchAdminRoute";
 import PrivateRoute from "./components/atoms/PrivateRoute";
-import NotFoundPage from "./pages/NotFoundPage";
-import ProductsPage from "./pages/Admin/Products/ProductsPage";
+import AddAddressPage from "./pages/AddAddress/AddAddressPage";
+import UpdateAddressPage from "./pages/AddAddress/UpdateAddress";
+import AddressListPage from "./pages/AddressList/AddressListPage";
 import AddProductPage from "./pages/Admin/Products/AddProductPage";
+import ProductsPage from "./pages/Admin/Products/ProductsPage";
 import UpdateProductPage from "./pages/Admin/Products/UpdateProduct";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import DummyLoginPage from "./pages/DummyLogin/DummyLoginPage";
+import EmailNoticePage from "./pages/EmailNotice/EmailNoticePage";
+import LandingPage from "./pages/LadingPage/LandingPage";
+import MenuPage from "./pages/Menu/ProfilePage";
+import MyDetailsPage from "./pages/MyDetails/MyDetails";
+import NotFoundPage from "./pages/NotFoundPage";
+import SignupPage from "./pages/SignUp/SignupPage";
 import UserManegement from "./pages/UserManagement/UserManagement";
+import UserVerification from "./pages/UserVerification/UserVerification";
 
 function App() {
   return (
@@ -82,22 +82,28 @@ function App() {
           <Route
             path='/dashboard/user-management'
             element={<UserManegement />}
-          ></Route>
-          <Route path='/dashboard/products' element={<ProductsPage />} />
-          <Route path='/dashboard/add-product' element={<AddProductPage />} />
+          />
+          <Route
+            path='/dashboard/products'
+            element={<BranchAdminProtect children={<ProductsPage />} />}
+          />
+          <Route
+            path='/dashboard/add-product'
+            element={<BranchAdminProtect children={<AddProductPage />} />}
+          />
           <Route
             path='/dashboard/update-product/:id'
-            element={<UpdateProductPage />}
+            element={<BranchAdminProtect children={<UpdateProductPage />} />}
           />
         </Route>
         <Route path='*' element={<NotFoundPage />} />
       </Route>
-      <Route path='/admin' element={<Outlet />}>
+      {/* <Route path='/admin' element={<Outlet />}>
         <Route path='products' element={<ProductsPage />} />
         <Route path='add-product' element={<AddProductPage />} />
         <Route path='update-product/:id' element={<UpdateProductPage />} />
         <Route path='*' element={<NotFoundPage />} />
-      </Route>
+      </Route> */}
     </Routes>
   );
 }

@@ -176,7 +176,6 @@ export default function AdminProductItem(props: AdminProductItemProps) {
             <InputLeftAddon children={"Rp"} />
             <Input
               type={"number"}
-              defaultValue={props.price}
               onBlur={handleBlurStock}
               name='price'
               onChange={handleInputValue}
@@ -192,7 +191,6 @@ export default function AdminProductItem(props: AdminProductItemProps) {
           <Input
             name='stock'
             type={"number"}
-            defaultValue={props.stock}
             placeholder='Masukan jumlah stok'
             onBlur={handleBlurStock}
             onChange={handleInputValue}

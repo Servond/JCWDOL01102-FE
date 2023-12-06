@@ -2,7 +2,7 @@
 
 import { IProductRequest } from "../../app/redux/slice/Admin/AddProduct/AddProductSlice";
 import { IProduct, IResponseApi } from "../../data/interfaces";
-import { server } from "../server";
+import { adminServer, server } from "../server";
 
 export const postCreateProduct = (file: File, data: IProductRequest) => {
   const formData = new FormData();
@@ -24,18 +24,20 @@ interface IQuery {
 }
 
 export const fetchAdminProductPage = (query: IQuery) => {
-  return server.get(`api/product`, { params: query });
+  return adminServer.get(`api/product`, {
+    params: query,
+  });
 };
 // {{base_url}}/api/product/:id
 
 export const updateProduct = (id: number, data: Partial<IProductRequest>) => {
-  return server.put(`api/product/${id}`, data);
+  return adminServer.put(`api/product/${id}`, data);
 };
 
 // {{base_url}}/api/product/:id
 
 export const deleteProduct = (id: number) => {
-  return server.delete(`api/product/${id}`);
+  return adminServer.delete(`api/product/${id}`);
 };
 
 //get product by id

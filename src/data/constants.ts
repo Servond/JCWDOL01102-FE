@@ -7,6 +7,7 @@ interface IDashBoarMeta {
   fieldName: string;
   icon: React.ElementType;
   path: string;
+  role: string[];
 }
 
 type DashboardNavMeta = IDashBoarMeta[];
@@ -18,13 +19,25 @@ export const constants = {
       fieldName: "User Management",
       icon: FaUserGear,
       path: "/dashboard/user-management",
+      role: ["super_admin"],
     },
-    { fieldName: "Products", icon: FaBoxes, path: "/dashboard/products" },
-    { fieldName: "Voucher", icon: IoTicket, path: "/dashboard/voucher" },
+    {
+      fieldName: "Products",
+      icon: FaBoxes,
+      path: "/dashboard/products",
+      role: ["branch_admin"],
+    },
+    {
+      fieldName: "Voucher",
+      icon: IoTicket,
+      path: "/dashboard/voucher",
+      role: ["branch_admin"],
+    },
     {
       fieldName: "Categories",
       icon: BiSolidCategoryAlt,
       path: "/dashboard/categories",
+      role: ["branch_admin"],
     },
   ] as DashboardNavMeta,
 };

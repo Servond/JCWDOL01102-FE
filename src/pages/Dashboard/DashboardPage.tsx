@@ -1,11 +1,10 @@
 import { Flex } from "@chakra-ui/react";
-import DashboardNavBar from "../../components/organism/Dashboard/DashboardNavBar";
-import DashboardContent from "../../components/organism/Dashboard/DashboardContent";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../app/redux/store";
-import { Role } from "../../data/constants";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../app/redux/store";
+import DashboardContent from "../../components/organism/Dashboard/DashboardContent";
+import DashboardNavBar from "../../components/organism/Dashboard/DashboardNavBar";
 
 export default function DashboardPage() {
   const userRole = useSelector((state: RootState) => state.login.role);

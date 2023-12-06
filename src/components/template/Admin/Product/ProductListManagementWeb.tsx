@@ -24,6 +24,8 @@ export default function ProductListManagementWeb() {
     (state: RootState) => state.getAdminProduct
   );
 
+  const userState = useSelector((state: RootState) => state.login);
+
   const dispatch = useDispatch<AppDispatch>();
   const [productName, setProductName] = useState("");
   const [categoryId, setCategoryId] = useState<string | number>("");
@@ -55,6 +57,7 @@ export default function ProductListManagementWeb() {
     isRefresh,
     sortBy,
     orderDirection,
+    userState.token,
   ]);
 
   const handlePageChange = (selectedItem: any) => {
@@ -90,6 +93,7 @@ export default function ProductListManagementWeb() {
           />
           <Divider my={"5px"} />
           <Grid
+            key={"Grid"}
             templateColumns={"repeat(14, 1fr)"}
             gap={"1rem"}
             rowGap={"5px"}
