@@ -2,6 +2,7 @@ import { FaUserGear } from "react-icons/fa6";
 import { FaBoxes } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
 import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BsClipboard2DataFill } from "react-icons/bs";
 
 interface IDashBoarMeta {
   fieldName: string;
@@ -24,11 +25,20 @@ export const constants = {
       icon: FaBoxes,
       to: "/dashboard/product-management",
     },
-    { fieldName: "Voucher", icon: IoTicket, to: "/dashboard/admin-management" },
+    {
+      fieldName: "Voucher",
+      icon: IoTicket,
+      to: "/dashboard/voucher-management",
+    },
     {
       fieldName: "Categories",
       icon: BiSolidCategoryAlt,
-      to: "/dashboard/admin-management",
+      to: "/dashboard/category-management",
+    },
+    {
+      fieldName: "Report",
+      icon: BsClipboard2DataFill,
+      to: "/dashboard/report",
     },
   ] as DashboardNavMeta,
 };

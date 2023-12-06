@@ -6,7 +6,11 @@ export default function Navigation() {
   const navigate = useNavigate();
   return (
     <HStack w={"full"} align={"center"} mb={"2rem"}>
-      <Box fontSize={"18px"} onClick={() => navigate(-1)}>
+      <Box
+        fontSize={"18px"}
+        onClick={() => navigate(-1)}
+        _hover={{ cursor: "pointer" }}
+      >
         <FaChevronLeft />
       </Box>
       <Heading
@@ -15,7 +19,7 @@ export default function Navigation() {
         fontSize={"20px"}
         lineHeight={"1.5px"}
       >
-        Dashboard
+        Admin List
       </Heading>
     </HStack>
   );
