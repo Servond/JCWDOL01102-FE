@@ -13,9 +13,6 @@ import {
   GridItem,
   HStack,
   Image,
-  Input,
-  InputGroup,
-  InputLeftAddon,
   Menu,
   MenuButton,
   MenuItem,
@@ -25,9 +22,9 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
-import { deleteProduct, updateProduct } from "../../../../api/admin/product";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { deleteProduct } from "../../../../api/admin/product";
 
 interface AdminProductItemProps {
   id: number;
@@ -40,8 +37,6 @@ interface AdminProductItemProps {
 }
 
 export default function AdminProductItem(props: AdminProductItemProps) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [lastStock, setLastStock] = useState(props.stock);
   const toast = useToast();
   const navigate = useNavigate();
   const [price, setPrice] = useState(props.price);
@@ -52,45 +47,6 @@ export default function AdminProductItem(props: AdminProductItemProps) {
     setStock(props.stock);
   }, [props.price, props.stock]);
 
-  const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "price") {
-      setPrice(parseInt(e.target.value));
-    } else {
-      setStock(parseInt(e.target.value));
-    }
-  };
-  const handleBlurStock = async (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsLoading(true);
-    try {
-      if (parseInt(e.target.value) === lastStock) {
-        setIsLoading(false);
-        return;
-      }
-      await updateProduct(props.id, {
-        [e.target.name]: parseInt(e.target.value),
-      });
-      toast({
-        title: `Berhasil mengubah ${e.target.name}`,
-        // description: "Stok berhasil diubah",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
-      setLastStock(parseInt(e.target.value));
-      setIsLoading(false);
-    } catch (error: any) {
-      setIsLoading(false);
-      toast({
-        title: "Gagal mengubah stok",
-        description: error.response.data.message ?? "Terjadi kesalahan",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
-    }
-  };
   const cancelRef = useRef<HTMLButtonElement>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleEdit = () => {
@@ -172,31 +128,18 @@ export default function AdminProductItem(props: AdminProductItemProps) {
       </GridItem>
       <GridItem colSpan={3}>
         <Center h={"100%"}>
-          <InputGroup>
-            <InputLeftAddon children={"Rp"} />
-            <Input
-              type={"number"}
-              onBlur={handleBlurStock}
-              name='price'
-              onChange={handleInputValue}
-              value={price}
-              isDisabled={isLoading}
-            />
-          </InputGroup>
+          <Text>
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }).format(price)}
+          </Text>
           <Spacer />
         </Center>
       </GridItem>
       <GridItem colSpan={2}>
         <Center h={"100%"}>
-          <Input
-            name='stock'
-            type={"number"}
-            placeholder='Masukan jumlah stok'
-            onBlur={handleBlurStock}
-            onChange={handleInputValue}
-            value={stock}
-            isDisabled={isLoading}
-          />
+          <Text>{stock}</Text>
           <Spacer />
         </Center>
       </GridItem>
