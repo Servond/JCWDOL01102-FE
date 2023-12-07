@@ -13,6 +13,9 @@ interface IAdminManagementState {
   pageSize: number;
   totalPages: number;
   currentPages: number;
+  sortBy: string;
+  filterBy: number;
+  keySearch: string;
   apiState: "idle" | "pending" | "done" | "rejected";
   admins: UserResponseData[];
   resp: UserPaginateResponse;
@@ -24,7 +27,13 @@ export const fetchAdminPaginate = createAsyncThunk<
   { rejectValue: UserPaginateResponse }
 >("adminManagement/paginate", async (payload, thunkApi) => {
   try {
-    const res = await getUserByRolePaginate(payload.page, payload.limit);
+    const res = await getUserByRolePaginate(
+      payload.page,
+      payload.limit,
+      String(payload.sortBy),
+      Number(payload.filterBy),
+      payload.key!
+    );
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -47,8 +56,21 @@ const adminManagementSlice = createSlice({
     admins: [],
     resp: {},
     apiState: "idle",
+    sortBy: "",
+    filterBy: 0,
+    keySearch: "",
   } as IAdminManagementState,
-  reducers: {},
+  reducers: {
+    setFilterBy: (state, action) => {
+      state.filterBy = action.payload;
+    },
+    setSortBy: (state, action) => {
+      state.sortBy = action.payload;
+    },
+    setKeySearch: (state, action) => {
+      state.keySearch = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(fetchAdminPaginate.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
@@ -82,4 +104,6 @@ const adminManagementSlice = createSlice({
   },
 });
 
+export const { setFilterBy, setSortBy, setKeySearch } =
+  adminManagementSlice.actions;
 export default adminManagementSlice.reducer;

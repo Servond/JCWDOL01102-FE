@@ -28,3 +28,8 @@ export interface IApiResponseStatic {
   statusCode?: number;
   message?: string;
 }
+
+export interface OptionType {
+  label: string;
+  value: string;
+}

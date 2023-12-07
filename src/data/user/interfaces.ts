@@ -59,6 +59,9 @@ export interface ILoginInput {
 export interface IUserPaginateInput {
   page: number;
   limit: number;
+  sortBy?: unknown;
+  filterBy?: unknown;
+  key?: string;
 }
 export interface UserCreationAttributes {
   image_id?: number | null;

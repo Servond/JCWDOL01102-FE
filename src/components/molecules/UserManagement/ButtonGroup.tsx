@@ -1,45 +1,51 @@
-import { Box, Button, HStack, Text, useDisclosure } from "@chakra-ui/react";
-import { FaSort, FaFilter, FaPlus } from "react-icons/fa";
-import FilterModal from "./filterModal";
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import { FaPlus } from "react-icons/fa";
+// import FilterModal from "./filterModal";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import {
+  SelectStyle,
+  SelectTheme,
+} from "../../../themes/Select/ReactSelect.theme";
+import { constants } from "../../../data/constants";
+
+import { OptionType } from "../../../data/interfaces";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../app/redux/store";
+import {
+  setFilterBy,
+  setSortBy,
+} from "../../../app/redux/slice/User/adminManagement";
 
 export default function ButtonGroup() {
-  const filterDisclosure = useDisclosure();
-  const sortDisclosure = useDisclosure();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   return (
     <HStack>
+      <Select
+        options={constants.adminCreationFilterField}
+        defaultValue={constants.adminCreationFilterField[0]}
+        styles={SelectStyle}
+        theme={SelectTheme}
+        onChange={(option) => {
+          const opt = option as OptionType;
+          console.log(opt.value);
+          dispatch(setFilterBy(opt.value));
+        }}
+      />
+      <Select
+        options={constants.AdminCreationSortField}
+        defaultValue={constants.AdminCreationSortField[0]}
+        styles={SelectStyle}
+        theme={SelectTheme}
+        onChange={(option) => {
+          const opt = option as OptionType;
+          console.log(opt.value);
+          dispatch(setSortBy(opt.value));
+        }}
+      />
       <Button
-        variant={"secondaryButton"}
-        color={"secondaryColor"}
-        borderColor={"secondaryColor"}
-        py={"1rem"}
-        fontSize={"16px"}
-        onClick={sortDisclosure.onOpen}
-      >
-        <HStack>
-          <Box fontSize={"16px"}>
-            <FaSort />
-          </Box>
-          <Text>Sort</Text>
-        </HStack>
-      </Button>
-      <Button
-        variant={"secondaryButton"}
-        py={"1rem"}
-        fontSize={"16px"}
-        color={"secondaryColor"}
-        borderColor={"secondaryColor"}
-        onClick={filterDisclosure.onOpen}
-      >
-        <HStack>
-          <Box fontSize={"16x"}>
-            <FaFilter />
-          </Box>
-          <Text>Filters</Text>
-        </HStack>
-      </Button>
-      <Button
+        w={"150px"}
         variant={"primaryButton"}
         py={"1rem"}
         fontSize={"16px"}
@@ -52,10 +58,6 @@ export default function ButtonGroup() {
           <Text>Add Admin</Text>
         </HStack>
       </Button>
-      <FilterModal
-        isOpen={filterDisclosure.isOpen}
-        onClose={filterDisclosure.onClose}
-      />
     </HStack>
   );
 }
