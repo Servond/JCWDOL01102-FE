@@ -27,7 +27,13 @@ export const getUserByEmail = (param: IEmailCheckInput) => {
   });
 };
 
-export const getUserByRolePaginate = (page: number, limit: number) => {
+export const getUserByRolePaginate = (
+  page: number,
+  limit: number,
+  sortBy: string | undefined,
+  filterBy: number | undefined,
+  key: string
+) => {
   return server.get<UserPaginateResponse>("api/users", {
     headers: {
       Authorization: generateAuthToken(localStorage.getItem("token")),
@@ -35,6 +41,9 @@ export const getUserByRolePaginate = (page: number, limit: number) => {
     params: {
       page,
       limit,
+      sortBy,
+      filterBy,
+      key: `%${key}%`,
     },
   });
 };

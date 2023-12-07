@@ -3,7 +3,7 @@ import { FaBoxes } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BsClipboard2DataFill } from "react-icons/bs";
-
+import { OptionType } from "./interfaces";
 interface IDashBoarMeta {
   fieldName: string;
   icon: React.ElementType;
@@ -14,6 +14,16 @@ type DashboardNavMeta = IDashBoarMeta[];
 
 export const constants = {
   authInputField: ["Name", "Email", "Number", "Password"],
+  adminCreationFilterField: [
+    { value: "0", label: "No Filter" },
+    { value: "1", label: "Super Admin" },
+    { value: "2", label: "Branch Admin" },
+  ],
+  AdminCreationSortField: [
+    { value: "", label: "No Sort" },
+    { value: "ASC", label: "A-Z" },
+    { value: "DESC", label: "Z-A" },
+  ] as OptionType[],
   dashboardField: [
     {
       fieldName: "Admin Management",

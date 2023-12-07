@@ -9,7 +9,7 @@ interface IUserInfo {
 export default function UserInfo(props: IUserInfo) {
   return (
     <HStack>
-      <Avatar w={"44px"} h={"44px"} />
+      <Avatar w={"44px"} h={"44px"} name="Admin" />
       <UserBioNameEmail name={props.name} email={props.email} />
     </HStack>
   );
