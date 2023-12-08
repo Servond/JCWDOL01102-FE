@@ -194,7 +194,6 @@ export default function ChangeProfileField() {
         </Text>
         <Button
           width={"100%"}
-          color={"primaryColor"}
           isDisabled={!!formik.errors.value && formik.touched.value}
           type={"submit"}
           isLoading={isLoading}

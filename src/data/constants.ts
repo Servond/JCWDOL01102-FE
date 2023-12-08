@@ -7,10 +7,17 @@ import { OptionType } from "./interfaces";
 interface IDashBoarMeta {
   fieldName: string;
   icon: React.ElementType;
-  to: string;
+  path: string;
+  role: string[];
 }
 
 type DashboardNavMeta = IDashBoarMeta[];
+
+export enum Role {
+  SUPER_ADMIN = "super_admin",
+  BRANCH_ADMIN = "branch_admin",
+  USER = "user",
+}
 
 export const constants = {
   authInputField: ["Name", "Email", "Number", "Password"],
@@ -28,27 +35,26 @@ export const constants = {
     {
       fieldName: "Admin Management",
       icon: FaUserGear,
-      to: "/dashboard/admin-management",
+      path: "/dashboard/admin-management",
+      role: [Role.SUPER_ADMIN],
     },
     {
       fieldName: "Products",
       icon: FaBoxes,
-      to: "/dashboard/product-management",
+      path: "/dashboard/products",
+      role: [Role.BRANCH_ADMIN],
     },
     {
       fieldName: "Voucher",
       icon: IoTicket,
-      to: "/dashboard/voucher-management",
+      path: "/dashboard/voucher",
+      role: [Role.BRANCH_ADMIN],
     },
     {
       fieldName: "Categories",
       icon: BiSolidCategoryAlt,
-      to: "/dashboard/category-management",
-    },
-    {
-      fieldName: "Report",
-      icon: BsClipboard2DataFill,
-      to: "/dashboard/report",
+      path: "/dashboard/categories",
+      role: [Role.BRANCH_ADMIN],
     },
   ] as DashboardNavMeta,
 };
@@ -73,10 +79,4 @@ export enum Permission {
   CAN_CREATE_CART = "can_create_cart",
   CAN_UPDATE_CART = "can_update_cart",
   CAN_REMOVE_CART = "can_remove_cart",
-}
-
-export enum Role {
-  SUPER_ADMIN = "super_admin",
-  BRANCH_ADMIN = "branch_admin",
-  USER = "user",
 }
