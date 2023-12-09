@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   AbsoluteCenter,
-  Container,
+  Box,
   Table,
   TableContainer,
   Tbody,
@@ -9,20 +10,33 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import UserInfo from "../../molecules/UserManagement/UserInfo";
 import UserRole from "../../atoms/UserManagement/UserRole";
 import DeleteButton from "../../atoms/UserManagement/DeleteButton";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
-import { fetchAdminPaginate } from "../../../app/redux/slice/User/adminManagement";
+import { fetchAdminPaginate } from "../../../app/redux/slice/Admin/userManagement/adminManagement";
 import LoadingCenter from "../../molecules/Loading";
 import SearchBar from "../../atoms/UserManagement/SearchBar";
 import UserNotFound from "../../molecules/UserManagement/UserNotFound";
+import ReactPaginate from "react-paginate";
+import { Role } from "../../../data/constants";
+import DeleteAlert from "../../molecules/UserManagement/DeleteAlert";
+import { resetDeleteAdminState } from "../../../app/redux/slice/Admin/userManagement/deleteAdmin";
+import UserBranch from "../../atoms/UserManagement/UserBranch";
+import { fetchBranches } from "../../../app/redux/slice/Admin/userManagement/createAdmin";
 
 export default function AdminTableContent() {
   const dispatch = useDispatch<AppDispatch>();
+  const alertDisclosure = useDisclosure();
+  const [isScrollTop, setScrollTop] = useState<boolean>(true);
+  const [selectedPage, setSelectedPage] = useState<number>(0);
+  const prevSelectedPage = useRef<number>(0);
+  const [adminId, setAdminId] = useState<number>(0);
   const apiState = useSelector(
     (root: RootState) => root.userManagement.apiState
   );
@@ -30,73 +44,190 @@ export default function AdminTableContent() {
     (root: RootState) => root.userManagement.admins
   );
   const key = useSelector((root: RootState) => root.userManagement.keySearch);
-
   const sortBy = useSelector((state: RootState) => state.userManagement.sortBy);
   const filterBy = useSelector(
     (state: RootState) => state.userManagement.filterBy
   );
+  const totalPage = useSelector(
+    (state: RootState) => state.userManagement.totalPages
+  );
+  const currentPage = useSelector(
+    (state: RootState) => state.userManagement.currentPages
+  );
+  const deleteAdminResp = useSelector(
+    (state: RootState) => state.deleteAdmin.resp
+  );
+  const deleteAdminApiState = useSelector(
+    (state: RootState) => state.deleteAdmin.apiState
+  );
+  const apiBranchState = useSelector(
+    (state: RootState) => state.createAdmin.apiState
+  );
   useEffect(() => {
     dispatch(
       fetchAdminPaginate({
-        page: 1,
+        page: prevSelectedPage.current === selectedPage ? 1 : selectedPage + 1,
         limit: 10,
         sortBy,
         filterBy,
         key,
       })
     );
-  }, [dispatch, sortBy, filterBy, key]);
+    prevSelectedPage.current = selectedPage;
+  }, [dispatch, sortBy, filterBy, key, selectedPage]);
+
+  useEffect(() => {
+    if (
+      Object.keys(deleteAdminResp).length === 0 ||
+      deleteAdminResp.statusCode !== 200 ||
+      deleteAdminApiState !== "done"
+    )
+      return;
+    dispatch(
+      fetchAdminPaginate({
+        page: currentPage,
+        limit: 10,
+        sortBy,
+        filterBy,
+        key,
+      })
+    ).then(() => {
+      dispatch(resetDeleteAdminState());
+    });
+  }, [deleteAdminResp, dispatch]);
+
+  useEffect(() => {
+    if (adminId < 1) return;
+    if (!alertDisclosure.isOpen) {
+      alertDisclosure.onOpen();
+    }
+  }, [alertDisclosure, adminId]);
+
+  useEffect(() => {
+    dispatch(fetchBranches());
+  }, [dispatch]);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handlePageChange = (selectedItem: any) => {
+    setSelectedPage(selectedItem.selected);
+  };
 
   const contentHandle = () => {
-    if (apiState === "pending") {
+    if (apiState === "done" && adminUsers.length > 0) {
       return (
-        <Container>
-          <AbsoluteCenter>
-            <LoadingCenter />
-          </AbsoluteCenter>
-        </Container>
+        <Tbody>
+          {adminUsers.map((user, index) => {
+            return (
+              <Tr key={index}>
+                <Td>
+                  <UserInfo
+                    name={user.name}
+                    email={user.email}
+                    role={user.role!.role}
+                  />
+                </Td>
+                <Td>
+                  <UserRole>{user.role?.role}</UserRole>
+                </Td>
+                <Td>
+                  <UserBranch
+                    branchId={user.branch_id}
+                    branchName={user.branch?.name}
+                    role={user.role?.role}
+                  />
+                </Td>
+                <Td>
+                  {user.role?.role === Role.BRANCH_ADMIN ? (
+                    <DeleteButton onClick={() => setAdminId(user.id)} />
+                  ) : (
+                    <Text fontSize={"16px"} fontWeight={"semibold"}>
+                      No action
+                    </Text>
+                  )}
+                </Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
       );
-    } else if (apiState === "done" && adminUsers.length > 0) {
-      return adminUsers.map((user, index) => {
-        return (
-          <Tr key={index}>
-            <Td>
-              <UserInfo name={user.name} email={user.email} />
-            </Td>
-            <Td>
-              <UserRole>{user.role?.role}</UserRole>
-            </Td>
-            <Td>
-              <Text fontSize={"16px"} fontWeight={"semibold"}>
-                {!user.branch_id ? "Not Assigned" : user.branch?.name}
-              </Text>
-            </Td>
-            <Td>
-              <DeleteButton />
-            </Td>
-          </Tr>
-        );
-      });
     } else if (apiState === "done" && adminUsers.length === 0) {
       return <UserNotFound />;
     }
   };
 
   return (
-    <TableContainer w={"full"} mt={"1rem"} maxH={"500px"} overflowY={"auto"}>
-      <Table>
-        <Thead bg={"thirdColor"}>
-          <Tr>
-            <Th>
-              <SearchBar />
-            </Th>
-            <Th>Role</Th>
-            <Th>Branch</Th>
-            <Th>Action</Th>
-          </Tr>
-        </Thead>
-        <Tbody>{contentHandle()}</Tbody>
-      </Table>
-    </TableContainer>
+    <VStack w={"full"}>
+      <DeleteAlert
+        isOpen={alertDisclosure.isOpen}
+        onClose={() => {
+          setAdminId(0);
+          alertDisclosure.onClose();
+        }}
+        id={adminId}
+      />
+      <TableContainer
+        w={"full"}
+        mt={"1rem"}
+        maxH={"450px"}
+        h={"450px"}
+        overflowY={"auto"}
+        onScroll={(e) => {
+          const scrollY = e.currentTarget.scrollTop;
+          if (scrollY <= 0.1) {
+            setScrollTop(true);
+          } else {
+            setScrollTop(false);
+          }
+        }}
+      >
+        <Table>
+          <Thead
+            bg={"thirdColor"}
+            shadow={!isScrollTop ? "md" : "none"}
+            transition={"0.1s ease"}
+            position={"sticky"}
+            top={0}
+            zIndex={"1"}
+          >
+            <Tr>
+              <Th>
+                <SearchBar />
+              </Th>
+              <Th>Role</Th>
+              <Th>Branch</Th>
+              <Th>Action</Th>
+            </Tr>
+          </Thead>
+          {contentHandle()}
+        </Table>
+        {apiState === "pending" || apiBranchState !== "done" ? (
+          <AbsoluteCenter>
+            <LoadingCenter />
+          </AbsoluteCenter>
+        ) : null}
+      </TableContainer>
+      <Box mt={"1rem"}>
+        <ReactPaginate
+          previousLabel="Previous"
+          nextLabel="Next"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          pageCount={!totalPage ? 1 : totalPage}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
+          onPageChange={handlePageChange}
+          containerClassName="pagination"
+          activeClassName="active"
+          forcePage={currentPage - 1}
+        />
+      </Box>
+    </VStack>
   );
 }

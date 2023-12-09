@@ -3,10 +3,10 @@ import {
   IUserPaginateInput,
   UserPaginateResponse,
   UserResponseData,
-} from "../../../../data/user/interfaces";
-import { getUserByRolePaginate } from "../../../../api/user";
+} from "../../../../../data/user/interfaces";
+import { getUserByRolePaginate } from "../../../../../api/user";
 import { AxiosError } from "axios";
-import { IPaginate } from "../../../../data/interfaces";
+import { IPaginate } from "../../../../../data/interfaces";
 
 interface IAdminManagementState {
   adminTotal: number;

@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   IBranchResponseData,
   getBranchesResponse,
-} from "../../../../data/branch/interface";
-import { getAllBranch } from "../../../../api/branch";
+} from "../../../../../data/branch/interface";
+import { getAllBranch } from "../../../../../api/branch";
 import { AxiosError } from "axios";
 
 export const fetchBranches = createAsyncThunk<
@@ -42,7 +42,6 @@ const createAdminSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchBranches.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
-        console.log(action.payload.data);
         state.branches = action.payload.data as IBranchResponseData[];
         state.apiState = "done";
       }

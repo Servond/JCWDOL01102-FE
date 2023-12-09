@@ -25,6 +25,7 @@ export const constants = {
     { value: "0", label: "No Filter" },
     { value: "1", label: "Super Admin" },
     { value: "2", label: "Branch Admin" },
+    { value: "3", label: "User" },
   ],
   AdminCreationSortField: [
     { value: "", label: "No Sort" },

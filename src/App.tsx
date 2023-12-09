@@ -22,7 +22,7 @@ import MenuPage from "./pages/Menu/ProfilePage";
 import MyDetailsPage from "./pages/MyDetails/MyDetails";
 import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
-import AdminManagementPage from "./pages/AdminManagement/AdminManagementPage";
+import UserManagementPage from "./pages/UserManagement/UserManagementPage";
 import CreateAdminPage from "./pages/CreateAdmin/CreateAdminPage";
 import SignupPage from "./pages/SignUp/SignupPage";
 import UserVerification from "./pages/UserVerification/UserVerification";
@@ -32,16 +32,16 @@ function App() {
   return (
     <Routes>
       <Route element={<AppWrapper />}>
-        <Route path='/email-notice' element={<EmailNoticePage />} />
+        <Route path="/email-notice" element={<EmailNoticePage />} />
         <Route
-          path='/user-verification/:verifyToken'
+          path="/user-verification/:verifyToken"
           element={<UserVerification />}
         />
-        <Route path='/' element={<LandingPage />} />
-        <Route path='/signup' element={<SignupPage />} />
-        <Route path='login' element={<DummyLoginPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="login" element={<DummyLoginPage />} />
         <Route
-          path='/menu'
+          path="/menu"
           element={
             <PrivateRoute>
               <MenuPage />
@@ -49,7 +49,7 @@ function App() {
           }
         />
         <Route
-          path='/my-details'
+          path="/my-details"
           element={
             <PrivateRoute>
               <MyDetailsPage />
@@ -57,7 +57,7 @@ function App() {
           }
         />
         <Route
-          path='/my-address'
+          path="/my-address"
           element={
             <PrivateRoute>
               <AddressListPage />
@@ -65,7 +65,7 @@ function App() {
           }
         />
         <Route
-          path='/add-address'
+          path="/add-address"
           element={
             <PrivateRoute>
               <AddAddressPage />
@@ -73,37 +73,37 @@ function App() {
           }
         />
         <Route
-          path='/update-address/:id'
+          path="/update-address/:id"
           element={
             <PrivateRoute>
               <UpdateAddressPage />
             </PrivateRoute>
           }
         />
-        <Route path='/dashboard' element={<DashboardPage />}>
+        <Route path="/dashboard" element={<DashboardPage />}>
           <Route
-            path='/dashboard/admin-management'
-            element={<AdminManagementPage />}
+            path="/dashboard/user-management"
+            element={<UserManagementPage />}
           />
-          <Route path='/dashboard/create-admin' element={<CreateAdminPage />} />
+          <Route path="/dashboard/create-admin" element={<CreateAdminPage />} />
           <Route
-            path='/dashboard/products'
+            path="/dashboard/products"
             element={<BranchAdminProtect children={<ProductsPage />} />}
           />
           <Route
-            path='/dashboard/add-product'
+            path="/dashboard/add-product"
             element={<BranchAdminProtect children={<AddProductPage />} />}
           />
           <Route
-            path='/dashboard/update-product/:id'
+            path="/dashboard/update-product/:id"
             element={<BranchAdminProtect children={<UpdateProductPage />} />}
           />
           <Route
-            path='/dashboard/categories'
+            path="/dashboard/categories"
             element={<BranchAdminProtect children={<CategoryPage />} />}
           />
         </Route>
-        <Route path='*' element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

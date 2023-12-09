@@ -10,10 +10,10 @@ import getAdminProductReducer from "./slice/Admin/getProduct/getProductSlice";
 import adminCategoryReducer from "./slice/Admin/category/AdminCategorySlice";
 import loginReducer from "./slice/User/login";
 import animationReducer from "./slice/Animation/animationSlice";
-import userManagementReducer from "./slice/User/adminManagement";
-import createAdminReducer from "./slice/User/createAdmin";
-
+import userManagementReducer from "./slice/Admin/userManagement/adminManagement";
+import createAdminReducer from "./slice/Admin/userManagement/createAdmin";
 export type AppDispatch = typeof store.dispatch;
+import deleteAdminReducer from "./slice/Admin/userManagement/deleteAdmin";
 export type RootState = ReturnType<typeof store.getState>;
 
 export const store = configureStore({
@@ -31,5 +31,6 @@ export const store = configureStore({
     animation: animationReducer,
     userManagement: userManagementReducer,
     createAdmin: createAdminReducer,
+    deleteAdmin: deleteAdminReducer,
   },
 });
