@@ -11,7 +11,10 @@ import { FocusableElement } from "@chakra-ui/utils";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
-import { deleteAdmin } from "../../../app/redux/slice/Admin/userManagement/deleteAdmin";
+import {
+  deleteAdmin,
+  resetDeleteAdminState,
+} from "../../../app/redux/slice/Admin/userManagement/deleteAdmin";
 import { HStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 
@@ -36,12 +39,7 @@ export default function DeleteAlert(props: IDeleteAlert) {
   };
 
   useEffect(() => {
-    if (
-      Object.keys(apiResp).length === 0 ||
-      apiResp.statusCode !== 200 ||
-      apiState !== "done"
-    )
-      return;
+    if (Object.keys(apiResp).length === 0) return;
     toast({
       duration: 3000,
       status: apiResp.statusCode === 200 ? "success" : "error",
@@ -49,6 +47,9 @@ export default function DeleteAlert(props: IDeleteAlert) {
       description: apiResp.message,
       position: "top",
     });
+    if (apiResp.statusCode !== 200) {
+      dispatch(resetDeleteAdminState());
+    }
   }, [apiState, apiResp, toast, dispatch]);
 
   return (

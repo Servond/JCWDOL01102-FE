@@ -5,6 +5,7 @@ interface IUserInfo {
   name: string;
   email: string;
   role: string;
+  id: number;
 }
 
 export default function UserInfo(props: IUserInfo) {
@@ -15,6 +16,7 @@ export default function UserInfo(props: IUserInfo) {
         name={props.name}
         email={props.email}
         role={props.role}
+        id={props.id}
       />
     </HStack>
   );

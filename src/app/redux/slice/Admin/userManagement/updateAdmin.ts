@@ -1,20 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IApiResponseStatic } from "../../../../../data/interfaces";
+import { updateAdminById } from "../../../../../api/admin/user-management";
 import { AxiosError } from "axios";
-import { deleteAdminById } from "../../../../../api/admin/user-management";
+import { AdminEditByIdInput } from "../../../../../data/user/interfaces";
 
-interface IDeleteAdminState {
-  apiState: "idle" | "pending" | "done" | "rejected";
+interface IUpdateAdminState {
+  apiState: "idle" | "pending" | "rejected" | "done";
   resp: IApiResponseStatic;
 }
 
-export const deleteAdmin = createAsyncThunk<
+export const updateAdmin = createAsyncThunk<
   IApiResponseStatic,
-  number,
+  AdminEditByIdInput,
   { rejectValue: IApiResponseStatic }
->("/deleteAdmin/delete", async (id, thunkApi) => {
+>("updateAdmin, admin", async (input, thunkApi) => {
   try {
-    const res = await deleteAdminById(id);
+    const res = await updateAdminById(input.id, input.data);
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -37,44 +38,36 @@ export const deleteAdmin = createAsyncThunk<
   }
 });
 
-export const deleteAdminSlice = createSlice({
-  name: "deleteAdmin",
+const updateAdminSlice = createSlice({
+  name: "updateAdmin",
   initialState: {
     apiState: "idle",
     resp: {},
-  } as IDeleteAdminState,
+  } as IUpdateAdminState,
   reducers: {
-    setDeleteAdminApiState: (state, action) =>
-      (state.apiState = action.payload),
-    setDeleteAdminResponse: (state, action) => (state.resp = action.payload),
-    resetDeleteAdminState: (state) => {
-      state.resp = {};
+    resetUpdateAdminState: (state) => {
       state.apiState = "idle";
+      state.resp = {};
     },
   },
-
   extraReducers(builder) {
-    builder.addCase(deleteAdmin.fulfilled, (state, action) => {
+    builder.addCase(updateAdmin.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
         state.resp = action.payload;
         state.apiState = "done";
       }
     });
 
-    builder.addCase(deleteAdmin.pending, (state) => {
+    builder.addCase(updateAdmin.pending, (state) => {
       state.apiState = "pending";
     });
 
-    builder.addCase(deleteAdmin.rejected, (state, action) => {
+    builder.addCase(updateAdmin.rejected, (state, action) => {
       state.apiState = "rejected";
       state.resp = action.payload!;
     });
   },
 });
 
-export const {
-  setDeleteAdminApiState,
-  setDeleteAdminResponse,
-  resetDeleteAdminState,
-} = deleteAdminSlice.actions;
-export default deleteAdminSlice.reducer;
+export const { resetUpdateAdminState } = updateAdminSlice.actions;
+export default updateAdminSlice.reducer;

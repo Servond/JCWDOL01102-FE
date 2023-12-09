@@ -37,12 +37,22 @@ export const fetchAdminPaginate = createAsyncThunk<
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
-      return thunkApi.rejectWithValue({
-        statusCode: e.response?.status,
-        message: e.response?.data.message,
-      });
+      if (e.response) {
+        return thunkApi.rejectWithValue({
+          statusCode: e.response?.status,
+          message: e.response?.data.message,
+        });
+      } else if (e.request) {
+        return thunkApi.rejectWithValue({
+          statusCode: 500,
+          message: e.code,
+        });
+      }
     }
-    return thunkApi.rejectWithValue(e as UserPaginateResponse);
+    return thunkApi.rejectWithValue({
+      statusCode: 500,
+      message: (e as Error).message,
+    });
   }
 });
 

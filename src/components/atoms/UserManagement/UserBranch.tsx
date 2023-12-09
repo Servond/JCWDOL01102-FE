@@ -8,10 +8,13 @@ import {
   SelectBranchStyle,
   SelectTheme,
 } from "../../../themes/Select/ReactSelect.theme";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import { AdminEditByIdInput } from "../../../data/user/interfaces";
+import { updateAdmin } from "../../../app/redux/slice/Admin/userManagement/updateAdmin";
 
 interface IUserBranchProps {
+  id: number;
   branchId?: number | null;
   branchName?: string;
   role?: string;
@@ -19,6 +22,8 @@ interface IUserBranchProps {
 
 export default function UserBranch(props: IUserBranchProps) {
   const [isBranchEdit, setIsBranchEdit] = useState<boolean>();
+  const [value, setValue] = useState<OptionType | null | undefined>(null);
+  const dispatch = useDispatch<AppDispatch>();
   const branches = useSelector(
     (state: RootState) => state.createAdmin.branches
   );
@@ -33,6 +38,29 @@ export default function UserBranch(props: IUserBranchProps) {
     selectRef.current?.focus();
   }, [isBranchEdit]);
 
+  useEffect(() => {
+    setValue(
+      !props.branchName
+        ? undefined
+        : ({
+            value: String(props.branchId),
+            label: props.branchName,
+          } as OptionType)
+    );
+  }, []);
+
+  const handleBlur = () => {
+    setIsBranchEdit(false);
+    if (value?.label === props.branchName) return;
+    const data: AdminEditByIdInput = {
+      id: props.id!,
+      data: {
+        branch_id: Number(value?.value),
+      },
+    };
+    dispatch(updateAdmin(data));
+  };
+
   return props.role === Role.BRANCH_ADMIN ? (
     <HStack
       onClick={() => setIsBranchEdit(true)}
@@ -42,7 +70,7 @@ export default function UserBranch(props: IUserBranchProps) {
         <Select
           theme={SelectTheme}
           styles={SelectBranchStyle}
-          onBlur={() => setIsBranchEdit(false)}
+          onBlur={handleBlur}
           ref={selectRef}
           options={branches.map((branch) => {
             const option: OptionType = {
@@ -51,19 +79,16 @@ export default function UserBranch(props: IUserBranchProps) {
             };
             return option;
           })}
-          value={
-            !props.branchName
-              ? undefined
-              : ({
-                  value: String(props.branchId),
-                  label: props.branchName,
-                } as OptionType)
-          }
+          value={value}
+          onChange={(option) => {
+            const opt = option as OptionType;
+            setValue(opt);
+          }}
           placeholder="Branch"
         />
       ) : (
         <Text fontWeight={"semibold"} size={"16px"}>
-          {!props.branchId ? "Not assigned" : props.branchName}
+          {!value?.label ? "Not assigned" : value?.label}
         </Text>
       )}
 

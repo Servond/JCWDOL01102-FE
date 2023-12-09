@@ -29,6 +29,7 @@ import DeleteAlert from "../../molecules/UserManagement/DeleteAlert";
 import { resetDeleteAdminState } from "../../../app/redux/slice/Admin/userManagement/deleteAdmin";
 import UserBranch from "../../atoms/UserManagement/UserBranch";
 import { fetchBranches } from "../../../app/redux/slice/Admin/userManagement/createAdmin";
+import { resetUpdateAdminState } from "../../../app/redux/slice/Admin/userManagement/updateAdmin";
 
 export default function AdminTableContent() {
   const dispatch = useDispatch<AppDispatch>();
@@ -60,6 +61,12 @@ export default function AdminTableContent() {
   const deleteAdminApiState = useSelector(
     (state: RootState) => state.deleteAdmin.apiState
   );
+  const updateAdminResp = useSelector(
+    (state: RootState) => state.updateAdmin.resp
+  );
+  const updateAdminApiState = useSelector(
+    (state: RootState) => state.updateAdmin.apiState
+  );
   const apiBranchState = useSelector(
     (state: RootState) => state.createAdmin.apiState
   );
@@ -78,9 +85,11 @@ export default function AdminTableContent() {
 
   useEffect(() => {
     if (
-      Object.keys(deleteAdminResp).length === 0 ||
-      deleteAdminResp.statusCode !== 200 ||
-      deleteAdminApiState !== "done"
+      (Object.keys(deleteAdminResp).length === 0 &&
+        Object.keys(updateAdminResp).length === 0) ||
+      (deleteAdminResp.statusCode !== 200 &&
+        updateAdminResp.statusCode !== 200) ||
+      (deleteAdminApiState !== "done" && updateAdminApiState !== "done")
     )
       return;
     dispatch(
@@ -92,9 +101,13 @@ export default function AdminTableContent() {
         key,
       })
     ).then(() => {
-      dispatch(resetDeleteAdminState());
+      if (Object.keys(deleteAdminResp).length > 0) {
+        dispatch(resetDeleteAdminState());
+      } else {
+        dispatch(resetUpdateAdminState());
+      }
     });
-  }, [deleteAdminResp, dispatch]);
+  }, [deleteAdminResp, dispatch, updateAdminResp]);
 
   useEffect(() => {
     if (adminId < 1) return;
@@ -124,6 +137,7 @@ export default function AdminTableContent() {
                     name={user.name}
                     email={user.email}
                     role={user.role!.role}
+                    id={user.id}
                   />
                 </Td>
                 <Td>
@@ -131,6 +145,7 @@ export default function AdminTableContent() {
                 </Td>
                 <Td>
                   <UserBranch
+                    id={user.id}
                     branchId={user.branch_id}
                     branchName={user.branch?.name}
                     role={user.role?.role}

@@ -65,3 +65,33 @@ export const SelectBranchStyle: StylesConfig<
     },
   }),
 };
+
+export const createAdminStyle: StylesConfig<
+  OptionType,
+  false,
+  GroupBase<OptionType>
+> = {
+  indicatorSeparator: () => ({ display: "none" }),
+  container: (baseStyle) => ({
+    ...baseStyle,
+    width: "100%",
+    minWidth: "80px",
+  }),
+  control: (base) => ({
+    ...base,
+    boxShadow: "none",
+    border: "1px solid #B1B1B1",
+    ":hover": {
+      border: "1px solid #53B175",
+    },
+  }),
+  option: (baseStyle) => ({
+    ...baseStyle,
+    backgroundColor: "white",
+    color: "black",
+    ":hover": {
+      backgroundColor: "#53B175",
+      color: "white",
+    },
+  }),
+};
