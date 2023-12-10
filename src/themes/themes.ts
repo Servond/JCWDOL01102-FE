@@ -15,7 +15,7 @@ export const globalTheme = extendTheme({
     successColor: "#53B175",
     superAdminColor: "#EDF7FC",
     branchAdminColor: "#F4EBF7",
-    userColor: "#F4EBF7",
+    userColor: "#FDE598",
   },
   styles: {
     global: {

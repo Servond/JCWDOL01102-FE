@@ -15,35 +15,41 @@ import { AppDispatch } from "../../../app/redux/store";
 import {
   setFilterBy,
   setSortBy,
-} from "../../../app/redux/slice/User/adminManagement";
+} from "../../../app/redux/slice/Admin/userManagement/adminManagement";
 
 export default function ButtonGroup() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   return (
     <HStack>
-      <Select
-        options={constants.adminCreationFilterField}
-        defaultValue={constants.adminCreationFilterField[0]}
-        styles={SelectStyle}
-        theme={SelectTheme}
-        onChange={(option) => {
-          const opt = option as OptionType;
-          console.log(opt.value);
-          dispatch(setFilterBy(opt.value));
-        }}
-      />
-      <Select
-        options={constants.AdminCreationSortField}
-        defaultValue={constants.AdminCreationSortField[0]}
-        styles={SelectStyle}
-        theme={SelectTheme}
-        onChange={(option) => {
-          const opt = option as OptionType;
-          console.log(opt.value);
-          dispatch(setSortBy(opt.value));
-        }}
-      />
+      <Box zIndex={"3"}>
+        <Select
+          options={constants.adminCreationFilterField}
+          defaultValue={constants.adminCreationFilterField[0]}
+          styles={SelectStyle}
+          theme={SelectTheme}
+          onChange={(option) => {
+            const opt = option as OptionType;
+            console.log(opt.value);
+            dispatch(setFilterBy(opt.value));
+          }}
+        />
+      </Box>
+
+      <Box zIndex={"3"}>
+        <Select
+          options={constants.AdminCreationSortField}
+          defaultValue={constants.AdminCreationSortField[0]}
+          styles={SelectStyle}
+          theme={SelectTheme}
+          onChange={(option) => {
+            const opt = option as OptionType;
+            console.log(opt.value);
+            dispatch(setSortBy(opt.value));
+          }}
+        />
+      </Box>
+
       <Button
         w={"150px"}
         variant={"primaryButton"}

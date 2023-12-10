@@ -3,6 +3,7 @@ import { FaTrash } from "react-icons/fa";
 
 interface IDeleteButtonProps {
   id?: number | undefined;
+  onClick: () => void;
 }
 
 export default function DeleteButton(props: IDeleteButtonProps) {
@@ -11,7 +12,7 @@ export default function DeleteButton(props: IDeleteButtonProps) {
       variant={"secondaryButton"}
       borderColor={"red.500"}
       color={"red.500"}
-      onClick={() => console.log(props.id)}
+      onClick={() => props.onClick()}
     >
       <HStack>
         <Box fontSize={"16px"}>

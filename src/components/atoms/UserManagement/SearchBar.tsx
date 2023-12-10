@@ -1,16 +1,22 @@
 import { Box, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { MdSearch } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../app/redux/store";
-import { setKeySearch } from "../../../app/redux/slice/User/adminManagement";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../app/redux/store";
+import { setKeySearch } from "../../../app/redux/slice/Admin/userManagement/adminManagement";
+import debounce from "debounce";
 
 export default function SearchBar() {
   const [isFocus, setFocus] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
-  const keySearch = useSelector(
-    (state: RootState) => state.userManagement.keySearch
-  );
+  const debouncedSearch = debounce((key) => {
+    dispatch(setKeySearch(key));
+  }, 500);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    debouncedSearch.clear();
+    debouncedSearch(e.target.value);
+  };
   return (
     <InputGroup w={"300px"} minW={"100px"}>
       <Input
@@ -18,8 +24,8 @@ export default function SearchBar() {
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         placeholder="Find user"
-        onChange={(e) => dispatch(setKeySearch(e.target.value))}
-        value={keySearch}
+        onChange={handleChange}
+        // value={keySearch}
       />
       <InputRightElement
         fontSize={"20px"}
