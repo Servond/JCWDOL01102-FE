@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   ILoginInput,
+  ILoginResponse,
   IUserFromToken,
   LoginResponse,
 } from "../../../../data/user/interfaces";
@@ -79,7 +80,7 @@ const loginSlice = createSlice({
     builder.addCase(userLogin.fulfilled, (state, action) => {
       if (action.payload.statusCode?.toString().startsWith("2")) {
         state.loginResp = action.payload;
-        state.token = action.payload.data?.token;
+        state.token = (action.payload.data as ILoginResponse).token;
         state.loginState = "done";
         state.isAuthenticated = true;
         const tokenObj = parseToken(state.token!) as IUserFromToken;

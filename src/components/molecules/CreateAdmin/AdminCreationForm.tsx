@@ -8,7 +8,6 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import Dropdown from "../../atoms/CreateAdmin/Dropdown";
 import { useFormik } from "formik";
 import { createAdminValidator } from "../../../app/validation/createAdminValidation.schema";
 import { useRef } from "react";
@@ -17,29 +16,35 @@ import { AppDispatch, RootState } from "../../../app/redux/store";
 import { createUser } from "../../../app/redux/slice/userSlicer";
 import { useEffect } from "react";
 import Loading from "../../atoms/Loading";
+import Select from "react-select";
+import {
+  SelectTheme,
+  createAdminStyle,
+} from "../../../themes/Select/ReactSelect.theme";
+import { OptionType } from "../../../data/interfaces";
 
 export default function AdminCreationForm() {
   const dispatch = useDispatch<AppDispatch>();
   const postUserState = useSelector(
     (state: RootState) => state.user.postUserState
   );
+  const branches = useSelector(
+    (state: RootState) => state.createAdmin.branches
+  );
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       password: "",
-      number: "",
       branch: 0,
     },
     onSubmit: (value) => {
       dispatch(
         createUser({
           name: value.name,
-          address: "",
           role_id: 2,
           branch_id: Number(value.branch),
           password: value.password,
-          phoneNumber: value.number,
           email: value.email,
         })
       );
@@ -47,10 +52,8 @@ export default function AdminCreationForm() {
     validationSchema: createAdminValidator,
   });
   const boxRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     if (postUserState !== "done") return;
-
     formik.resetForm({
       submitCount: 0,
       errors: {},
@@ -59,7 +62,6 @@ export default function AdminCreationForm() {
         name: "",
         email: "",
         password: "",
-        number: "",
         branch: 0,
       },
     });
@@ -126,34 +128,6 @@ export default function AdminCreationForm() {
 
           <VStack w={"full"} align={"start"}>
             <FormControl
-              isInvalid={Boolean(formik.errors.number && formik.touched.number)}
-            >
-              <FormLabel
-                htmlFor="number"
-                color={"forthColor"}
-                fontSize={"1rem"}
-              >
-                Number
-              </FormLabel>
-              <Input
-                variant={
-                  formik.submitCount > 0 && formik.errors.number
-                    ? "error"
-                    : "createAdmin"
-                }
-                onChange={formik.handleChange}
-                name="number"
-                id="number"
-                value={formik.values.number}
-              />
-              {formik.submitCount > 0 && formik.errors.number ? (
-                <FormErrorMessage>{formik.errors.number}</FormErrorMessage>
-              ) : null}
-            </FormControl>
-          </VStack>
-
-          <VStack w={"full"} align={"start"}>
-            <FormControl
               isInvalid={Boolean(
                 formik.errors.password && formik.touched.password
               )}
@@ -194,9 +168,20 @@ export default function AdminCreationForm() {
               >
                 Branch
               </FormLabel>
-              <Dropdown
-                onChange={formik.setFieldValue}
-                value={formik.values.branch}
+              <Select
+                theme={SelectTheme}
+                styles={createAdminStyle}
+                options={branches.map((branch) => {
+                  const obj: OptionType = {
+                    value: String(branch.id),
+                    label: branch.name,
+                  };
+                  return obj;
+                })}
+                onChange={(selected) => {
+                  const opt = selected as OptionType;
+                  formik.setFieldValue("branch", Number(opt.value));
+                }}
               />
               {formik.submitCount > 0 && formik.errors.branch ? (
                 <FormErrorMessage>{formik.errors.branch}</FormErrorMessage>

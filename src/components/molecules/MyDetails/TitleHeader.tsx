@@ -7,6 +7,7 @@ interface Props {
   subMenu?: string;
   callbackSubmenu?: () => void;
   callback?: () => void;
+  isNotBack?: boolean;
 }
 
 export default function TitleHeader(props: Props) {
@@ -17,7 +18,12 @@ export default function TitleHeader(props: Props) {
   };
   return (
     <HStack pt={"10px"} width={"100%"}>
-      <PiArrowLeft size={"24px"} cursor={"pointer"} onClick={handleBack} />
+      <PiArrowLeft
+        size={"24px"}
+        cursor={"pointer"}
+        onClick={handleBack}
+        style={{ display: props.isNotBack ? "none" : "block" }}
+      />
       <Text fontWeight={"bold"}>{props.title}</Text>
       <Spacer />
       {props.subMenu ? (

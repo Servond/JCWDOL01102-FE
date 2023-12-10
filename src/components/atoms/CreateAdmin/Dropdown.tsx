@@ -9,11 +9,10 @@ import {
 import { FaChevronDown } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/redux/store";
-import { useState } from "react";
 import { FormikErrors } from "formik";
 
 interface IDropdownProps {
-  onChange: (
+  onChange?: (
     field: string,
     value: unknown,
     shouldValidate?: boolean | undefined
@@ -28,14 +27,13 @@ interface IDropdownProps {
           branch: number;
         }>
       >;
-  value: number;
+  value?: number;
 }
 
 export default function Dropdown(props: IDropdownProps) {
   const branches = useSelector(
     (state: RootState) => state.createAdmin.branches
   );
-  const [branchName, setBranchName] = useState<string>("");
 
   return (
     <Menu autoSelect={false} matchWidth variant={"dropdown"}>
@@ -52,8 +50,7 @@ export default function Dropdown(props: IDropdownProps) {
               value={branch.id}
               key={index}
               onClick={(e) => {
-                props.onChange("branch", Number(e.currentTarget.value));
-                setBranchName(branch.name);
+                props.onChange?.("branch", Number(e.currentTarget.value));
               }}
             >
               {branch.name}

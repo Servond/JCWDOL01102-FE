@@ -5,11 +5,15 @@ import addressListReducer from "../redux/slice/AddressList/addressListSlice";
 import { user2Reducer } from "./slice/User/user";
 import provinceReducer from "./slice/MasterData/ProvinceSlice";
 import citiesReducer from "./slice/MasterData/CitiesSlice";
+import addProductReducer from "./slice/Admin/AddProduct/AddProductSlice";
+import getAdminProductReducer from "./slice/Admin/getProduct/getProductSlice";
+import adminCategoryReducer from "./slice/Admin/category/AdminCategorySlice";
 import loginReducer from "./slice/User/login";
 import animationReducer from "./slice/Animation/animationSlice";
-import userManagementReducer from "./slice/User/adminManagement";
-import createAdminReducer from "./slice/User/createAdmin";
-
+import userManagementReducer from "./slice/Admin/userManagement/adminManagement";
+import createAdminReducer from "./slice/Admin/userManagement/createAdmin";
+import deleteAdminReducer from "./slice/Admin/userManagement/deleteAdmin";
+import updateAdminReducer from "./slice/Admin/userManagement/updateAdmin";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -21,9 +25,14 @@ export const store = configureStore({
     user2: user2Reducer,
     province: provinceReducer,
     cities: citiesReducer,
+    addProduct: addProductReducer,
+    getAdminProduct: getAdminProductReducer,
+    adminCategory: adminCategoryReducer,
     login: loginReducer,
     animation: animationReducer,
     userManagement: userManagementReducer,
     createAdmin: createAdminReducer,
+    deleteAdmin: deleteAdminReducer,
+    updateAdmin: updateAdminReducer,
   },
 });
