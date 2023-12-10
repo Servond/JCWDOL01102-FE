@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   IBranchResponseData,
   getBranchesResponse,
-} from "../../../../data/branch/interface";
-import { getAllBranch } from "../../../../api/branch";
+} from "../../../../../data/branch/interface";
+import { getAllBranch } from "../../../../../api/branch";
 import { AxiosError } from "axios";
 
 export const fetchBranches = createAsyncThunk<
@@ -16,12 +16,22 @@ export const fetchBranches = createAsyncThunk<
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
-      return thunkApi.rejectWithValue({
-        statusCode: e.response?.status,
-        message: e.response?.data.message,
-      });
+      if (e.response) {
+        return thunkApi.rejectWithValue({
+          statusCode: e.response?.status,
+          message: e.response?.data.message,
+        });
+      } else if (e.request) {
+        return thunkApi.rejectWithValue({
+          statusCode: 500,
+          message: e.code,
+        });
+      }
     }
-    return thunkApi.rejectWithValue(e as getBranchesResponse);
+    return thunkApi.rejectWithValue({
+      statusCode: 500,
+      message: (e as Error).message,
+    });
   }
 });
 
@@ -42,7 +52,6 @@ const createAdminSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(fetchBranches.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
-        console.log(action.payload.data);
         state.branches = action.payload.data as IBranchResponseData[];
         state.apiState = "done";
       }

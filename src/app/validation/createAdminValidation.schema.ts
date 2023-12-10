@@ -5,7 +5,6 @@ export const createAdminValidator = Yup.object({
   email: Yup.string()
     .required("Email is required")
     .email("Email format is invalid"),
-  number: Yup.string().required("Number is Required"),
   password: Yup.string()
     .required("Password is required")
     .min(8, "Password must contain 8 charcaters or more")

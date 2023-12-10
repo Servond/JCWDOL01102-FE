@@ -63,6 +63,11 @@ export interface IUserPaginateInput {
   filterBy?: unknown;
   key?: string;
 }
+
+export interface AdminEditByIdInput {
+  id: number;
+  data: UserCreationAttributes;
+}
 export interface UserCreationAttributes {
   image_id?: number | null;
   name?: string;

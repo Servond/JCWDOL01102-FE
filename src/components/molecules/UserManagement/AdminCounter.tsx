@@ -12,7 +12,7 @@ export default function AdminCounter() {
   return (
     <HStack>
       <Text fontSize={"20px"} fontWeight={"bold"}>
-        Admin
+        User
       </Text>
       <Divider
         orientation="vertical"
