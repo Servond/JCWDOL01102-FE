@@ -49,7 +49,6 @@ export default function AppWrapper() {
     }
 
     if (isDashboard && !location.pathname.startsWith("/dashboard")) {
-      console.log("here");
       setDashboard(false);
     }
   }, [location]);

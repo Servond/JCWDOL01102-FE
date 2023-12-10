@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../../app/redux/store";
@@ -11,8 +11,10 @@ export default function DashboardPage() {
   const userRole = useSelector((state: RootState) => state.login.role);
   const navigate = useNavigate();
   const location = useLocation();
+  const [path, setPath] = useState<string>("");
+  const prevPath = useRef<string>("");
   useEffect(() => {
-    if (location.pathname.includes("/dashboard")) return;
+    if (prevPath.current.includes("/dashboard")) return;
     if (userRole === Role.SUPER_ADMIN) {
       navigate("/dashboard/user-management");
     } else if (userRole === Role.BRANCH_ADMIN) {
@@ -20,7 +22,12 @@ export default function DashboardPage() {
     } else {
       navigate("/*");
     }
-  }, [navigate, userRole, location]);
+  }, [navigate, userRole, path]);
+
+  useEffect(() => {
+    prevPath.current = path;
+    setPath(location.pathname);
+  }, [location.pathname]);
   return (
     <Flex w={"full"} py={"1rem"} h={"100dvh"}>
       <DashboardNavBar />
