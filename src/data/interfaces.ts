@@ -21,7 +21,7 @@ export interface IPaginate<T> {
 export interface IApiResponse<T> {
   statusCode?: number;
   message?: string;
-  data?: T | T[];
+  data?: T;
 }
 
 export interface IApiResponseStatic {

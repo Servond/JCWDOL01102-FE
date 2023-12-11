@@ -2,12 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   ILoginInput,
   ILoginResponse,
-  IUserFromToken,
   LoginResponse,
+  UserResponseData,
 } from "../../../../data/user/interfaces";
 import { login } from "../../../../api/user";
 import { AxiosError } from "axios";
-import { parseToken } from "../../../../utils/function/parseToken";
 
 interface ILoginState {
   emailValue: string | undefined;
@@ -18,6 +17,7 @@ interface ILoginState {
   isAuthenticated: boolean;
   role: string;
   permission: string[];
+  user: Partial<UserResponseData> | null;
 }
 
 export const userLogin = createAsyncThunk<
@@ -50,6 +50,7 @@ const loginSlice = createSlice({
     isAuthenticated: false,
     role: "",
     permission: [],
+    user: null,
   } as ILoginState,
   reducers: {
     resetUserLoginCredential: (state) => {
@@ -75,18 +76,22 @@ const loginSlice = createSlice({
     setPermission: (state, action) => {
       state.permission = action.payload;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.fulfilled, (state, action) => {
       if (action.payload.statusCode?.toString().startsWith("2")) {
         state.loginResp = action.payload;
-        state.token = (action.payload.data as ILoginResponse).token;
+        const data = action.payload.data as ILoginResponse;
+        state.token = data.token;
         state.loginState = "done";
+        state.user = data.user;
         state.isAuthenticated = true;
-        const tokenObj = parseToken(state.token!) as IUserFromToken;
-        state.role = tokenObj.role;
+        state.role = data.user.role as string;
+        state.permission = data.user.permission!;
         console.log(state.role);
-        state.permission = tokenObj.permission;
       }
     });
     builder.addCase(userLogin.pending, (state) => {
@@ -107,6 +112,7 @@ export const {
   setAuthenticated,
   setPermission,
   setRole,
+  setUser,
 } = loginSlice.actions;
 
 export default loginSlice.reducer;

@@ -57,6 +57,12 @@ export const constants = {
       path: "/dashboard/categories",
       role: [Role.BRANCH_ADMIN],
     },
+    {
+      fieldName: "Report",
+      icon: BsClipboard2DataFill,
+      path: "/dashboard/report",
+      role: [Role.BRANCH_ADMIN],
+    },
   ] as DashboardNavMeta,
 };
 

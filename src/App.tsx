@@ -24,6 +24,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
 import UserManagementPage from "./pages/UserManagement/UserManagementPage";
 import CreateAdminPage from "./pages/CreateAdmin/CreateAdminPage";
+import ReportPage from "./pages/Report/ReportPage";
 import SignupPage from "./pages/SignUp/SignupPage";
 import UserVerification from "./pages/UserVerification/UserVerification";
 import CategoryPage from "./pages/Admin/Category/CategoryPage";
@@ -86,6 +87,10 @@ function App() {
             element={<UserManagementPage />}
           />
           <Route path="/dashboard/create-admin" element={<CreateAdminPage />} />
+          <Route
+            path="/dashboard/report"
+            element={<BranchAdminProtect children={<ReportPage />} />}
+          />
           <Route
             path="/dashboard/products"
             element={<BranchAdminProtect children={<ProductsPage />} />}

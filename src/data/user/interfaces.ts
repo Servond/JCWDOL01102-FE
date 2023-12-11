@@ -18,8 +18,9 @@ export interface UserResponseData {
   password: string;
   created_at?: Date;
   updated_at?: Date;
-  role?: { role: string };
+  role?: { role: string } | string;
   branch?: { name: string };
+  permission?: string[];
 }
 
 export interface IEmailCheckResponse {
@@ -46,8 +47,7 @@ export interface ISendEmailCheckInput {
 }
 
 export interface ILoginResponse {
-  email: string;
-  password: string;
+  user: Partial<UserResponseData>;
   token: string;
 }
 

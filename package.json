@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
     "@reduxjs/toolkit": "^1.9.7",
+    "apexcharts": "^3.44.2",
     "axios": "^1.6.2",
     "debounce": "^2.0.0",
     "formik": "^2.4.5",

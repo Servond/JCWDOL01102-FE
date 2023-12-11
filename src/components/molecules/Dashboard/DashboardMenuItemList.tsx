@@ -1,12 +1,17 @@
 import { VStack } from "@chakra-ui/react";
 import DashboardMenuItem from "../../atoms/Dashboard/DashboardMenuItem";
-import { useState } from "react";
-import { constants } from "../../../data/constants";
+import { useEffect, useState } from "react";
+import { Role, constants } from "../../../data/constants";
 import { RootState } from "../../../app/redux/store";
 import { useSelector } from "react-redux";
 
 export default function DashboardMenuItemList() {
   const userState = useSelector((state: RootState) => state.login);
+  useEffect(() => {
+    if (userState.role === Role.BRANCH_ADMIN) {
+      setIndex(1);
+    }
+  }, []);
   const [indexNow, setIndex] = useState<number>(0);
   return (
     <VStack spacing={"1rem"} w={"full"}>
