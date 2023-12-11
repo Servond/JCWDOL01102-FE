@@ -91,7 +91,6 @@ const loginSlice = createSlice({
         state.isAuthenticated = true;
         state.role = data.user.role as string;
         state.permission = data.user.permission!;
-        console.log(state.role);
       }
     });
     builder.addCase(userLogin.pending, (state) => {

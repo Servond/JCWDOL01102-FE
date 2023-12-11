@@ -25,7 +25,11 @@ export default function AppWrapper() {
   const userPermission = useSelector(
     (state: RootState) => state.login.permission
   );
+  const userIsAuth = useSelector(
+    (state: RootState) => state.login.isAuthenticated
+  );
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector((state: RootState) => state.login.user);
 
   const scrollHandle = () => {
     boxRef.current?.scrollTo({
@@ -42,15 +46,18 @@ export default function AppWrapper() {
   };
 
   useEffect(() => {
-    if (userRole === "" || userPermission?.length === 0) {
-      const userObj = parseToken(
-        localStorage.getItem("token")
-      ) as IUserFromToken;
+    if (!user || !userRole || userPermission?.length === 0 || !userIsAuth)
+      return;
+    setIsRender(true);
+  }, [user, userRole, userPermission, userIsAuth]);
+
+  useEffect(() => {
+    const userObj = parseToken(localStorage.getItem("token")) as IUserFromToken;
+    if (userObj) {
       dispatch(setRole(userObj.role));
       dispatch(setPermission(userObj.permission));
       dispatch(setAuthenticated(true));
       dispatch(setUser(userObj));
-      setIsRender(true);
     } else {
       setIsRender(true);
     }
