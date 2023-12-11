@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   ILoginInput,
   ILoginResponse,
+  IUserLoginAttributes,
   LoginResponse,
-  UserResponseData,
 } from "../../../../data/user/interfaces";
 import { login } from "../../../../api/user";
 import { AxiosError } from "axios";
@@ -17,7 +17,7 @@ interface ILoginState {
   isAuthenticated: boolean;
   role: string;
   permission: string[];
-  user: Partial<UserResponseData> | null;
+  user: IUserLoginAttributes | null;
 }
 
 export const userLogin = createAsyncThunk<
@@ -79,6 +79,9 @@ const loginSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setToken: (state, action) => {
+      state.token = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.fulfilled, (state, action) => {
@@ -112,6 +115,7 @@ export const {
   setPermission,
   setRole,
   setUser,
+  setToken,
 } = loginSlice.actions;
 
 export default loginSlice.reducer;

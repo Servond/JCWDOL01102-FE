@@ -10,6 +10,7 @@ import {
   setAuthenticated,
   setPermission,
   setRole,
+  setToken,
   setUser,
 } from "../../app/redux/slice/User/login";
 import { IUserFromToken } from "../../data/user/interfaces";
@@ -28,8 +29,9 @@ export default function AppWrapper() {
   const userIsAuth = useSelector(
     (state: RootState) => state.login.isAuthenticated
   );
-  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.login.user);
+  const token = useSelector((state: RootState) => state.login.token);
+  const dispatch = useDispatch<AppDispatch>();
 
   const scrollHandle = () => {
     boxRef.current?.scrollTo({
@@ -46,15 +48,22 @@ export default function AppWrapper() {
   };
 
   useEffect(() => {
-    if (!user || !userRole || userPermission?.length === 0 || !userIsAuth)
+    if (
+      !user ||
+      !userRole ||
+      userPermission?.length === 0 ||
+      !userIsAuth ||
+      !token
+    )
       return;
     setIsRender(true);
-  }, [user, userRole, userPermission, userIsAuth]);
+  }, [user, userRole, userPermission, userIsAuth, token]);
 
   useEffect(() => {
     const userObj = parseToken(localStorage.getItem("token")) as IUserFromToken;
     if (userObj) {
       dispatch(setRole(userObj.role));
+      dispatch(setToken(localStorage.getItem("token")));
       dispatch(setPermission(userObj.permission));
       dispatch(setAuthenticated(true));
       dispatch(setUser(userObj));
