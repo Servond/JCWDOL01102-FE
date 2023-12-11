@@ -10,8 +10,7 @@ import {
   MdLogin,
   MdOutlineDashboard,
 } from "react-icons/md";
-import { validatePermissions } from "../../../utils/function/validatePermissions";
-import { Permission, Role } from "../../../data/constants";
+import { Role } from "../../../data/constants";
 
 const drawerAnimations = {
   open: {

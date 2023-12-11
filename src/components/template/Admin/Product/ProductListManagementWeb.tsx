@@ -129,26 +129,26 @@ export default function ProductListManagementWeb() {
               />
             ))}
           </Grid>
-          <div id='container'>
+          <div id="container">
             {getAdminProductState.data.data.length !== 0 && (
               <ReactPaginate
-                previousLabel='Previous'
-                nextLabel='Next'
-                pageClassName='page-item'
-                pageLinkClassName='page-link'
-                previousClassName='page-item'
-                previousLinkClassName='page-link'
-                nextClassName='page-item'
-                nextLinkClassName='page-link'
-                breakLabel='...'
-                breakClassName='page-item'
-                breakLinkClassName='page-link'
+                previousLabel="Previous"
+                nextLabel="Next"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakLabel="..."
+                breakClassName="page-item"
+                breakLinkClassName="page-link"
                 pageCount={getAdminProductState.data.totalPages ?? 1}
                 marginPagesDisplayed={1}
                 pageRangeDisplayed={2}
                 onPageChange={handlePageChange}
-                containerClassName='pagination'
-                activeClassName='active'
+                containerClassName="pagination"
+                activeClassName="active"
                 // forcePage={pageOffset}
               />
             )}

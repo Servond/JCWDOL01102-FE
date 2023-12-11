@@ -79,7 +79,7 @@ export default function AdminProductItem(props: AdminProductItemProps) {
   return (
     <>
       <AlertDialog
-        motionPreset='slideInBottom'
+        motionPreset="slideInBottom"
         onClose={onClose}
         leastDestructiveRef={cancelRef!}
         isOpen={isOpen}
@@ -98,7 +98,7 @@ export default function AdminProductItem(props: AdminProductItemProps) {
             <Button ref={cancelRef} onClick={onClose}>
               No
             </Button>
-            <Button colorScheme='red' ml={3} onClick={handleDelete}>
+            <Button colorScheme="red" ml={3} onClick={handleDelete}>
               Yes
             </Button>
           </AlertDialogFooter>
