@@ -10,6 +10,7 @@ import {
   setAuthenticated,
   setPermission,
   setRole,
+  setUser,
 } from "../../app/redux/slice/User/login";
 import { IUserFromToken } from "../../data/user/interfaces";
 import { parseToken } from "../../utils/function/parseToken";
@@ -48,6 +49,7 @@ export default function AppWrapper() {
       dispatch(setRole(userObj.role));
       dispatch(setPermission(userObj.permission));
       dispatch(setAuthenticated(true));
+      dispatch(setUser(userObj));
       setIsRender(true);
     } else {
       setIsRender(true);
