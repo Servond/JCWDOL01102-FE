@@ -87,7 +87,10 @@ function App() {
             element={<UserManagementPage />}
           />
           <Route path="/dashboard/create-admin" element={<CreateAdminPage />} />
-          <Route path="/dashboard/report" element={<ReportPage />} />
+          <Route
+            path="/dashboard/report"
+            element={<BranchAdminProtect children={<ReportPage />} />}
+          />
           <Route
             path="/dashboard/products"
             element={<BranchAdminProtect children={<ProductsPage />} />}

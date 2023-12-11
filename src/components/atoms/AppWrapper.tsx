@@ -6,7 +6,11 @@ import DummyNavBar from "../organism/dummyNavBar";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/redux/store";
-import { setPermission, setRole } from "../../app/redux/slice/User/login";
+import {
+  setAuthenticated,
+  setPermission,
+  setRole,
+} from "../../app/redux/slice/User/login";
 import { IUserFromToken } from "../../data/user/interfaces";
 import { parseToken } from "../../utils/function/parseToken";
 
@@ -15,6 +19,7 @@ export default function AppWrapper() {
   const boxRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const [isDashboard, setDashboard] = useState<boolean>(true);
+  const [isRender, setIsRender] = useState<boolean>(false);
   const userRole = useSelector((state: RootState) => state.login.role);
   const userPermission = useSelector(
     (state: RootState) => state.login.permission
@@ -42,6 +47,10 @@ export default function AppWrapper() {
       ) as IUserFromToken;
       dispatch(setRole(userObj.role));
       dispatch(setPermission(userObj.permission));
+      dispatch(setAuthenticated(true));
+      setIsRender(true);
+    } else {
+      setIsRender(true);
     }
 
     if (location.pathname.startsWith("/dashboard")) {
@@ -73,9 +82,11 @@ export default function AppWrapper() {
       }}
     >
       {location.pathname === "/" ? <DummyNavBar /> : null}
-      <Box px={"1.5rem"}>
-        <Outlet />
-      </Box>
+      {isRender ? (
+        <Box px={"1.5rem"}>
+          <Outlet />
+        </Box>
+      ) : null}
     </Box>
   );
 }
