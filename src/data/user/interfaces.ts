@@ -13,6 +13,19 @@ export interface UserResponseData {
   iat: number;
 }
 
+export interface IUserLoginAttributes {
+  name: string;
+  email: string;
+  branchId: number | null;
+  userId: number;
+  phoneNumber: string;
+  referralCode: string;
+  role: string;
+  permission: string[];
+  branch: string | null;
+  iat: number;
+}
+
 export interface IEmailCheckResponse {
   available: boolean;
 }
@@ -37,7 +50,7 @@ export interface ISendEmailCheckInput {
 }
 
 export interface ILoginResponse {
-  user: Partial<UserResponseData>;
+  user: IUserLoginAttributes;
   token: string;
 }
 
