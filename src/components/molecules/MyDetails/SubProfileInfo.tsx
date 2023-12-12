@@ -8,6 +8,7 @@ interface Props {
   value: string;
   copyIcon?: boolean;
   field: string;
+  isHiden?: boolean;
 }
 
 export default function SubProfileInfo(props: Props) {
@@ -15,12 +16,18 @@ export default function SubProfileInfo(props: Props) {
     <Grid templateColumns={"repeat(12, 1fr)"} gap={6} w={"100%"} my={"5px"}>
       <LabelDetail label={props.label} />
       <ValueDetail value={props.value} />
-      <ButtonDetail
-        copyIcon={props.copyIcon}
-        value={props.value}
-        label={props.label}
-        field={props.field}
-      />
+      <div
+        style={{
+          display: props.isHiden ? "none" : "flex",
+        }}
+      >
+        <ButtonDetail
+          copyIcon={props.copyIcon}
+          value={props.value}
+          label={props.label}
+          field={props.field}
+        />
+      </div>
     </Grid>
   );
 }

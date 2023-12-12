@@ -1,18 +1,17 @@
 import {
-  Button,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
   Select,
   Spacer,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { PiMagnifyingGlass } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../app/redux/store";
+import { useDebounce } from "use-debounce";
 import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
+import { AppDispatch, RootState } from "../../../../app/redux/store";
 
 interface SearchAdminProductProps {
   handleSearch: (value: string) => void;
@@ -67,6 +66,12 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
         break;
     }
   };
+
+  const [productNameSearch] = useDebounce(search, 1000);
+  useEffect(() => {
+    props.handleSearch(productNameSearch);
+  }, [productNameSearch, props]);
+
   return (
     <HStack w={"100%"} gap={"1rem"}>
       <InputGroup width={"500px"}>
@@ -80,18 +85,6 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
           }}
           value={search}
         />
-        <InputRightElement width='4.5rem'>
-          <Button
-            h='1.75rem'
-            size='sm'
-            onClick={() => {
-              props.handleSearch(search);
-              setSearch("");
-            }}
-          >
-            Cari
-          </Button>
-        </InputRightElement>
       </InputGroup>
       <Spacer />
       <Select
