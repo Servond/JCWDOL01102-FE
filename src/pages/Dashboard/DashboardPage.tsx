@@ -20,7 +20,7 @@ export default function DashboardPage() {
     } else if (userRole === Role.BRANCH_ADMIN) {
       navigate("/dashboard/products");
     } else {
-      navigate("/*");
+      navigate("/login");
     }
   }, [navigate, userRole, path]);
 

@@ -1,26 +1,16 @@
 import { IApiResponse, IApiResponseStatic, IPaginate } from "../interfaces";
 
 export interface UserResponseData {
-  id: number;
-  image_id?: number;
-  branch_id?: number;
   name: string;
   email: string;
-  address: string;
-  phone_number: string;
-  referral_code: string;
-  role_id: number;
-  birthdate?: Date;
-  isDeleted: boolean;
-  isVerified: boolean;
-  resetPassword_token?: string;
-  verifyToken?: string;
-  password: string;
-  created_at?: Date;
-  updated_at?: Date;
-  role?: { role: string } | string;
-  branch?: { name: string };
-  permission?: string[];
+  branchId: number | null;
+  userId: number;
+  phoneNumber: string;
+  referralCode: string;
+  role: string;
+  permission: string[];
+  branch: string | null;
+  iat: number;
 }
 
 export interface IEmailCheckResponse {

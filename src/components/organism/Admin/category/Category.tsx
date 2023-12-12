@@ -1,15 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Button,
   Divider,
   GridItem,
   HStack,
   Input,
   Text,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React from "react";
-import { updateCategory } from "../../../../api/admin/category";
+import React, { useRef } from "react";
+import {
+  deleteCategoryById,
+  updateCategory,
+} from "../../../../api/admin/category";
 
 interface Props {
   id: number;
@@ -57,6 +67,31 @@ export default function Category(props: Props) {
     setIsUpdate(!isUpdate);
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await deleteCategoryById(props.id);
+      toast({
+        title: "Berhasil Menghapus Kategori",
+        description: response.data.message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      props.setRefresh();
+    } catch (error: any) {
+      toast({
+        title: "Gagal Menghapus Kategori",
+        description: error.response.data.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      props.setRefresh();
+    }
+  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
+
   return (
     <>
       <GridItem colSpan={3}>
@@ -79,7 +114,8 @@ export default function Category(props: Props) {
             colorScheme={"red"}
             variant={"outline"}
             height={"30px"}
-            isDisabled={isUpdate}
+            isDisabled={isUpdate || props.totalItem > 0 ? true : false}
+            onClick={onOpen}
           >
             Hapus
           </Button>
@@ -94,6 +130,39 @@ export default function Category(props: Props) {
           </Button>
         </HStack>
       </GridItem>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              Delete Customer
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? You can't undo this action afterwards.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme='red'
+                onClick={() => {
+                  handleDelete();
+                  onClose();
+                }}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }

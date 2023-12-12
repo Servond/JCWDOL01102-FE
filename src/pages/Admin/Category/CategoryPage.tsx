@@ -23,11 +23,12 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getCategoryPage } from "../../../app/redux/slice/Admin/category/AdminCategorySlice";
 import { createCategory } from "../../../api/admin/category";
 import Category from "../../../components/organism/Admin/category/Category";
 import ReactPaginate from "react-paginate";
+import { useDebounce } from "use-debounce";
 
 export default function CategoryPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,24 +42,20 @@ export default function CategoryPage() {
     setPageOffset(selectedItem.selected + 1);
   };
 
-  useEffect(() => {
-    dispatch(
-      getCategoryPage({
-        page: pageOffset,
-        limit: 10,
-        sort: "asc",
-        name: "",
-        branchId: 1,
-      })
-    );
-  }, [dispatch, refresh, pageOffset]);
-
-  useEffect(() => {
-    console.log(categoryState);
-  }, [categoryState]);
   const toast = useToast();
   const handleCreateCategory = async (name: string) => {
     try {
+      if (name === "") {
+        toast({
+          title: "Gagal Menambahkan Kategori",
+          description: "Nama Kategori tidak boleh kosong",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        return;
+      }
       const response = await createCategory(name);
       toast({
         title: "Berhasil Menambahkan Kategori",
@@ -82,7 +79,19 @@ export default function CategoryPage() {
     }
     setName("");
   };
-
+  const [searchCategory, setSearchCategory] = useState("");
+  const [searchValue] = useDebounce(searchCategory, 1000);
+  useEffect(() => {
+    dispatch(
+      getCategoryPage({
+        page: pageOffset,
+        limit: 10,
+        sort: "asc",
+        name: searchValue,
+        branchId: 1,
+      })
+    );
+  }, [dispatch, refresh, pageOffset, searchValue]);
   return (
     <Box
       maxW={"100vw"}
@@ -99,6 +108,15 @@ export default function CategoryPage() {
           <Button onClick={onOpen} variant={"outline"}>
             Tambah Kategori
           </Button>
+        </HStack>
+        <HStack w={"100%"} my={"5px"}>
+          <Input
+            placeholder='Cari Kategori'
+            width={"450px"}
+            margin={"0"}
+            onChange={(e) => setSearchCategory(e.target.value)}
+            value={searchCategory}
+          />
         </HStack>
         <Grid
           templateColumns={"repeat(3, 1fr)"}

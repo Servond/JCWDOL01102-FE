@@ -52,6 +52,7 @@ export default function AddProductWeb(
   });
   const toast = useToast();
   const navigate = useNavigate();
+  const [isDuplicate, setIsDuplicate] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -123,6 +124,11 @@ export default function AddProductWeb(
       }
     },
   });
+  useEffect(() => {
+    if (isDuplicate) {
+      formik.setFieldError("name", "Nama produk sudah ada");
+    }
+  }, [isDuplicate, formik]);
 
   return (
     <Flex p={"15px"} justifyContent={"center"} overflowX={"scroll"}>
@@ -142,6 +148,8 @@ export default function AddProductWeb(
             values={formik.values}
             errors={formik.errors}
             touched={formik.touched}
+            setError={formik.setFieldError}
+            isDuplicate={setIsDuplicate}
             // setFieldValue={formik.setFieldValue}
           />
           <ProductDetailForm

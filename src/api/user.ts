@@ -11,8 +11,12 @@ import {
 import { IApiResponseStatic } from "../data/interfaces";
 import { generateAuthToken } from "../utils/function/generateAuthToken";
 
-export const getUserById = (id: number) => {
-  return server.get(`api/users/${id}`);
+export const getUserById = (id: number, token: string) => {
+  return server.get(`api/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const getUserByEmail = (param: IEmailCheckInput) => {

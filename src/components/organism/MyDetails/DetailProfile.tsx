@@ -13,12 +13,19 @@ import SubProfileInfo from "../../molecules/MyDetails/SubProfileInfo";
 
 export default function DetailProfile() {
   const dispatch = useDispatch<AppDispatch>();
+  const loginState = useSelector((state: RootState) => state.login);
   const user2 = useSelector((state: RootState) => state.user2);
   const user = user2.user as IUser;
   const errorUser = user2.user as IErrorResponse;
   useEffect(() => {
-    dispatch(fetchUserById_(1));
-  }, [dispatch]);
+    if (loginState.user?.userId && loginState.token)
+      dispatch(
+        fetchUserById_({
+          id: loginState.user.userId,
+          token: loginState.token,
+        })
+      );
+  }, [dispatch, loginState]);
 
   if (user2.status === "pending" || user2.status === "idle")
     return <LoadingCenter />;

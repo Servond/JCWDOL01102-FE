@@ -17,7 +17,7 @@ interface ILoginState {
   isAuthenticated: boolean;
   role: string;
   permission: string[];
-  user: Partial<UserResponseData> | null;
+  user: UserResponseData | null;
 }
 
 export const userLogin = createAsyncThunk<
