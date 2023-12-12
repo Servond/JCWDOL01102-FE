@@ -22,6 +22,7 @@ import { fetchUserById_ } from "../../../app/redux/slice/User/user";
 export default function ChangeProfileField() {
   const dispatch = useDispatch<AppDispatch>();
   const changeProfile = useSelector((state: RootState) => state.changeProfile);
+  const loginState = useSelector((state: RootState) => state.login);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleBack = () => {
@@ -90,11 +91,16 @@ export default function ChangeProfileField() {
   const handleSubmit = async (values: FormValues) => {
     try {
       setIsLoading(true);
-      await updateUser(1, {
+      await updateUser(loginState.user?.userId as number, {
         [values.name]: values.value,
       });
       setIsLoading(false);
-      dispatch(fetchUserById_(1));
+      dispatch(
+        fetchUserById_({
+          id: loginState.user?.userId as number,
+          token: loginState.token as string,
+        })
+      );
       toast({
         title: "Success",
         description: "Data berhasil diubah",

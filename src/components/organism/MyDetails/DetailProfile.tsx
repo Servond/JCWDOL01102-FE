@@ -46,7 +46,12 @@ export default function DetailProfile() {
         value={user?.name ?? ""}
         field='name'
       />
-      <SubProfileInfo label={"Email"} value={user?.email ?? ""} field='email' />
+      <SubProfileInfo
+        label={"Email"}
+        value={user?.email ?? ""}
+        field='email'
+        isHiden={true}
+      />
       <SubProfileInfo
         label={"Nomor Handphone"}
         value={user?.phoneNumber ?? ""}

@@ -10,6 +10,7 @@ import {
 } from "../data/user/interfaces";
 import { IApiResponseStatic } from "../data/interfaces";
 import { generateAuthToken } from "../utils/function/generateAuthToken";
+import { getToken } from "./admin/product";
 
 export const getUserById = (id: number, token: string) => {
   return server.get(`api/users/${id}`, {
@@ -40,7 +41,7 @@ export const getUserByRolePaginate = (
 ) => {
   return server.get<UserPaginateResponse>("api/users", {
     headers: {
-      Authorization: generateAuthToken(localStorage.getItem("token")),
+      Authorization: getToken(),
     },
     params: {
       page,
@@ -55,7 +56,7 @@ export const getUserByRolePaginate = (
 export const postUser = (data: UserCreationAttributes) => {
   return server.post<CreateUserResponse>("api/users", data, {
     headers: {
-      Authorization: generateAuthToken(localStorage.getItem("token")),
+      Authorization: getToken(),
     },
   });
 };
@@ -72,7 +73,7 @@ export const getEmailVerification = (
       verifyToken,
     },
     headers: {
-      Authorization: generateAuthToken(localStorage.getItem("token")),
+      Authorization: getToken(),
     },
   });
 };
@@ -85,7 +86,7 @@ export const verifyUserByEmail = (verifyToken: string) => {
     },
     {
       headers: {
-        Authorization: generateAuthToken(localStorage.getItem("token")),
+        Authorization: getToken(),
       },
     }
   );
@@ -94,7 +95,7 @@ export const verifyUserByEmail = (verifyToken: string) => {
 export const updateUser = (id: number, data: UserCreationAttributes) => {
   return server.put(`api/users/${id}`, data, {
     headers: {
-      Authorization: generateAuthToken(localStorage.getItem("token")),
+      Authorization: getToken(),
     },
   });
 };
@@ -108,7 +109,7 @@ export const login = (email: string, password: string) => {
     },
     {
       headers: {
-        Authorization: generateAuthToken(localStorage.getItem("token")),
+        Authorization: getToken(),
       },
     }
   );
