@@ -42,12 +42,16 @@ const initialState: IUserState = {
   statusCode: undefined,
   error: {},
 };
+interface IFetchUserById {
+  id: number;
+  token: string;
+}
 
 export const fetchUserById_ = createAsyncThunk(
   "user/getbyid",
-  async (id: number) => {
+  async (input: IFetchUserById) => {
     try {
-      const res = await getUserById(id);
+      const res = await getUserById(input.id, input.token);
       return res.data?.data;
     } catch (e: any) {
       return e?.response;

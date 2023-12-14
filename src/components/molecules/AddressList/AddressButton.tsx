@@ -7,15 +7,19 @@ import { fetchAddressList } from "../../../app/redux/slice/AddressList/addressLi
 
 export default function AddressButton() {
   const addressListState = useSelector((state: RootState) => state.addressList);
+  const loginState = useSelector((state: RootState) => state.login);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const toast = useToast();
   const handleSave = async () => {
     try {
       setIsLoading(true);
-      await changeDefaultAddress(1, addressListState.selectedAddressId!);
+      await changeDefaultAddress(
+        loginState.user?.userId as number,
+        addressListState.selectedAddressId!
+      );
       setIsLoading(false);
-      dispatch(fetchAddressList(1));
+      dispatch(fetchAddressList(loginState.user?.userId as number));
       toast({
         title: "Berhasil",
         description: "Alamat berhasil diubah",

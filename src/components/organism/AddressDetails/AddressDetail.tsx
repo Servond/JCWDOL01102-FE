@@ -77,6 +77,7 @@ export default function AddressDetail(props: AddressDetailProps) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const addressListState = useSelector((state: RootState) => state.addressList);
+  const loginState = useSelector((state: RootState) => state.login);
   const handleFormSubmit = async (values: AddressFormValues) => {
     try {
       setIsLoading(true);
@@ -91,14 +92,14 @@ export default function AddressDetail(props: AddressDetailProps) {
         isDeleted: false,
         latitude: values.latitude,
         longitude: values.longitude,
-        userId: 1,
+        userId: loginState.user?.userId as number,
       };
       let response: any;
       if (!props.isUpdate) {
-        response = await createAddress(1, data);
+        response = await createAddress(loginState.user?.userId as number, data);
       } else {
         response = await updateAddress(
-          1,
+          loginState.user?.userId as number,
           addressListState.selectedAddressId!,
           data
         );

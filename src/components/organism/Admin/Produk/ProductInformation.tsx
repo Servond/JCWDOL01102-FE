@@ -21,6 +21,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
 import { AppDispatch, RootState } from "../../../../app/redux/store";
 import "./style.scss";
+import { AxiosError } from "axios";
+import { findDuplicateProduct } from "../../../../api/admin/product";
+import { useDebounce } from "use-debounce";
 interface ProductInformationFormProps {
   handleChange: (e: ChangeEvent<any>) => void;
   handleBlur: (e: FocusEvent<any, Element>) => void;
@@ -28,12 +31,37 @@ interface ProductInformationFormProps {
   values: any;
   errors: any;
   touched: any;
+  setError: (field: string, message: string) => void;
+  isDuplicate: (value: boolean) => void;
 }
 export default function ProductInformationForm(
   props: ProductInformationFormProps
 ) {
   const dispatch = useDispatch<AppDispatch>();
   const categoryState = useSelector((state: RootState) => state.adminCategory);
+
+  const [debouncedName] = useDebounce(props.values.name, 500);
+
+  const handleDuplicateName = async (value: string) => {
+    try {
+      await findDuplicateProduct(value);
+      props.setError("name", "");
+      props.isDuplicate(false);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 400) {
+          props.setError("name", "Nama produk sudah ada");
+          props.isDuplicate(true);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (debouncedName) {
+      handleDuplicateName(debouncedName);
+    }
+  }, [debouncedName]);
 
   useEffect(() => {
     dispatch(getCategory());
