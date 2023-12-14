@@ -1,7 +1,7 @@
 // {{base_url}}/api/product
 
 import { IProductRequest } from "../../app/redux/slice/Admin/AddProduct/AddProductSlice";
-import { IProduct, IResponseApi } from "../../data/interfaces";
+import { IApiResponse, IProduct, IResponseApi } from "../../data/interfaces";
 import { adminServer } from "../server";
 
 export const postCreateProduct = (file: File, data: IProductRequest) => {
@@ -69,6 +69,11 @@ export const fetchProductById = (id: number) => {
   });
 };
 
+export const fetchAllProductByBranch = () => {
+  return adminServer.get<IApiResponse<IProduct[]>>("api/product", {});
+};
+//PUT {{base_url}}/api/product/image/:id
+
 export const updateProductWithImage = (
   id: number,
   file: File,
@@ -83,6 +88,10 @@ export const updateProductWithImage = (
   formData.append("weight", data.weight!.toString()!);
   formData.append("desc", data.desc!);
   formData.append("categoryId", data.categoryId!.toString()!);
+
+  return adminServer.put(`api/product/image/${id}`, formData);
+};
+
   return adminServer.put(`api/product/image/${id}`, formData, {
     headers: {
       Authorization: getToken(),
@@ -97,3 +106,4 @@ export const findDuplicateProduct = (name: string) => {
     },
   });
 };
+

@@ -2,7 +2,11 @@ import { Box, HStack, Heading } from "@chakra-ui/react";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-export default function Navigation() {
+interface IBackNavigationProps {
+  pageBefore: string;
+}
+
+export default function BackNavigation(props: IBackNavigationProps) {
   const navigate = useNavigate();
   return (
     <HStack w={"full"} align={"center"} mb={"2rem"}>
@@ -19,7 +23,7 @@ export default function Navigation() {
         fontSize={"20px"}
         lineHeight={"1.5px"}
       >
-        Admin List
+        {props.pageBefore}
       </Heading>
     </HStack>
   );

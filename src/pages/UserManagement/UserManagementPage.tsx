@@ -22,7 +22,7 @@ export default function UserManagementPage() {
     if (response.statusCode !== 200) {
       dispatch(resetUpdateAdminState());
     }
-  }, [response, dispatch]);
+  }, [response, dispatch, toast]);
 
   return (
     <VStack w={"full"}>

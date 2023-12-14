@@ -1,16 +1,26 @@
 import { IApiResponse, IApiResponseStatic, IPaginate } from "../interfaces";
 
 export interface UserResponseData {
+  id: number;
+  image_id?: number;
+  branch_id?: number;
   name: string;
   email: string;
-  branchId: number | null;
-  userId: number;
-  phoneNumber: string;
-  referralCode: string;
-  role: string;
-  permission: string[];
-  branch: string | null;
-  iat: number;
+  address: string;
+  phone_number: string;
+  referral_code: string;
+  role_id: number;
+  birthdate?: Date;
+  isDeleted: boolean;
+  isVerified: boolean;
+  resetPassword_token?: string;
+  verifyToken?: string;
+  password: string;
+  created_at?: Date;
+  updated_at?: Date;
+  role?: { role: string };
+  branch?: { name: string; id: number };
+  permission?: string[];
 }
 
 export interface IUserLoginAttributes {
@@ -22,7 +32,7 @@ export interface IUserLoginAttributes {
   referralCode: string;
   role: string;
   permission: string[];
-  branch: string | null;
+  branch: { name: string; id: number } | null;
   iat: number;
 }
 

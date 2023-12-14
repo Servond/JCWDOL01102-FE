@@ -28,11 +28,17 @@ export const SelectStyle: StylesConfig<
   option: (baseStyle) => ({
     ...baseStyle,
     backgroundColor: "white",
+    borderRadius: "4px",
     color: "black",
     ":hover": {
       backgroundColor: "#53B175",
       color: "white",
     },
+  }),
+  menu: (baseStyle) => ({
+    ...baseStyle,
+    borderRadius: "10px",
+    border: "1px solid #B1B1B1",
   }),
 };
 
@@ -59,10 +65,16 @@ export const SelectBranchStyle: StylesConfig<
     ...baseStyle,
     backgroundColor: "white",
     color: "black",
+    borderRadius: "4px",
     ":hover": {
       backgroundColor: "#53B175",
       color: "white",
     },
+  }),
+  menu: (baseStyle) => ({
+    ...baseStyle,
+    borderRadius: "10px",
+    border: "1px solid #B1B1B1",
   }),
 };
 
@@ -85,13 +97,22 @@ export const createAdminStyle: StylesConfig<
       border: "1px solid #53B175",
     },
   }),
+
   option: (baseStyle) => ({
     ...baseStyle,
     backgroundColor: "white",
+    borderRadius: "4px",
     color: "black",
     ":hover": {
       backgroundColor: "#53B175",
       color: "white",
     },
+  }),
+
+  menu: (baseStyle) => ({
+    ...baseStyle,
+    borderRadius: "10px",
+    border: "1px solid #B1B1B1",
+    // boxShadow: "none",
   }),
 };
