@@ -28,6 +28,8 @@ import ReportPage from "./pages/Report/ReportPage";
 import SignupPage from "./pages/SignUp/SignupPage";
 import UserVerification from "./pages/UserVerification/UserVerification";
 import CategoryPage from "./pages/Admin/Category/CategoryPage";
+import VoucherManagementPage from "./pages/VoucherManagement/VoucherMangementPage";
+import CreateVoucherPage from "./pages/CreateVoucherPage/CreateVoucherPage";
 
 function App() {
   return (
@@ -91,6 +93,16 @@ function App() {
           <Route
             path="/dashboard/products"
             element={<BranchAdminProtect children={<ProductsPage />} />}
+          />
+          <Route
+            path="/dashboard/discount-management"
+            element={
+              <BranchAdminProtect children={<VoucherManagementPage />} />
+            }
+          />
+          <Route
+            path="/dashboard/create-voucher"
+            element={<BranchAdminProtect children={<CreateVoucherPage />} />}
           />
           <Route
             path="/dashboard/add-product"

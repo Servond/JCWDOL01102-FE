@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   AbsoluteCenter,
+  Box,
   Table,
   TableContainer,
   Tbody,
@@ -30,7 +31,7 @@ import { fetchBranches } from "../../../app/redux/slice/Admin/userManagement/cre
 import { resetUpdateAdminState } from "../../../app/redux/slice/Admin/userManagement/updateAdmin";
 import Paginate from "../../molecules/Paginate";
 
-export default function AdminTableContent() {
+export default function VoucherTableContent() {
   const dispatch = useDispatch<AppDispatch>();
   const alertDisclosure = useDisclosure();
   const [isScrollTop, setScrollTop] = useState<boolean>(true);
@@ -53,21 +54,6 @@ export default function AdminTableContent() {
   );
   const currentPage = useSelector(
     (state: RootState) => state.userManagement.currentPages
-  );
-  const deleteAdminResp = useSelector(
-    (state: RootState) => state.deleteAdmin.resp
-  );
-  const deleteAdminApiState = useSelector(
-    (state: RootState) => state.deleteAdmin.apiState
-  );
-  const updateAdminResp = useSelector(
-    (state: RootState) => state.updateAdmin.resp
-  );
-  const updateAdminApiState = useSelector(
-    (state: RootState) => state.updateAdmin.apiState
-  );
-  const apiBranchState = useSelector(
-    (state: RootState) => state.createAdmin.apiState
   );
   useEffect(() => {
     dispatch(
@@ -132,12 +118,7 @@ export default function AdminTableContent() {
             return (
               <Tr key={index}>
                 <Td>
-                  <UserInfo
-                    name={user.name}
-                    email={user.email}
-                    role={user.role!.role}
-                    id={user.id}
-                  />
+                  
                 </Td>
                 <Td>
                   <UserRole>{user.role?.role}</UserRole>
@@ -220,11 +201,9 @@ export default function AdminTableContent() {
           </AbsoluteCenter>
         ) : null}
       </TableContainer>
-      <Paginate
-        pageCount={!totalPage ? 1 : totalPage}
-        onPageChange={handlePageChange}
-        forcePage={currentPage - 1}
-      />
+      <Box mt={"1rem"}>
+        <Paginate />
+      </Box>
     </VStack>
   );
 }

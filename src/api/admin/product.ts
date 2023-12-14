@@ -1,7 +1,7 @@
 // {{base_url}}/api/product
 
 import { IProductRequest } from "../../app/redux/slice/Admin/AddProduct/AddProductSlice";
-import { IProduct, IResponseApi } from "../../data/interfaces";
+import { IApiResponse, IProduct, IResponseApi } from "../../data/interfaces";
 import { adminServer } from "../server";
 
 export const postCreateProduct = (file: File, data: IProductRequest) => {
@@ -46,6 +46,9 @@ export const fetchProductById = (id: number) => {
   return adminServer.get<IResponseApi<IProduct>>(`api/product/${id}`);
 };
 
+export const fetchAllProductByBranch = () => {
+  return adminServer.get<IApiResponse<IProduct[]>>("api/product", {});
+};
 //PUT {{base_url}}/api/product/image/:id
 
 export const updateProductWithImage = (

@@ -17,20 +17,19 @@ import {
   setSortBy,
 } from "../../../app/redux/slice/Admin/userManagement/adminManagement";
 
-export default function ButtonGroup() {
+export default function InputGroup() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   return (
     <HStack>
       <Box zIndex={"3"}>
         <Select
-          options={constants.userManegementFilterField}
-          defaultValue={constants.userManegementFilterField[0]}
+          options={constants.voucherFilterField}
+          defaultValue={constants.voucherFilterField[0]}
           styles={SelectStyle}
           theme={SelectTheme}
           onChange={(option) => {
             const opt = option as OptionType;
-            console.log(opt.value);
             dispatch(setFilterBy(opt.value));
           }}
         />
@@ -38,30 +37,29 @@ export default function ButtonGroup() {
 
       <Box zIndex={"3"}>
         <Select
-          options={constants.userManagementSortField}
-          defaultValue={constants.userManagementSortField[0]}
+          options={constants.voucherSortField}
+          defaultValue={constants.voucherSortField[0]}
           styles={SelectStyle}
           theme={SelectTheme}
           onChange={(option) => {
             const opt = option as OptionType;
-            console.log(opt.value);
             dispatch(setSortBy(opt.value));
           }}
         />
       </Box>
 
       <Button
-        w={"150px"}
+        // w={"150px"}
         variant={"primaryButton"}
         py={"1rem"}
         fontSize={"16px"}
-        onClick={() => navigate("/dashboard/create-admin")}
+        onClick={() => navigate("/dashboard/create-voucher")}
       >
         <HStack>
           <Box fontSize={"16px"}>
             <FaPlus />
           </Box>
-          <Text>Add Admin</Text>
+          <Text>Add Promotion</Text>
         </HStack>
       </Button>
     </HStack>

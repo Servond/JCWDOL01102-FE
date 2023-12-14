@@ -8,4 +8,4 @@ export interface IBranchResponseData {
   address?: string;
 }
 
-export type getBranchesResponse = IApiResponse<IBranchResponseData>;
+export type getBranchesResponse = IApiResponse<IBranchResponseData[]>;

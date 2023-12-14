@@ -19,18 +19,78 @@ export enum Role {
   USER = "user",
 }
 
+export enum DiscountType {
+  PROMOTION = "promotion",
+  VOUCHER = "voucher",
+}
+
+export enum VoucherType {
+  PRICE_CUT = "price_cut",
+  TOTAL_PRICE_CUT = "total_price_cut",
+  FREE_SHIPPING = "free_shipping",
+}
+
+export enum PromotionType {
+  BUY_ONE_GET_ONE = "buy_one_get_one",
+  PRICE_CUT = "price_cut",
+}
+
+export enum DiscountValueType {
+  PERCENTAGE = "percentage",
+  FIXED_PRICE = "fixed_price",
+}
 export const constants = {
   authInputField: ["Name", "Email", "Number", "Password"],
-  adminCreationFilterField: [
+  userManegementFilterField: [
     { value: "0", label: "No Filter" },
     { value: "1", label: "Super Admin" },
     { value: "2", label: "Branch Admin" },
     { value: "3", label: "User" },
   ],
-  AdminCreationSortField: [
+  userManagementSortField: [
     { value: "", label: "No Sort" },
     { value: "ASC", label: "A-Z" },
     { value: "DESC", label: "Z-A" },
+  ] as OptionType[],
+  voucherFilterField: [
+    { value: "0", label: "No Filter" },
+    { value: "1", label: "Super Admin" },
+    { value: "2", label: "Branch Admin" },
+    { value: "3", label: "User" },
+  ] as OptionType[],
+  voucherSortField: [
+    { value: "", label: "No Sort" },
+    { value: "ASC", label: "A-Z" },
+    { value: "DESC", label: "Z-A" },
+  ] as OptionType[],
+  discountTypeField: [
+    { value: DiscountType.VOUCHER, label: "Voucher" },
+    { value: DiscountType.PROMOTION, label: "Promotion" },
+  ] as OptionType[],
+  promotionType: [
+    { value: PromotionType.BUY_ONE_GET_ONE, label: "Buy One Get One" },
+    {
+      value: PromotionType.PRICE_CUT,
+      label: "Price Cut",
+    },
+  ] as OptionType[],
+  voucherType: [
+    { value: VoucherType.PRICE_CUT, label: "Price Cut" },
+    {
+      value: VoucherType.TOTAL_PRICE_CUT,
+      label: "Total Price Cut",
+    },
+    {
+      value: VoucherType.FREE_SHIPPING,
+      label: "Free Shipping",
+    },
+  ] as OptionType[],
+  discountValueType: [
+    { value: DiscountValueType.PERCENTAGE, label: "Percentage (%)" },
+    {
+      value: DiscountValueType.FIXED_PRICE,
+      label: "Price (Rp)",
+    },
   ] as OptionType[],
   dashboardField: [
     {
@@ -46,9 +106,9 @@ export const constants = {
       role: [Role.BRANCH_ADMIN],
     },
     {
-      fieldName: "Voucher",
+      fieldName: "Discount",
       icon: IoTicket,
-      path: "/dashboard/voucher",
+      path: "/dashboard/discount-management",
       role: [Role.BRANCH_ADMIN],
     },
     {

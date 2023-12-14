@@ -10,7 +10,7 @@ import UploadPhoto from "../../components/atoms/CreateAdmin/UploadPhoto";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/redux/store";
 import { useEffect } from "react";
-import Navigation from "../../components/molecules/CreateAdmin/Navigation";
+import Navigation from "../../components/molecules/BackNavigation";
 import { resetUserState } from "../../app/redux/slice/userSlicer";
 import { fetchBranches } from "../../app/redux/slice/Admin/userManagement/createAdmin";
 import LoadingCenter from "../../components/molecules/Loading";
@@ -61,7 +61,7 @@ export default function CreateAdminPage() {
         </Container>
       ) : (
         <>
-          <Navigation />
+          <Navigation pageBefore="Admin List" />
           <HStack w={"full"} align={"start"} h={"full"} spacing={"1rem"}>
             <AdminCreationForm />
             <UploadPhoto />

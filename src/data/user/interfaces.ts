@@ -18,8 +18,8 @@ export interface UserResponseData {
   password: string;
   created_at?: Date;
   updated_at?: Date;
-  role?: { role: string } | string;
-  branch?: { name: string };
+  role?: { role: string };
+  branch?: { name: string; id: number };
   permission?: string[];
 }
 
@@ -32,7 +32,7 @@ export interface IUserLoginAttributes {
   referralCode: string;
   role: string;
   permission: string[];
-  branch: string | null;
+  branch: { name: string; id: number } | null;
   iat: number;
 }
 
