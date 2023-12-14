@@ -89,15 +89,14 @@ export const updateProductWithImage = (
   formData.append("desc", data.desc!);
   formData.append("categoryId", data.categoryId!.toString()!);
 
-  return adminServer.put(`api/product/image/${id}`, formData);
-};
-
   return adminServer.put(`api/product/image/${id}`, formData, {
     headers: {
       Authorization: getToken(),
     },
   });
 };
+
+  
 
 export const findDuplicateProduct = (name: string) => {
   return adminServer.get(`api/product/find-duplicate?name=${name}`, {
