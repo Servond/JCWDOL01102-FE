@@ -8,13 +8,13 @@ import { store } from "./app/redux/store.ts";
 import { globalTheme } from "./themes/themes.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ChakraProvider theme={globalTheme}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    </ChakraProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <ChakraProvider theme={globalTheme}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </ChakraProvider>
+  // </React.StrictMode>
 );

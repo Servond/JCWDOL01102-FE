@@ -96,7 +96,7 @@ export const constants = {
     {
       fieldName: "Admin Management",
       icon: FaUserGear,
-      path: "/dashboard/admin-management",
+      path: "/dashboard/user-management",
       role: [Role.SUPER_ADMIN],
     },
     {
