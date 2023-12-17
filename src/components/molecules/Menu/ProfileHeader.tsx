@@ -1,9 +1,12 @@
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";
 import { FaRegEdit } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../app/redux/store";
 
 export default function ProfileHeader() {
   const navigate = useNavigate();
+  const loginState = useSelector((state: RootState) => state.login);
   const handleEdit = () => {
     navigate("/my-details");
   };
@@ -37,7 +40,7 @@ export default function ProfileHeader() {
               textAlign={"left"}
               my={1}
             >
-              Azizi Asadel
+              {loginState.user?.name}
             </Text>
             <FaRegEdit
               color={"#53B175"}
@@ -46,7 +49,7 @@ export default function ProfileHeader() {
             />
           </HStack>
           <Text fontSize={"14px"} lineHeight={0} my={1}>
-            azizi.asadel@gmail.com
+            {loginState.user?.email}
           </Text>
         </VStack>
       </HStack>
