@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
@@ -5,6 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Input,
   Select,
   Text,
   useToast,
@@ -13,8 +15,10 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useDebounce } from "use-debounce";
 import * as Yup from "yup";
 import { createAddress, updateAddress } from "../../../api/address";
+import { forwardGeocoding } from "../../../api/opencage";
 import { fetchCities } from "../../../app/redux/slice/MasterData/CitiesSlice";
 import { fetchProvinces } from "../../../app/redux/slice/MasterData/ProvinceSlice";
 import { AppDispatch, RootState } from "../../../app/redux/store";
@@ -116,6 +120,7 @@ export default function AddressDetail(props: AddressDetailProps) {
       navigate("/my-address");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      setIsLoading(false);
       toast({
         title: "Error",
         description: error?.response?.data?.message ?? "Terjadi Kesalahan",
@@ -135,44 +140,6 @@ export default function AddressDetail(props: AddressDetailProps) {
     },
   });
   const toast = useToast();
-  const getCoordinate = (): void => {
-    const successCallback = (position: GeolocationPosition): void => {
-      formik.setFieldValue("latitude", position.coords.latitude);
-      formik.setFieldValue("longitude", position.coords.longitude);
-      toast({
-        title: "Success",
-        description: "Koordinat berhasil didapatkan",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
-    };
-
-    const errorCallback = (error: GeolocationPositionError): void => {
-      toast({
-        title: "Error",
-        description: error.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
-    };
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-    } else {
-      toast({
-        title: "Error",
-        description: "Geolocation is not supported by your browser",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-        position: "top",
-      });
-    }
-  };
 
   const dispatch = useDispatch<AppDispatch>();
   const provinces = useSelector((state: RootState) => state.province);
@@ -190,6 +157,57 @@ export default function AddressDetail(props: AddressDetailProps) {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     dispatch(fetchCities(parseInt(event.target.value)));
+  };
+  const [provinceName, setProvinceName] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [addressDebounce] = useDebounce(formik.values.address, 1000);
+
+  const handleGetLatLong = async () => {
+    try {
+      const response = await forwardGeocoding(provinceName, cityName);
+
+      formik.setFieldValue(
+        "latitude",
+        response.data.data.results[0].geometry.lat
+      );
+      formik.setFieldValue(
+        "longitude",
+        response.data.data.results[0].geometry.lng
+      );
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.message ?? "Terjadi Kesalahan",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (addressDebounce) {
+      handleGetLatLong();
+    }
+  }, [addressDebounce, cityName, provinceName]);
+
+  const handleChangeProvince = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const province = provinces.data.find(
+      (province) => province.province_id === parseInt(event.target.value)
+    );
+    setProvinceName(province?.province_name as string);
+    formik.setFieldValue("province", event.target.value);
+  };
+
+  const handleChangeCity = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const city = cities.data.find(
+      (city) => city.city_id === parseInt(event.target.value)
+    );
+    setCityName(city?.city_name as string);
+    formik.setFieldValue("city", event.target.value);
   };
 
   return (
@@ -226,32 +244,8 @@ export default function AddressDetail(props: AddressDetailProps) {
         handleBlur={formik.handleBlur}
         value={formik.values.addressLabel}
       />
-      <AddressFormField
-        label='Latitude'
-        error={formik.errors.latitude}
-        touched={formik.touched.latitude}
-        name='latitude'
-        placeholder='Latitude'
-        handleChange={formik.handleChange}
-        handleBlur={formik.handleBlur}
-        value={formik.values.latitude}
-        isDisabled={true}
-      />
-
-      <AddressFormField
-        label='Longitude'
-        error={formik.errors.longitude}
-        touched={formik.touched.longitude}
-        name='longitude'
-        placeholder='Longitude'
-        handleChange={formik.handleChange}
-        handleBlur={formik.handleBlur}
-        value={formik.values.longitude}
-        isDisabled={true}
-      />
-      <Button width={"100%"} my={"15px"} onClick={getCoordinate}>
-        Dapatkan Koordinat Alamat
-      </Button>
+      <Input type='hidden' name='latitude' value={formik.values.latitude} />
+      <Input type='hidden' name='longitude' value={formik.values.longitude} />
       <FormControl
         isInvalid={!!formik.errors.province && formik.touched.province}
       >
@@ -261,7 +255,7 @@ export default function AddressDetail(props: AddressDetailProps) {
           name='province'
           onChange={(e) => {
             handleProvinceChange(e);
-            formik.handleChange(e);
+            handleChangeProvince(e);
           }}
           onBlur={formik.handleBlur}
           value={formik.values.province}
@@ -279,7 +273,9 @@ export default function AddressDetail(props: AddressDetailProps) {
         <Select
           placeholder='Pilih Kota/Kabupaten'
           name='city'
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            handleChangeCity(e);
+          }}
           onBlur={formik.handleBlur}
           value={formik.values.city}
         >
