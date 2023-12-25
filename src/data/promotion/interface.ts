@@ -8,6 +8,11 @@ export interface IPromotionAttributes {
   dateEnd: string;
   value: number | null;
   valueType: string | null;
+  productId: number | null;
+}
+
+export interface IPromotionPaginateAttributes extends IPromotionAttributes {
+  product: { name: string };
 }
 
 export interface PromotionCreationAttributes
@@ -19,5 +24,5 @@ export interface PostPromotionInput {
 }
 
 export type PromotionPaginateResponse = IApiResponse<
-  IPaginate<IPromotionAttributes>
+  IPaginate<IPromotionPaginateAttributes>
 >;

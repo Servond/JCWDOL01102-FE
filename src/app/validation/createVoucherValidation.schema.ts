@@ -1,6 +1,11 @@
 import { FormikConfig, FormikHelpers } from "formik";
 import * as Yup from "yup";
-import { PromotionType, VoucherType, constants } from "../../data/constants";
+import {
+  DiscountType,
+  PromotionType,
+  VoucherType,
+  constants,
+} from "../../data/constants";
 
 export interface ICreateVoucherInitialState {
   discountType: string;
@@ -19,8 +24,8 @@ export const createDiscountValidator = Yup.object({
   discountType: Yup.string().required("Discount is required"),
   name: Yup.string().required("Name is required"),
   type: Yup.string().required("Type is required"),
-  productId: Yup.number().when("type", {
-    is: PromotionType.BUY_ONE_GET_ONE,
+  productId: Yup.number().when("discountType", {
+    is: DiscountType.PROMOTION,
     then: (schema) =>
       schema.required("Product is required").test({
         name: "prod",
@@ -54,7 +59,15 @@ export const createDiscountValidator = Yup.object({
       value === PromotionType.BUY_ONE_GET_ONE ||
       value === VoucherType.FREE_SHIPPING,
     then: (schema) => schema.nullable(),
-    otherwise: (schema) => schema.required("Value is required"),
+    otherwise: (schema) =>
+      schema.required("Value is required").test({
+        name: "test value",
+        test: (value) => {
+          const normalized = Number(value);
+          return normalized > 0;
+        },
+        message: "Value cannot be 0",
+      }),
   }),
   valueType: Yup.string().when(["type"], {
     is: (value: string) =>
@@ -79,19 +92,6 @@ export const createDiscountValidator = Yup.object({
   }),
 });
 
-const discountInitialFormState: ICreateVoucherInitialState = {
-  name: "",
-  discountType: constants.discountTypeField[0].value,
-  type: constants.voucherType[0].value,
-  productId: Number(null),
-  branchId: 0,
-  startDate: "",
-  endDate: "",
-  value: null,
-  valueType: constants.discountValueType[0].value,
-  minPrice: null,
-};
-
 export const formInitialState = (branchId: number) => {
   const obj: ICreateVoucherInitialState = {
     name: "",
@@ -114,7 +114,7 @@ export const createVoucherFormikConfig = (
   onSubmit: (
     values: ICreateVoucherInitialState,
     formikHelpers: FormikHelpers<ICreateVoucherInitialState>
-  ) => void | Promise<any>
+  ) => void | Promise<unknown>
 ) => {
   const conf: FormikConfig<ICreateVoucherInitialState> = {
     initialValues: initialState,

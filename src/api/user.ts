@@ -1,4 +1,4 @@
-import { server } from "./server";
+import { adminServer, server } from "./server";
 import {
   CreateUserResponse,
   GetUserByEmailResponse,
@@ -9,11 +9,9 @@ import {
   UserPaginateResponse,
 } from "../data/user/interfaces";
 import { IApiResponseStatic } from "../data/interfaces";
-import { generateAuthToken } from "../utils/function/generateAuthToken";
-import { getToken } from "./admin/product";
 
 export const getUserById = (id: number, token: string) => {
-  return server.get(`api/users/${id}`, {
+  return adminServer.get(`api/users/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -21,13 +19,10 @@ export const getUserById = (id: number, token: string) => {
 };
 
 export const getUserByEmail = (param: IEmailCheckInput) => {
-  return server.get<GetUserByEmailResponse>(`api/users`, {
+  return adminServer.get<GetUserByEmailResponse>(`api/users`, {
     signal: param.controller.signal,
     params: {
       email: param.email,
-    },
-    headers: {
-      Authorization: generateAuthToken(localStorage.getItem("token")),
     },
   });
 };
@@ -39,10 +34,7 @@ export const getUserByRolePaginate = (
   filterBy: number | undefined,
   key: string
 ) => {
-  return server.get<UserPaginateResponse>("api/users", {
-    headers: {
-      Authorization: getToken(),
-    },
+  return adminServer.get<UserPaginateResponse>("api/users", {
     params: {
       page,
       limit,
@@ -54,11 +46,7 @@ export const getUserByRolePaginate = (
 };
 
 export const postUser = (data: UserCreationAttributes) => {
-  return server.post<CreateUserResponse>("api/users", data, {
-    headers: {
-      Authorization: getToken(),
-    },
-  });
+  return server.post<CreateUserResponse>("api/users", data, {});
 };
 
 export const getEmailVerification = (
@@ -66,51 +54,28 @@ export const getEmailVerification = (
   email?: string,
   verifyToken?: string
 ) => {
-  return server.get<SendEmailVerificationResponse>("api/users/email", {
+  return server.get<SendEmailVerificationResponse>("api/auth/email", {
     params: {
       email,
       name,
       verifyToken,
     },
-    headers: {
-      Authorization: getToken(),
-    },
   });
 };
 
 export const verifyUserByEmail = (verifyToken: string) => {
-  return server.patch<IApiResponseStatic>(
-    `api/users/verify`,
-    {
-      verifyToken,
-    },
-    {
-      headers: {
-        Authorization: getToken(),
-      },
-    }
-  );
-};
-
-export const updateUser = (id: number, data: UserCreationAttributes) => {
-  return server.put(`api/users/${id}`, data, {
-    headers: {
-      Authorization: getToken(),
-    },
+  return server.patch<IApiResponseStatic>(`api/auth/verify`, {
+    verifyToken,
   });
 };
 
+export const updateUser = (id: number, data: UserCreationAttributes) => {
+  return adminServer.put(`api/users/${id}`, data);
+};
+
 export const login = (email: string, password: string) => {
-  return server.post<LoginResponse>(
-    "api/users/login",
-    {
-      email,
-      password,
-    },
-    {
-      headers: {
-        Authorization: getToken(),
-      },
-    }
-  );
+  return server.post<LoginResponse>("api/auth/login", {
+    email,
+    password,
+  });
 };

@@ -18,9 +18,12 @@ import DeleteButton from "../../atoms/UserManagement/DeleteButton";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
-import { fetchAdminPaginate } from "../../../app/redux/slice/Admin/userManagement/adminManagement";
+import {
+  fetchAdminPaginate,
+  setKeySearch,
+} from "../../../app/redux/slice/Admin/userManagement/adminManagement";
 import LoadingCenter from "../../molecules/Loading";
-import SearchBar from "../../atoms/UserManagement/SearchBar";
+import SearchBar from "../../atoms/SearchBar";
 import UserNotFound from "../../molecules/UserManagement/UserNotFound";
 import { Role } from "../../../data/constants";
 import DeleteAlert from "../../molecules/UserManagement/DeleteAlert";
@@ -205,7 +208,12 @@ export default function AdminTableContent() {
           >
             <Tr>
               <Th>
-                <SearchBar />
+                <SearchBar
+                  onChange={(e) => {
+                    dispatch(setKeySearch(e));
+                  }}
+                  placeHolder="Search user"
+                />
               </Th>
               <Th>Role</Th>
               <Th>Branch</Th>
@@ -214,7 +222,7 @@ export default function AdminTableContent() {
           </Thead>
           {contentHandle()}
         </Table>
-        {apiState === "pending" || apiBranchState !== "done" ? (
+        {apiState === "pending" || apiBranchState === "pending" ? (
           <AbsoluteCenter>
             <LoadingCenter />
           </AbsoluteCenter>

@@ -17,6 +17,13 @@ import updateAdminReducer from "./slice/Admin/userManagement/updateAdmin";
 import getAdminProductByBranchReducer from "./slice/Admin/getProduct/getProductByBranch";
 import createVoucherReducer from "./slice/Admin/discount/createVoucher";
 import createPromotionReducer from "./slice/Admin/discount/createPromotion";
+import getVoucherPaginate from "./slice/Admin/discount/getVoucher";
+import getPromotionPaginateReducer from "./slice/Admin/discount/getPromo";
+import applyButtonReducer from "./slice/Admin/discount/productApplyButton";
+import manageProductVoucherReducer from "./slice/Admin/discount/manageProductVoucher";
+import discountTabsReducer from "./slice/Admin/discount/discountTabs";
+import deleteVoucherReducer from "./slice/Admin/discount/deleteVoucher";
+import deletePromotionReducer from "./slice/Admin/discount/deletePromotion";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -40,5 +47,12 @@ export const store = configureStore({
     updateAdmin: updateAdminReducer,
     createVoucher: createVoucherReducer,
     createPromotion: createPromotionReducer,
+    getVoucher: getVoucherPaginate,
+    getPromotion: getPromotionPaginateReducer,
+    applyButton: applyButtonReducer,
+    manageProductVoucher: manageProductVoucherReducer,
+    discountTab: discountTabsReducer,
+    deleteVoucher: deleteVoucherReducer,
+    deletePromotoin: deletePromotionReducer,
   },
 });

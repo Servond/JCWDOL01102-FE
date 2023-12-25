@@ -1,18 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IPaginate } from "../../../../../data/interfaces";
 import { AxiosError } from "axios";
-
-import { getVoucherPaginate } from "../../../../../api/admin/discount-management";
+import { getPromoPaginate } from "../../../../../api/admin/discount-management";
 import { IUserPaginateInput } from "../../../../../data/user/interfaces";
 import {
-  IVoucherAttributes,
-  VoucherPaginateResponse,
-} from "../../../../../data/voucher/interface";
+  IPromotionPaginateAttributes,
+  PromotionPaginateResponse,
+} from "../../../../../data/promotion/interface";
 
-interface IPaginateVoucherState {
+interface IPaginateProimotionState {
   apiState: "idle" | "pending" | "rejected" | "done";
-  resp: VoucherPaginateResponse;
-  vouchers: IVoucherAttributes[];
+  resp: PromotionPaginateResponse;
+  promotions: IPromotionPaginateAttributes[];
   pageSize: number;
   totalPages: number;
   currentPages: number;
@@ -21,13 +20,13 @@ interface IPaginateVoucherState {
   keySearch: string;
 }
 
-export const fetchVoucherPaginate = createAsyncThunk<
-  VoucherPaginateResponse,
+export const fetchPromotionPaginate = createAsyncThunk<
+  PromotionPaginateResponse,
   IUserPaginateInput,
-  { rejectValue: VoucherPaginateResponse }
->("paginateVoucher/get", async (input, thunkApi) => {
+  { rejectValue: PromotionPaginateResponse }
+>("paginatePromotion/get", async (input, thunkApi) => {
   try {
-    const res = await getVoucherPaginate(
+    const res = await getPromoPaginate(
       input.page,
       input.limit,
       String(input.sortBy),
@@ -56,33 +55,34 @@ export const fetchVoucherPaginate = createAsyncThunk<
   }
 });
 
-const getVoucherSlice = createSlice({
-  name: "paginateVoucher",
+const getPromotionSlice = createSlice({
+  name: "paginatePromotion",
   initialState: {
     apiState: "idle",
     resp: {},
-    vouchers: [],
+    promotions: [],
     pageSize: 0,
     totalPages: 0,
     currentPages: 1,
     sortBy: "",
     filterBy: "",
     keySearch: "",
-  } as IPaginateVoucherState,
+  } as IPaginateProimotionState,
   reducers: {
-    setVoucherKeySearch: (state, action) => {
+    setPromotionKeySearch: (state, action) => {
+      console.log("here");
       state.keySearch = action.payload;
     },
-    setVoucherSortBy: (state, action) => {
+    setPromotionSortBy: (state, action) => {
       state.sortBy = action.payload;
     },
-    setVoucherFilterBy: (state, action) => {
+    setPromotionFilterBy: (state, action) => {
       state.filterBy = action.payload;
     },
-    resetVoucherPagination: (state) => {
+    resetPromotionPagination: (state) => {
       state.apiState = "idle";
       state.resp = {};
-      state.vouchers = [];
+      state.promotions = [];
       state.pageSize = 0;
       state.totalPages = 0;
       state.currentPages = 1;
@@ -92,33 +92,33 @@ const getVoucherSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(fetchVoucherPaginate.fulfilled, (state, action) => {
+    builder.addCase(fetchPromotionPaginate.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
         state.resp = action.payload;
-        state.vouchers = (
-          action.payload.data! as IPaginate<IVoucherAttributes>
+        state.promotions = (
+          action.payload.data! as IPaginate<IPromotionPaginateAttributes>
         ).data;
         state.pageSize = (
-          action.payload.data! as IPaginate<IVoucherAttributes>
+          action.payload.data! as IPaginate<IPromotionPaginateAttributes>
         ).pageSize;
         state.currentPages = (
-          action.payload.data! as IPaginate<IVoucherAttributes>
+          action.payload.data! as IPaginate<IPromotionPaginateAttributes>
         ).currentPage;
         state.totalPages = (
-          action.payload.data! as IPaginate<IVoucherAttributes>
+          action.payload.data! as IPaginate<IPromotionPaginateAttributes>
         ).totalPages;
         state.currentPages = (
-          action.payload.data! as IPaginate<IVoucherAttributes>
+          action.payload.data! as IPaginate<IPromotionPaginateAttributes>
         ).currentPage;
         state.apiState = "done";
       }
     });
 
-    builder.addCase(fetchVoucherPaginate.pending, (state) => {
+    builder.addCase(fetchPromotionPaginate.pending, (state) => {
       state.apiState = "pending";
     });
 
-    builder.addCase(fetchVoucherPaginate.rejected, (state, action) => {
+    builder.addCase(fetchPromotionPaginate.rejected, (state, action) => {
       state.apiState = "rejected";
       state.resp = action.payload!;
     });
@@ -128,10 +128,10 @@ const getVoucherSlice = createSlice({
 // export const { setVoucherKeySearch, setVoucherSortBy, setVoucherFilterBy } =
 //   getVoucherSlice.actions;
 export const {
-  setVoucherKeySearch,
-  setVoucherSortBy,
-  setVoucherFilterBy,
-  resetVoucherPagination,
-} = getVoucherSlice.actions;
+  setPromotionKeySearch,
+  setPromotionSortBy,
+  setPromotionFilterBy,
+  resetPromotionPagination,
+} = getPromotionSlice.actions;
 
-export default getVoucherSlice.reducer;
+export default getPromotionSlice.reducer;

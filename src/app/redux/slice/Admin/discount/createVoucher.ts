@@ -5,7 +5,7 @@ import {
   IVoucherAttributes,
   VoucherPromotionInput,
 } from "../../../../../data/voucher/interface";
-import { postVoucher } from "../../../../../api/admin/voucher-manegement";
+import { postVoucher } from "../../../../../api/admin/discount-management";
 
 interface ICreateVoucherState {
   apiState: "idle" | "pending" | "rejected" | "done";

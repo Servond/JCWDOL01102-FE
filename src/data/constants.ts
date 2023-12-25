@@ -53,10 +53,28 @@ export const constants = {
     { value: "DESC", label: "Z-A" },
   ] as OptionType[],
   voucherFilterField: [
-    { value: "0", label: "No Filter" },
-    { value: "1", label: "Super Admin" },
-    { value: "2", label: "Branch Admin" },
-    { value: "3", label: "User" },
+    { value: "", label: "No Filter" },
+    { value: "status:active", label: "Status: Active" },
+    { value: "status:inactive", label: "Status: Inactive" },
+    { value: `type:${VoucherType.PRICE_CUT}`, label: "Type: Price Cut" },
+    {
+      value: `type:${VoucherType.TOTAL_PRICE_CUT}`,
+      label: "type: Total Price Cut",
+    },
+    {
+      value: `type:${VoucherType.FREE_SHIPPING}`,
+      label: "type: Free Shipping",
+    },
+  ] as OptionType[],
+  promotionFilterField: [
+    { value: "", label: "No Filter" },
+    { value: "status:active", label: "Status: Active" },
+    { value: "status:inactive", label: "Status: Inactive" },
+    { value: `type:${PromotionType.PRICE_CUT}`, label: "Type: Price Cut" },
+    {
+      value: `type:${PromotionType.BUY_ONE_GET_ONE}`,
+      label: "type: Buy One Get One",
+    },
   ] as OptionType[],
   voucherSortField: [
     { value: "", label: "No Sort" },
@@ -96,7 +114,7 @@ export const constants = {
     {
       fieldName: "Admin Management",
       icon: FaUserGear,
-      path: "/dashboard/admin-management",
+      path: "/dashboard/user-management",
       role: [Role.SUPER_ADMIN],
     },
     {

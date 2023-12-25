@@ -80,6 +80,18 @@ const adminManagementSlice = createSlice({
     setKeySearch: (state, action) => {
       state.keySearch = action.payload;
     },
+    resetUserPagination: (state) => {
+      state.adminTotal = 0;
+      state.pageSize = 0;
+      state.totalPages = 0;
+      state.currentPages = 1;
+      state.admins = [];
+      state.resp = {};
+      state.apiState = "idle";
+      state.sortBy = "";
+      state.filterBy = 0;
+      state.keySearch = "";
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchAdminPaginate.fulfilled, (state, action) => {
@@ -114,6 +126,6 @@ const adminManagementSlice = createSlice({
   },
 });
 
-export const { setFilterBy, setSortBy, setKeySearch } =
+export const { setFilterBy, setSortBy, setKeySearch, resetUserPagination } =
   adminManagementSlice.actions;
 export default adminManagementSlice.reducer;

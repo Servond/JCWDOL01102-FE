@@ -1,25 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IApiResponse } from "../../../../../data/interfaces";
 import { AxiosError } from "axios";
-import { IVoucherAttributes } from "../../../../../data/voucher/interface";
-import { postPromotion } from "../../../../../api/admin/discount-management";
-import {
-  IPromotionAttributes,
-  PromotionCreationAttributes,
-} from "../../../../../data/promotion/interface";
+import { removePromotion } from "../../../../../api/admin/discount-management";
+import { IPromotionAttributes } from "../../../../../data/promotion/interface";
 
-interface ICreatePromotionState {
+interface IDeletePromotionState {
   apiState: "idle" | "pending" | "rejected" | "done";
   resp: IApiResponse<IPromotionAttributes>;
 }
 
-export const createPromotion = createAsyncThunk<
+export const deletePromotion = createAsyncThunk<
   IApiResponse<IPromotionAttributes>,
-  PromotionCreationAttributes,
-  { rejectValue: IApiResponse<IVoucherAttributes> }
->("createVoucher/post", async (input, thunkApi) => {
+  number,
+  { rejectValue: IApiResponse<IPromotionAttributes> }
+>("deletePromotion/delete", async (voucherId, thunkApi) => {
   try {
-    const res = await postPromotion(input);
+    const res = await removePromotion(voucherId);
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -42,37 +38,36 @@ export const createPromotion = createAsyncThunk<
   }
 });
 
-const createPromotionSlice = createSlice({
-  name: "getProductByBranchSlice",
+const deletePromotionSlice = createSlice({
+  name: "deletePromotion",
   initialState: {
     apiState: "idle",
-    products: [],
     resp: {},
-  } as ICreatePromotionState,
+  } as IDeletePromotionState,
   reducers: {
-    resetCreatePromotionState: (state) => {
+    resetDeletePromotionState: (state) => {
       state.apiState = "idle";
       state.resp = {};
     },
   },
   extraReducers(builder) {
-    builder.addCase(createPromotion.fulfilled, (state, action) => {
+    builder.addCase(deletePromotion.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
         state.apiState = "done";
         state.resp = action.payload;
       }
     });
 
-    builder.addCase(createPromotion.pending, (state) => {
+    builder.addCase(deletePromotion.pending, (state) => {
       state.apiState = "pending";
     });
 
-    builder.addCase(createPromotion.rejected, (state, action) => {
+    builder.addCase(deletePromotion.rejected, (state, action) => {
       state.apiState = "rejected";
       state.resp = action.payload as IApiResponse<IPromotionAttributes>;
     });
   },
 });
 
-export const { resetCreatePromotionState } = createPromotionSlice.actions;
-export default createPromotionSlice.reducer;
+export const { resetDeletePromotionState } = deletePromotionSlice.actions;
+export default deletePromotionSlice.reducer;

@@ -51,7 +51,6 @@ export default function DiscountValue(props: IDiscountValProps) {
           type="number"
           onChange={(e) => {
             const type = props.values[2];
-            console.log(type);
             const valNow = e.target.value;
             const isNumber = /^[0-9]*$/.test(valNow);
             if (!isNumber) return;
@@ -59,7 +58,7 @@ export default function DiscountValue(props: IDiscountValProps) {
               return;
             props.setFieldValue("value", e.target.value);
           }}
-          value={String(props.values[0])}
+          value={props.values[0] === null ? "0" : String(props.values[0])}
         />
       </FormField>
       <VStack

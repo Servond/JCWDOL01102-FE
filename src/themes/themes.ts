@@ -4,6 +4,7 @@ import Checkbox from "./Checkbox/checkbox.theme";
 import Input from "./Input/input.theme";
 import Select from "./Select/Select.theme";
 import Menu from "./Menu/menu.theme";
+import Tabs from "./Tabs/tabs.theme";
 
 export const globalTheme = extendTheme({
   colors: {
@@ -16,6 +17,7 @@ export const globalTheme = extendTheme({
     superAdminColor: "#EDF7FC",
     branchAdminColor: "#F4EBF7",
     userColor: "#FDE598",
+    errorColor: "#FF4545",
   },
   styles: {
     global: {
@@ -36,5 +38,6 @@ export const globalTheme = extendTheme({
     Input,
     Select,
     Menu,
+    Tabs,
   },
 });
