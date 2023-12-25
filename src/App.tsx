@@ -101,7 +101,7 @@ function App() {
             }
           />
           <Route
-            path="/dashboard/create-voucher"
+            path="/dashboard/create-discount"
             element={<BranchAdminProtect children={<CreateVoucherPage />} />}
           />
           <Route

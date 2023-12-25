@@ -53,6 +53,17 @@ const loginSlice = createSlice({
     user: null,
   } as ILoginState,
   reducers: {
+    resetUserLoginState: (state) => {
+      state.emailValue = "";
+      state.passwordValue = "";
+      state.token = "";
+      state.loginState = "idle";
+      state.loginResp = {};
+      state.isAuthenticated = false;
+      state.role = "";
+      state.permission = [];
+      state.user = null;
+    },
     resetUserLoginCredential: (state) => {
       state.emailValue = "";
       state.passwordValue = "";
@@ -116,6 +127,7 @@ export const {
   setRole,
   setUser,
   setToken,
+  resetUserLoginState,
 } = loginSlice.actions;
 
 export default loginSlice.reducer;

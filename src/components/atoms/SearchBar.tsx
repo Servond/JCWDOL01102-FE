@@ -1,16 +1,18 @@
 import { Box, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 import { MdSearch } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../app/redux/store";
-import { setKeySearch } from "../../../app/redux/slice/Admin/userManagement/adminManagement";
 import debounce from "debounce";
 
-export default function SearchBar() {
+interface ISearchBarProps {
+  onChange: (key: string) => void;
+  placeHolder?: string;
+}
+
+export default function SearchBar(props: ISearchBarProps) {
   const [isFocus, setFocus] = useState<boolean>(false);
-  const dispatch = useDispatch<AppDispatch>();
   const debouncedSearch = debounce((key) => {
-    dispatch(setKeySearch(key));
+    // dispatch(setKeySearch(key));
+    props.onChange(key);
   }, 500);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +25,7 @@ export default function SearchBar() {
         variant={"createAdmin"}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        placeholder="Find user"
+        placeholder={props.placeHolder}
         onChange={handleChange}
         // value={keySearch}
       />

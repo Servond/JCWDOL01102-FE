@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   AbsoluteCenter,
+  Box,
   Table,
   TableContainer,
   Tbody,
@@ -12,49 +13,56 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
+import LoadingCenter from "../../molecules/Loading";
 import SearchBar from "../../atoms/SearchBar";
 import DeleteAlert from "../../molecules/UserManagement/DeleteAlert";
 import Paginate from "../../molecules/Paginate";
 import {
-  fetchVoucherPaginate,
-  setVoucherKeySearch,
-} from "../../../app/redux/slice/Admin/discount/getVoucher";
-import LoadingCenter from "../../molecules/Loading";
-import DiscountValueDisplay from "../../atoms/voucherManagement/DiscountValueDisplay";
+  fetchPromotionPaginate,
+  setPromotionKeySearch,
+} from "../../../app/redux/slice/Admin/discount/getPromo";
 import { toCamelCase } from "../../../utils/function/toCamelCase";
-import DetailButton from "./DetailButton";
-import { DiscountType, VoucherType } from "../../../data/constants";
 import DiscountStatus from "../../atoms/DiscountStatus";
 import DiscountNotFound from "../../atoms/DiscountNotFound";
+import DiscountValueDisplay from "../../atoms/voucherManagement/DiscountValueDisplay";
+import { DiscountType, PromotionType } from "../../../data/constants";
 import ActionButton from "../../molecules/VoucherManagement/ActionButton";
+// import { toGMT7 } from "../../../utils/function/toGMT7";
 
-export default function VoucherTableContent() {
+export default function PromoTableContent() {
   const dispatch = useDispatch<AppDispatch>();
   const alertDisclosure = useDisclosure();
   const [isScrollTop, setScrollTop] = useState<boolean>(true);
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const prevSelectedPage = useRef<number>(0);
   const [adminId, setAdminId] = useState<number>(0);
-  const apiState = useSelector((state: RootState) => state.getVoucher.apiState);
-  const vouchers = useSelector((state: RootState) => state.getVoucher.vouchers);
-  const key = useSelector((root: RootState) => root.getVoucher.keySearch);
-  const sortBy = useSelector((state: RootState) => state.getVoucher.sortBy);
-  const filterBy = useSelector((state: RootState) => state.getVoucher.filterBy);
-  const deleteVoucherResp = useSelector(
-    (state: RootState) => state.deleteVoucher.resp
+  const apiState = useSelector(
+    (state: RootState) => state.getPromotion.apiState
+  );
+  const promotions = useSelector(
+    (state: RootState) => state.getPromotion.promotions
+  );
+  const key = useSelector((state: RootState) => state.getPromotion.keySearch);
+  const sortBy = useSelector((state: RootState) => state.getPromotion.sortBy);
+  const filterBy = useSelector(
+    (state: RootState) => state.getPromotion.filterBy
   );
   const totalPage = useSelector(
-    (state: RootState) => state.getVoucher.totalPages
+    (state: RootState) => state.getPromotion.totalPages
   );
   const currentPage = useSelector(
-    (state: RootState) => state.getVoucher.currentPages
+    (state: RootState) => state.getPromotion.currentPages
+  );
+  const deletePromotionResp = useSelector(
+    (state: RootState) => state.deletePromotoin.resp
   );
   useEffect(() => {
     dispatch(
-      fetchVoucherPaginate({
+      fetchPromotionPaginate({
         page: prevSelectedPage.current === selectedPage ? 1 : selectedPage + 1,
         limit: 10,
         sortBy,
@@ -67,13 +75,13 @@ export default function VoucherTableContent() {
 
   useEffect(() => {
     if (
-      Object.keys(deleteVoucherResp).length === 0 &&
-      deleteVoucherResp?.statusCode !== 200
+      Object.keys(deletePromotionResp).length === 0 &&
+      deletePromotionResp?.statusCode !== 200
     ) {
       return;
     }
     dispatch(
-      fetchVoucherPaginate({
+      fetchPromotionPaginate({
         page: prevSelectedPage.current === selectedPage ? 1 : selectedPage + 1,
         limit: 10,
         sortBy,
@@ -82,7 +90,7 @@ export default function VoucherTableContent() {
       })
     );
     prevSelectedPage.current = selectedPage;
-  }, [deleteVoucherResp]);
+  }, [deletePromotionResp]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handlePageChange = (selectedItem: any) => {
@@ -90,44 +98,44 @@ export default function VoucherTableContent() {
   };
 
   const contentHandle = () => {
-    if (apiState === "done" && vouchers.length > 0) {
+    if (apiState === "done" && promotions.length > 0) {
       return (
         <Tbody>
-          {vouchers.map((voucher, index) => {
+          {promotions.map((promotion, index) => {
             return (
               <Tr key={index} fontWeight={"semibold"}>
                 <Td>
-                  <Text fontWeight={"bold"}>{voucher.name}</Text>
+                  <Text fontWeight={"bold"}>{promotion.name}</Text>
                 </Td>
                 <Td>
                   <DiscountStatus
-                    startDate={voucher.dateStart}
-                    endDate={voucher.dateEnd}
+                    startDate={promotion.dateStart}
+                    endDate={promotion.dateEnd}
                   />
                 </Td>
                 <Td>
-                  <DiscountValueDisplay
-                    value={voucher.value}
-                    valueType={voucher.valueType}
-                    type={voucher.type}
-                  />
-                </Td>
-                <Td>
-                  <Text textTransform={"capitalize"}>
-                    {toCamelCase(voucher.type)}
-                  </Text>
-                </Td>
-                <Td>
-                  {voucher.type === VoucherType.PRICE_CUT ? (
-                    <DetailButton voucherId={voucher.id} />
+                  {promotion.type !== PromotionType.BUY_ONE_GET_ONE ? (
+                    <DiscountValueDisplay
+                      value={promotion.value!}
+                      valueType={promotion.valueType!}
+                      type={promotion.type}
+                    />
                   ) : (
-                    <Text>Not Assigned</Text>
+                    <Text textTransform={"capitalize"}>not Assigned</Text>
                   )}
                 </Td>
                 <Td>
+                  <Text textTransform={"capitalize"}>
+                    {toCamelCase(promotion.type)}
+                  </Text>
+                </Td>
+                <Td>
+                  <Text>{promotion.product.name}</Text>
+                </Td>
+                <Td>
                   <ActionButton
-                    id={voucher.id}
-                    discountType={DiscountType.VOUCHER}
+                    id={promotion.id}
+                    discountType={DiscountType.PROMOTION}
                   />
                 </Td>
               </Tr>
@@ -135,13 +143,13 @@ export default function VoucherTableContent() {
           })}
         </Tbody>
       );
-    } else if (apiState === "done" && vouchers.length === 0) {
-      return <DiscountNotFound caption="Voucher was not found" />;
+    } else if (apiState === "done" && promotions.length === 0) {
+      return <DiscountNotFound caption="Promotion was not found" />;
     }
   };
 
   return (
-    <VStack w={"full"} h={"full"}>
+    <VStack w={"full"}>
       <DeleteAlert
         isOpen={alertDisclosure.isOpen}
         onClose={() => {
@@ -175,17 +183,17 @@ export default function VoucherTableContent() {
             <Tr>
               <Th>
                 <SearchBar
-                  placeHolder="Search voucher"
-                  onChange={(val) => {
-                    dispatch(setVoucherKeySearch(val));
+                  placeHolder="Search promotions"
+                  onChange={(key) => {
+                    dispatch(setPromotionKeySearch(key));
                   }}
                 />
               </Th>
               <Th>Status</Th>
               <Th>Value</Th>
-              <Th>Type</Th>
-              <Th>Products</Th>
-              <Th>Aksi</Th>
+              <Th>type</Th>
+              <Th>Product</Th>
+              <Th>Action</Th>
             </Tr>
           </Thead>
           {contentHandle()}
@@ -196,11 +204,13 @@ export default function VoucherTableContent() {
           </AbsoluteCenter>
         ) : null}
       </TableContainer>
-      <Paginate
-        pageCount={totalPage}
-        onPageChange={handlePageChange}
-        forcePage={currentPage - 1 < 0 ? 0 : currentPage - 1}
-      />
+      <Box>
+        <Paginate
+          pageCount={totalPage}
+          onPageChange={handlePageChange}
+          forcePage={currentPage - 1 < 0 ? 0 : currentPage - 1}
+        />
+      </Box>
     </VStack>
   );
 }

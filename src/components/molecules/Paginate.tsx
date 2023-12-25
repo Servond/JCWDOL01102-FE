@@ -8,7 +8,7 @@ interface IPaginateProps {
 }
 export default function Paginate(props: IPaginateProps) {
   return (
-    <Box mt={"1rem"}>
+    <Box mt={"0.5rem"}>
       <ReactPaginate
         previousLabel="Previous"
         nextLabel="Next"

@@ -9,7 +9,6 @@ export interface IVoucherAttributes {
   minimumPrice?: number | null;
   value: number;
   valueType: string;
-  product?: { id: number; name: string; branch: { id: number; name: string } };
 }
 
 export interface VoucherCreationAttributes
@@ -20,6 +19,23 @@ export interface VoucherPromotionInput {
   productId: number | null;
 }
 
+export interface IManageProductVoucherInput {
+  voucherId: number;
+  data: string[];
+}
+
 export type VoucherPaginateResponse = IApiResponse<
   IPaginate<IVoucherAttributes>
 >;
+
+export interface IProductVoucher {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+export interface IGetProductVoucherResponse {
+  productList: IProductVoucher[];
+  activeProductIdList: string[];
+  filteredActiveProductIdList: string[];
+}

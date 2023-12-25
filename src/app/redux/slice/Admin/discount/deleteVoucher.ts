@@ -2,24 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IApiResponse } from "../../../../../data/interfaces";
 import { AxiosError } from "axios";
 import { IVoucherAttributes } from "../../../../../data/voucher/interface";
-import { postPromotion } from "../../../../../api/admin/discount-management";
-import {
-  IPromotionAttributes,
-  PromotionCreationAttributes,
-} from "../../../../../data/promotion/interface";
+import { removeVoucher } from "../../../../../api/admin/discount-management";
 
-interface ICreatePromotionState {
+interface ICreateDeleteState {
   apiState: "idle" | "pending" | "rejected" | "done";
-  resp: IApiResponse<IPromotionAttributes>;
+  resp: IApiResponse<IVoucherAttributes>;
 }
 
-export const createPromotion = createAsyncThunk<
-  IApiResponse<IPromotionAttributes>,
-  PromotionCreationAttributes,
+export const deleteVoucher = createAsyncThunk<
+  IApiResponse<IVoucherAttributes>,
+  number,
   { rejectValue: IApiResponse<IVoucherAttributes> }
->("createVoucher/post", async (input, thunkApi) => {
+>("deleteVoucher/delete", async (voucherId, thunkApi) => {
   try {
-    const res = await postPromotion(input);
+    const res = await removeVoucher(voucherId);
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -42,37 +38,36 @@ export const createPromotion = createAsyncThunk<
   }
 });
 
-const createPromotionSlice = createSlice({
-  name: "getProductByBranchSlice",
+const deleteVoucherSlice = createSlice({
+  name: "deleteVoucher",
   initialState: {
     apiState: "idle",
-    products: [],
     resp: {},
-  } as ICreatePromotionState,
+  } as ICreateDeleteState,
   reducers: {
-    resetCreatePromotionState: (state) => {
+    resetDeleteVoucherState: (state) => {
       state.apiState = "idle";
       state.resp = {};
     },
   },
   extraReducers(builder) {
-    builder.addCase(createPromotion.fulfilled, (state, action) => {
+    builder.addCase(deleteVoucher.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
         state.apiState = "done";
         state.resp = action.payload;
       }
     });
 
-    builder.addCase(createPromotion.pending, (state) => {
+    builder.addCase(deleteVoucher.pending, (state) => {
       state.apiState = "pending";
     });
 
-    builder.addCase(createPromotion.rejected, (state, action) => {
+    builder.addCase(deleteVoucher.rejected, (state, action) => {
       state.apiState = "rejected";
-      state.resp = action.payload as IApiResponse<IPromotionAttributes>;
+      state.resp = action.payload as IApiResponse<IVoucherAttributes>;
     });
   },
 });
 
-export const { resetCreatePromotionState } = createPromotionSlice.actions;
-export default createPromotionSlice.reducer;
+export const { resetDeleteVoucherState } = deleteVoucherSlice.actions;
+export default deleteVoucherSlice.reducer;

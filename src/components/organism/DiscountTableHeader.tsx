@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import InputGroup from "../../molecules/promotionMangement/InputGroup";
+import InputGroup from "../molecules/promotionMangement/InputGroup";
 
 export default function VoucherTableHeader() {
   return (

@@ -29,6 +29,8 @@ import { createPromotion } from "../../../app/redux/slice/Admin/discount/createP
 export default function VoucherCreationForm() {
   const dispatch = useDispatch<AppDispatch>();
   const [currentVal, setVal] = useState<OptionType | null>(null);
+  const [discountCurrentType, setDiscountCurrentType] =
+    useState<OptionType | null>(null);
   const createVoucherState = useSelector(
     (state: RootState) => state.createVoucher.apiState
   );
@@ -53,7 +55,9 @@ export default function VoucherCreationForm() {
     };
     return obj;
   };
-  const ResetForm = () => {
+  const resetForm = () => {
+    setVal(constants.voucherType[0]);
+    setDiscountCurrentType(constants.discountTypeField[0]);
     formik.resetForm({
       errors: {},
       submitCount: 0,
@@ -72,30 +76,32 @@ export default function VoucherCreationForm() {
               voucher: {
                 name: value.name,
                 type: value.type,
-                minimumPrice: Number(value.minPrice),
+                minimumPrice:
+                  value.minPrice === null ? 0 : Number(value.minPrice),
                 dateStart: value.startDate,
                 dateEnd: value.endDate,
-                value: Number(value.value),
+                value: value.value === null ? 0 : Number(value.value),
                 valueType: value.valueType!,
               },
             })
-          );
+          ).then(() => {
+            resetForm();
+          });
         } else {
           dispatch(
             createPromotion({
-              productId: !value.productId ? null : value.productId,
-              promotion: {
-                name: value.name,
-                type: value.type,
-                dateStart: value.startDate,
-                dateEnd: value.endDate,
-                value: Number(value.value),
-                valueType: value.valueType,
-              },
+              name: value.name,
+              type: value.type,
+              dateStart: value.startDate,
+              dateEnd: value.endDate,
+              value: value.value === null ? 0 : Number(value.value),
+              valueType: value.valueType,
+              productId: value.productId,
             })
-          );
+          ).then(() => {
+            resetForm();
+          });
         }
-        ResetForm();
       }
     )
   );
@@ -116,11 +122,17 @@ export default function VoucherCreationForm() {
     if (formik.values.discountType === DiscountType.VOUCHER) {
       setVal(constants.voucherType[0]);
       formik.setFieldValue("type", constants.voucherType[0].value);
+      setDiscountCurrentType(constants.discountTypeField[0]);
     } else {
       setVal(constants.promotionType[0]);
       formik.setFieldValue("type", constants.promotionType[0].value);
+      setDiscountCurrentType(constants.discountTypeField[1]);
     }
   }, [formik.values.discountType]);
+
+  // useEffect(() => {
+  //   dispatch(getProductByBranch())
+  // }, [])
 
   return (
     <Box minW="300px" w={"full"} h={"92%"} ref={boxRef}>
@@ -146,9 +158,11 @@ export default function VoucherCreationForm() {
               theme={SelectTheme}
               options={constants.discountTypeField}
               defaultValue={constants.discountTypeField[0]}
-              onChange={(option) =>
-                formik.setFieldValue("discountType", option?.value)
-              }
+              onChange={(option) => {
+                setDiscountCurrentType(option);
+                formik.setFieldValue("discountType", option?.value);
+              }}
+              value={discountCurrentType}
             />
           </FormField>
 
@@ -162,7 +176,9 @@ export default function VoucherCreationForm() {
               <Input
                 id="name"
                 variant={"createAdmin"}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  formik.setFieldValue("name", e.target.value);
+                }}
                 value={formik.values.name}
               />
             </FormField>
@@ -218,27 +234,31 @@ export default function VoucherCreationForm() {
               />
             </FormField>
 
-            <FormField
-              formLabel="Product"
-              labelFor="prod"
-              error={formik.errors.productId}
-              submitCount={formik.submitCount}
-            >
-              <Select
-                id="prod"
-                styles={createAdminStyle}
-                theme={SelectTheme}
-                options={generateProdOptions(products)}
-                defaultValue={{ value: "", label: "No Product" } as OptionType}
-                onChange={(option) => {
-                  formik.setFieldValue("productId", Number(option!.value));
-                }}
-                isDisabled={
-                  formik.values.type === VoucherType.FREE_SHIPPING ||
-                  formik.values.type === VoucherType.TOTAL_PRICE_CUT
-                }
-              />
-            </FormField>
+            {formik.values.discountType === DiscountType.PROMOTION ? (
+              <FormField
+                formLabel="Product"
+                labelFor="prod"
+                error={formik.errors.productId}
+                submitCount={formik.submitCount}
+              >
+                <Select
+                  id="prod"
+                  styles={createAdminStyle}
+                  theme={SelectTheme}
+                  options={generateProdOptions(products)}
+                  defaultValue={
+                    { value: "", label: "No Product" } as OptionType
+                  }
+                  onChange={(option) => {
+                    formik.setFieldValue("productId", Number(option!.value));
+                  }}
+                  isDisabled={
+                    formik.values.type === VoucherType.FREE_SHIPPING ||
+                    formik.values.type === VoucherType.TOTAL_PRICE_CUT
+                  }
+                />
+              </FormField>
+            ) : null}
           </HStack>
 
           <HStack w={"full"} spacing={"1rem"}>
