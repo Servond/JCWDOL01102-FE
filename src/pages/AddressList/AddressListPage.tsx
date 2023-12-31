@@ -4,15 +4,18 @@ import {
   keyframes,
   usePrefersReducedMotion,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddressButton from "../../components/molecules/AddressList/AddressButton";
 import TitleHeader from "../../components/molecules/MyDetails/TitleHeader";
 import AddressList from "../../components/organism/AddressList/AddressList";
 
 export default function AddressListPage() {
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
   const handleBack = () => {
-    navigate("/menu");
+    const backUrl = query.get("back") ? `/${query.get("back")}` : "/menu";
+    navigate(backUrl);
   };
   const zoom = keyframes`
   from {transform: scale(0.95);}

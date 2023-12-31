@@ -17,6 +17,9 @@ import updateAdminReducer from "./slice/Admin/userManagement/updateAdmin";
 import getAdminProductByBranchReducer from "./slice/Admin/getProduct/getProductByBranch";
 import createVoucherReducer from "./slice/Admin/discount/createVoucher";
 import createPromotionReducer from "./slice/Admin/discount/createPromotion";
+import courierPriceReducer from "./slice/Order/ShippingPriceSlice";
+import orderReducer from "./slice/Order/OrderSlice";
+
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -40,5 +43,7 @@ export const store = configureStore({
     updateAdmin: updateAdminReducer,
     createVoucher: createVoucherReducer,
     createPromotion: createPromotionReducer,
+    courierPrice: courierPriceReducer,
+    order: orderReducer,
   },
 });

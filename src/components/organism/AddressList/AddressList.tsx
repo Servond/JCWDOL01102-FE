@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useEffect } from "react";
 import { fetchAddressList } from "../../../app/redux/slice/AddressList/addressListSlice";
+import LoadingCenter from "../../molecules/Loading";
 
 export default function AddressList() {
   const addressListState = useSelector((state: RootState) => state.addressList);
@@ -18,11 +19,7 @@ export default function AddressList() {
     addressListState.status === "pending" ||
     addressListState.status === "idle"
   )
-    return (
-      <Text fontSize={"sm"} color={"gray.500"} textAlign={"center"} mt={"20px"}>
-        Loading...
-      </Text>
-    );
+    return <LoadingCenter />;
 
   if (
     addressListState.status === "done" &&
