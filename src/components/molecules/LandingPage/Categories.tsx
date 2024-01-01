@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, Skeleton } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useEffect } from "react";
@@ -11,6 +11,9 @@ export default function Categories() {
   );
   const categories = useSelector(
     (state: RootState) => state.getCategoriesWithLimit.categories
+  );
+  const apiState = useSelector(
+    (state: RootState) => state.getCategoriesWithLimit.apiState
   );
   const branch = useSelector((state: RootState) => state.nearestBranch.branch);
   const dispatch = useDispatch<AppDispatch>();
@@ -33,14 +36,18 @@ export default function Categories() {
         scrollbarWidth: "thin", // For Firefox
       }}
     >
-      {categories.map((category, index) => (
-        <ProductCategoryItem
-          currentCategoryIndex={currentCategories}
-          id={category.id}
-          name={category.name}
-          key={index}
-        />
-      ))}
+      {apiState === "done"
+        ? categories.map((category, index) => (
+            <ProductCategoryItem
+              currentCategoryIndex={currentCategories}
+              id={category.id}
+              name={category.name}
+              key={index}
+            />
+          ))
+        : [...new Array(5)].map(() => {
+            return <Skeleton w={"60px"} h={"10px"} />;
+          })}
     </HStack>
   );
 }
