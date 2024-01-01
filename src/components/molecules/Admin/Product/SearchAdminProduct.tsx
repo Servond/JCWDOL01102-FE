@@ -95,7 +95,11 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
         }}
       >
         {categoryState.data.map((item) => {
-          return <option value={item.id}>{item.name}</option>;
+          return (
+            <option key={item.id} value={item.id}>
+              {item.name}
+            </option>
+          );
         })}
       </Select>
       <Select

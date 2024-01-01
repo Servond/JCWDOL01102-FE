@@ -28,6 +28,9 @@ import NavbarReducer from "./slice/Navbar/Navbar";
 import landingpageCategoryReducer from "./slice/LandingPage/categories";
 import getNearestBranchReducer from "./slice/LandingPage/getNearestBranch";
 import getCategoriesWithLimit from "./slice/LandingPage/getCategoriesWithLimit";
+import courierPriceReducer from "./slice/Order/ShippingPriceSlice";
+import orderReducer from "./slice/Order/OrderSlice";
+
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -62,5 +65,7 @@ export const store = configureStore({
     deletePromotoin: deletePromotionReducer,
     nearestBranch: getNearestBranchReducer,
     getCategoriesWithLimit: getCategoriesWithLimit,
+    courierPrice: courierPriceReducer,
+    order: orderReducer,
   },
 });

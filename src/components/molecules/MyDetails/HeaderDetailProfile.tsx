@@ -26,9 +26,7 @@ export default function HeaderDetailProfile() {
           w={"120px"}
         >
           <img
-            src={
-              "http://203.175.11.82:9001/api/v1/buckets/grocery/objects/download?preview=true&prefix=cHJvZmlsZS9Beml6aS1aZWUtMTc3NDQ0ODQ3MS53ZWJw&version_id=null"
-            }
+            src={"default.jpg"}
             style={{
               borderRadius: "50%",
               height: "100%",
