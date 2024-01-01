@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fetchAdminProductPage } from "../../../../../api/admin/product";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 interface IPage {
   [key: string]: string | number | null | undefined;
 }

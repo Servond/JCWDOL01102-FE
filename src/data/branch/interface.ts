@@ -7,5 +7,12 @@ export interface IBranchResponseData {
   longitude: string;
   address?: string;
 }
+export interface IBranchWithDistanceAttributes extends IBranchResponseData {
+  distanceToUser: number;
+}
 
+export interface IGetNearestBranchInput {
+  longitude: number;
+  latitude: number;
+}
 export type getBranchesResponse = IApiResponse<IBranchResponseData[]>;

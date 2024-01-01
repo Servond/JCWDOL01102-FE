@@ -17,7 +17,7 @@ import { IUserFromToken } from "../../data/user/interfaces";
 import { parseToken } from "../../utils/function/parseToken";
 
 export default function AppWrapper() {
-  const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const [isMobile] = useMediaQuery("(max-width: 425px)");
   const boxRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const [isDashboard, setDashboard] = useState<boolean>(true);
@@ -41,10 +41,15 @@ export default function AppWrapper() {
 
   const widthhandler = (isDashboard: boolean) => {
     if (!isDashboard) {
-      return isMobile ? "full" : "500px";
+      return isMobile ? "full" : "425px";
     } else {
       return "full";
     }
+  };
+
+  const isShowDashboard = (path: string) => {
+    const whitelist = ["/", "/menu", "/cart", "/notification", "/explore"];
+    return whitelist.some((whitelist) => whitelist === path);
   };
 
   useEffect(() => {
@@ -90,21 +95,27 @@ export default function AppWrapper() {
       ref={boxRef}
       m={"auto"}
       h={"100dvh"}
-      bg={"thirdColor"}
+      bg={"#F4F4F4"}
       shadow={"xl"}
       overflowY={"auto"}
-      sx={{
-        "::-webkit-scrollbar": {
-          display: "none",
-        },
-      }}
+      display={"flex"}
+      flexDir={"column"}
     >
-      {location.pathname === "/" ? <DummyNavBar /> : null}
       {isRender ? (
-        <Box px={"1.5rem"}>
+        <Box
+          sx={{
+            "::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+          px={"1rem"}
+          maxHeight={!isDashboard ? "calc(100vh - 60px)" : "full"} // Set the maximum height of the Box
+          overflow="auto"
+        >
           <Outlet />
         </Box>
       ) : null}
+      {isShowDashboard(location.pathname) ? <DummyNavBar /> : null}
     </Box>
   );
 }

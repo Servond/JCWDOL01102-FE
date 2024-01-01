@@ -13,6 +13,7 @@ import {
   VoucherPaginateResponse,
 } from "../../data/voucher/interface";
 import { adminServer } from "../server";
+import { getToken } from "./product";
 
 export const getVoucherPaginate = (
   page: number,
@@ -28,6 +29,9 @@ export const getVoucherPaginate = (
       sortBy,
       filterBy,
       key: `%${key}%`,
+    },
+    headers: {
+      Authorization: getToken(),
     },
   });
 };
@@ -47,6 +51,9 @@ export const getPromoPaginate = (
       filterBy,
       key: `%${key}%`,
     },
+    headers: {
+      Authorization: getToken(),
+    },
   });
 };
 
@@ -54,11 +61,15 @@ export const postVoucher = (
   data: VoucherCreationAttributes,
   productId: number | null
 ) => {
+  console.log(data);
   return adminServer.post<IApiResponse<IVoucherAttributes>>(
     "api/vouchers",
     data,
     {
       params: productId ? { productId } : undefined,
+      headers: {
+        Authorization: getToken(),
+      },
     }
   );
 };
@@ -66,7 +77,12 @@ export const postVoucher = (
 export const postPromotion = (data: PromotionCreationAttributes) => {
   return adminServer.post<IApiResponse<IPromotionAttributes>>(
     "api/promotions",
-    data
+    data,
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
   );
 };
 
@@ -80,19 +96,32 @@ export const manageProductVoucher = (voucherId: number, data: string[]) => {
       params: {
         voucherId,
       },
+      headers: {
+        Authorization: getToken(),
+      },
     }
   );
 };
 
 export const removeVoucher = (voucherId: number) => {
   return adminServer.delete<IApiResponse<IVoucherAttributes>>(
-    `api/vouchers/${voucherId}`
+    `api/vouchers/${voucherId}`,
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
   );
 };
 
 export const removePromotion = (promotionId: number) => {
   return adminServer.delete<IApiResponse<IPromotionAttributes>>(
-    `api/promotions/${promotionId}`
+    `api/promotions/${promotionId}`,
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
   );
 };
 
@@ -107,6 +136,9 @@ export const fetchProductVoucherByBranch = async (
         params: {
           voucherId,
           key: `%${key}%`,
+        },
+        headers: {
+          Authorization: getToken(),
         },
       }
     );
