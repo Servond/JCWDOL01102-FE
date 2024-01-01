@@ -3,7 +3,7 @@ import { useMediaQuery } from "@chakra-ui/media-query";
 import { useRef } from "react";
 
 export default function Wrapper({ children }: { children: React.ReactNode }) {
-  const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const [isMobile] = useMediaQuery("(max-width: 425px)");
   const boxRef = useRef<HTMLDivElement>(null);
 
   const scrollHandle = () => {

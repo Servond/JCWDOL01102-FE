@@ -2,6 +2,7 @@ import { IApiResponse, IPaginate } from "../interfaces";
 
 export interface IPromotionAttributes {
   name: string;
+  branchId: number;
   id: number;
   type: string;
   dateStart: string;

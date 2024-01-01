@@ -24,11 +24,17 @@ import manageProductVoucherReducer from "./slice/Admin/discount/manageProductVou
 import discountTabsReducer from "./slice/Admin/discount/discountTabs";
 import deleteVoucherReducer from "./slice/Admin/discount/deleteVoucher";
 import deletePromotionReducer from "./slice/Admin/discount/deletePromotion";
+import NavbarReducer from "./slice/Navbar/Navbar";
+import landingpageCategoryReducer from "./slice/LandingPage/categories";
+import getNearestBranchReducer from "./slice/LandingPage/getNearestBranch";
+import getCategoriesWithLimit from "./slice/LandingPage/getCategoriesWithLimit";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
 export const store = configureStore({
   reducer: {
+    navbar: NavbarReducer,
+    landingpageCategory: landingpageCategoryReducer,
     user: userReducer,
     changeProfile: changeProfileReducer,
     addressList: addressListReducer,
@@ -54,5 +60,7 @@ export const store = configureStore({
     discountTab: discountTabsReducer,
     deleteVoucher: deleteVoucherReducer,
     deletePromotoin: deletePromotionReducer,
+    nearestBranch: getNearestBranchReducer,
+    getCategoriesWithLimit: getCategoriesWithLimit,
   },
 });

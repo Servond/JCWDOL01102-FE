@@ -2,6 +2,7 @@ import { IApiResponse, IPaginate } from "../interfaces";
 
 export interface IVoucherAttributes {
   id: number;
+  branchId: number;
   name: string;
   type: string;
   dateStart: string;

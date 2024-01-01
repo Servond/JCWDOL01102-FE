@@ -4,14 +4,22 @@ import { IoTicket } from "react-icons/io5";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BsClipboard2DataFill } from "react-icons/bs";
 import { OptionType } from "./interfaces";
-interface IDashBoarMeta {
+import { FaStore } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
+import { FaBell } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
+import { IoPerson } from "react-icons/io5";
+
+interface INavbarMeta {
   fieldName: string;
   icon: React.ElementType;
   path: string;
   role: string[];
 }
 
-type DashboardNavMeta = IDashBoarMeta[];
+type DashboardNavMeta = INavbarMeta[];
+type NavbarMeta = Omit<INavbarMeta, "role">;
 
 export enum Role {
   SUPER_ADMIN = "super_admin",
@@ -142,6 +150,38 @@ export const constants = {
       role: [Role.BRANCH_ADMIN, Role.SUPER_ADMIN],
     },
   ] as DashboardNavMeta,
+  navbarField: [
+    {
+      fieldName: "Store",
+      icon: FaStore,
+      path: "/",
+    },
+    {
+      fieldName: "Explore",
+      icon: FaSearch,
+      path: "/explore",
+    },
+    {
+      fieldName: "Cart",
+      icon: FaCartShopping,
+      path: "/cart",
+    },
+    {
+      fieldName: "Notification",
+      icon: FaBell,
+      path: "/notification",
+    },
+    {
+      fieldName: "Account",
+      icon: IoPerson,
+      path: "/menu",
+    },
+    {
+      fieldName: "Dashboard",
+      icon: MdDashboard,
+      path: "/dashboard",
+    },
+  ] as NavbarMeta[],
 };
 
 export enum Permission {

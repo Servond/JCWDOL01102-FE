@@ -77,11 +77,12 @@ export default function VoucherCreationForm() {
                 name: value.name,
                 type: value.type,
                 minimumPrice:
-                  value.minPrice === null ? 0 : Number(value.minPrice),
+                value.minPrice === null ? 0 : Number(value.minPrice),
                 dateStart: value.startDate,
                 dateEnd: value.endDate,
                 value: value.value === null ? 0 : Number(value.value),
                 valueType: value.valueType!,
+                branchId: value.branchId,
               },
             })
           ).then(() => {
@@ -97,6 +98,7 @@ export default function VoucherCreationForm() {
               value: value.value === null ? 0 : Number(value.value),
               valueType: value.valueType,
               productId: value.productId,
+              branchId: value.branchId,
             })
           ).then(() => {
             resetForm();
