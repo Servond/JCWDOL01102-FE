@@ -1,5 +1,5 @@
 import { Box, Image, Skeleton } from "@chakra-ui/react";
-import bannerSvg from "../../../assets/banner.svg";
+import bannerSvg from "../../../assets/banner-top.jpg";
 import { useState } from "react";
 
 export default function Banner() {
@@ -10,6 +10,8 @@ export default function Banner() {
     <Skeleton w={"full"} borderRadius={"10px"} isLoaded={isLoaded} h={"130px"}>
       <Box w={"full"} borderRadius={"10px"} h={"full"}>
         <Image
+          borderRadius={"10px"}
+          objectFit={"cover"}
           w={"full"}
           h={"full"}
           src={bannerSvg}

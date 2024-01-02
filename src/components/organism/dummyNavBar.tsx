@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/redux/store";
 
 export default function DummyNavBar() {
-  const [isMobile] = useMediaQuery("(max-width: 425px)");
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
   const userRole = useSelector((state: RootState) => state.login.role);
   const currentPageIndex = useSelector(
     (state: RootState) => state.navbar.currentPageIndex
@@ -16,7 +16,7 @@ export default function DummyNavBar() {
       boxShadow={"0 -2px 6px -1px rgba(0, 0, 0, 0.1)"}
       borderTopStartRadius={"18px"}
       borderTopEndRadius={"18px"}
-      maxW={isMobile ? "full" : "425px"}
+      maxW={isMobile ? "full" : "500px"}
       w={"full"}
       position={"fixed"}
       bottom={"0px"}

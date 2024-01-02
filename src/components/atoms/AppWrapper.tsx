@@ -17,7 +17,7 @@ import { IUserFromToken } from "../../data/user/interfaces";
 import { parseToken } from "../../utils/function/parseToken";
 
 export default function AppWrapper() {
-  const [isMobile] = useMediaQuery("(max-width: 425px)");
+  const [isMobile] = useMediaQuery("(max-width: )");
   const boxRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const [isDashboard, setDashboard] = useState<boolean>(true);
@@ -41,7 +41,7 @@ export default function AppWrapper() {
 
   const widthhandler = (isDashboard: boolean) => {
     if (!isDashboard) {
-      return isMobile ? "full" : "425px";
+      return isMobile ? "full" : "500px";
     } else {
       return "full";
     }

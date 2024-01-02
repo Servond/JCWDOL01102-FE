@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useEffect } from "react";
 import { fetchCategoriesWithLimit } from "../../../app/redux/slice/LandingPage/getCategoriesWithLimit";
 import ProductCategoryItem from "../../atoms/LandingPage/ProductCategoryItem";
+import MoreButton from "../../atoms/LandingPage/MoreButton";
 
 export default function Categories() {
   const currentCategories = useSelector(
@@ -19,16 +20,17 @@ export default function Categories() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchCategoriesWithLimit({ limit: 10, branchId: branch.id }));
+    dispatch(fetchCategoriesWithLimit({ limit: 4, branchId: branch.id }));
   }, []);
 
   return (
     <HStack
       overflowX={"scroll"}
-      w={"calc(425px - 32px)"}
+      w={"full"}
       justify={"space-between"}
-      spacing={"1rem"}
+      // spacing={"rem"}
       align={"center"}
+      h={"30px"}
       css={{
         "&::-webkit-scrollbar": {
           display: "none",
@@ -37,14 +39,19 @@ export default function Categories() {
       }}
     >
       {apiState === "done"
-        ? categories.map((category, index) => (
-            <ProductCategoryItem
-              currentCategoryIndex={currentCategories}
-              id={category.id}
-              name={category.name}
-              key={index}
-            />
-          ))
+        ? categories.map((category, index) => {
+            if (index === 5) {
+              return <MoreButton />;
+            }
+            return (
+              <ProductCategoryItem
+                currentCategoryIndex={currentCategories}
+                id={category.id}
+                name={category.name}
+                key={index}
+              />
+            );
+          })
         : [...new Array(5)].map(() => {
             return <Skeleton w={"60px"} h={"10px"} />;
           })}

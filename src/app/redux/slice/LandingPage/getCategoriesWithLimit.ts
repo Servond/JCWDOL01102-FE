@@ -62,6 +62,11 @@ const getCategoriesWithLimitSlice = createSlice({
             name: "All",
           },
           ...(action.payload as IApiResponse<ICategoryAttributes[]>).data!,
+          {
+            branchId: 0,
+            id: 5,
+            name: "More",
+          },
         ];
       }
     });

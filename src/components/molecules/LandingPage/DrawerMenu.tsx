@@ -57,7 +57,7 @@ const textAnimations = {
 };
 
 export default function DrawerMenu() {
-  const [isMobile] = useMediaQuery("(max-width: 425px)");
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
   const isDrawerOpen = useSelector(
     (state: RootState) => state.animation.drawer
   );
