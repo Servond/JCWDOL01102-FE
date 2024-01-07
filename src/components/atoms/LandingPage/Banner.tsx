@@ -7,7 +7,7 @@ export default function Banner() {
   const onload = () => setIsLoaded(true);
   const onError = () => setIsLoaded(false);
   return (
-    <Skeleton w={"full"} borderRadius={"10px"} isLoaded={isLoaded} h={"130px"}>
+    <Skeleton w={"full"} borderRadius={"10px"} isLoaded={isLoaded} h={"130px"} shadow={"md"}>
       <Box w={"full"} borderRadius={"10px"} h={"full"}>
         <Image
           borderRadius={"10px"}

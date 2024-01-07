@@ -28,6 +28,9 @@ import NavbarReducer from "./slice/Navbar/Navbar";
 import landingpageCategoryReducer from "./slice/LandingPage/categories";
 import getNearestBranchReducer from "./slice/LandingPage/getNearestBranch";
 import getCategoriesWithLimit from "./slice/LandingPage/getCategoriesWithLimit";
+import getLandingpageProductReducer from "./slice/LandingPage/productPagination";
+import getProductRecommendationReducer from "./slice/LandingPage/productRecommendation";
+import getLandingpageCategoriesReducer from "./slice/LandingPage/getLandingpageCategories";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -62,5 +65,8 @@ export const store = configureStore({
     deletePromotoin: deletePromotionReducer,
     nearestBranch: getNearestBranchReducer,
     getCategoriesWithLimit: getCategoriesWithLimit,
+    landingpageProduct: getLandingpageProductReducer,
+    productRecommendation: getProductRecommendationReducer,
+    landingPageCategories: getLandingpageCategoriesReducer,
   },
 });

@@ -28,13 +28,13 @@ export default function LandingPage() {
   useEffect(() => {
     const getLocation = async () => {
       try {
-        const permission = await navigator.permissions.query({
-          name: "geolocation",
-        });
+        // const permission = await navigator.permissions.query({
+        //   name: "geolocation",
+        // });
 
-        if (permission.state !== "granted") {
-          return;
-        }
+        // if (permission.state !== "granted") {
+        //   return;
+        // }
         const position = await new Promise<GeolocationPosition>(
           (resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -43,7 +43,7 @@ export default function LandingPage() {
           }
         );
         const { latitude, longitude } = position.coords;
-        dispatch(fetchNearestBranch({ latitude, longitude }));
+        await dispatch(fetchNearestBranch({ latitude, longitude }));
       } catch (e) {
         console.log(e);
       }
@@ -84,7 +84,7 @@ export default function LandingPage() {
         onOpen();
         return;
       }
-    }, 1000);
+    }, 200);
     if (!isAuthenticated) {
       const token = localStorage.getItem("token");
       if (token) {

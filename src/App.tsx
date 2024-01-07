@@ -30,6 +30,7 @@ import UserVerification from "./pages/UserVerification/UserVerification";
 import CategoryPage from "./pages/Admin/Category/CategoryPage";
 import VoucherManagementPage from "./pages/VoucherManagement/VoucherMangementPage";
 import CreateVoucherPage from "./pages/CreateVoucherPage/CreateVoucherPage";
+import ProductDetailsPage from "./pages/ProductDetailPage/productDetailPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           path="/user-verification/:verifyToken"
           element={<UserVerification />}
         />
+        <Route path="/product-details" element={<ProductDetailsPage />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="login" element={<DummyLoginPage />} />

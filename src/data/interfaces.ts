@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface IAppInputProps {
   onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
   onBlur: React.FocusEventHandler<HTMLInputElement>;
@@ -32,6 +34,13 @@ export interface IApiResponseStatic {
 export interface OptionType {
   label: string;
   value: string;
+}
+
+export interface OptionTypeWithIcon {
+  label: string;
+  value: string;
+  sort: "asc" | "desc";
+  icon: React.ElementType;
 }
 export interface IResponseApi<T> {
   data: T;

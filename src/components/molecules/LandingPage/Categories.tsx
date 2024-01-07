@@ -26,6 +26,8 @@ export default function Categories() {
   return (
     <HStack
       overflowX={"scroll"}
+      overflowY={"hidden"}
+      key={"hello"}
       w={"full"}
       justify={"space-between"}
       // spacing={"rem"}
@@ -41,7 +43,7 @@ export default function Categories() {
       {apiState === "done"
         ? categories.map((category, index) => {
             if (index === 5) {
-              return <MoreButton />;
+              return <MoreButton key={index} />;
             }
             return (
               <ProductCategoryItem
@@ -52,8 +54,8 @@ export default function Categories() {
               />
             );
           })
-        : [...new Array(5)].map(() => {
-            return <Skeleton w={"60px"} h={"10px"} />;
+        : [...new Array(5)].map((_, index) => {
+            return <Skeleton w={"60px"} h={"10px"} key={index} />;
           })}
     </HStack>
   );

@@ -17,22 +17,18 @@ export default function Welcoming() {
   );
   return isAuthenticated && userName ? (
     <HStack w={"full"} justify={"space-between"}>
-      (
-      <>
-        <VStack w={"full"} justify={"center"} align={"start"} spacing={"4px"}>
-          <Heading noOfLines={1} fontSize={"20px"} fontWeight={"bold"}>
-            Hello,
-            <Text as={"span"} color={"primaryColor"}>
-              {userName}
-            </Text>
-          </Heading>
-          <Text color={"forthColor"} fontSize={"12px"}>
-            What are you looking for?
+      <VStack w={"full"} justify={"center"} align={"start"} spacing={"4px"}>
+        <Heading noOfLines={1} fontSize={"20px"} fontWeight={"bold"}>
+          {"Hello, "}
+          <Text as={"span"} color={"primaryColor"}>
+            {userName}
           </Text>
-        </VStack>
-        <Avatar w={"32px"} h={"32px"} />
-      </>
-      )
+        </Heading>
+        <Text color={"forthColor"} fontSize={"12px"}>
+          What are you looking for?
+        </Text>
+      </VStack>
+      <Avatar w={"32px"} h={"32px"} />
     </HStack>
   ) : (
     <Flex
@@ -43,7 +39,7 @@ export default function Welcoming() {
       bg={"white"}
       p={"1rem"}
       borderRadius={"10px"}
-      // shadow={"md"}
+      shadow={"md"}
     >
       <Heading fontSize={"32px"} mt={"0.2rem"}>
         Buy Fresh
@@ -52,7 +48,10 @@ export default function Welcoming() {
         </Heading>
         Easily With Us
       </Heading>
-      <Button mt={"1rem"}>Explore now</Button>
+      <Button mt={"1rem"} variant={"secondaryButton"}>
+        Sign Up
+      </Button>
+      <Button mt={"1rem"}>Log In</Button>
     </Flex>
   );
 }

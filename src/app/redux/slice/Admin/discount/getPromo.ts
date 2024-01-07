@@ -70,7 +70,6 @@ const getPromotionSlice = createSlice({
   } as IPaginateProimotionState,
   reducers: {
     setPromotionKeySearch: (state, action) => {
-      console.log("here");
       state.keySearch = action.payload;
     },
     setPromotionSortBy: (state, action) => {
