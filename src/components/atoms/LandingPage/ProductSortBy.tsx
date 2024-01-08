@@ -8,10 +8,14 @@ import ProductSortOption from "./ProductSortOption";
 import { constants } from "../../../data/constants";
 import { useState } from "react";
 import { OptionTypeWithIcon } from "../../../data/interfaces";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../../app/redux/store";
+import { setLandingpageProductSortBy } from "../../../app/redux/slice/Explore/productPagination";
 export default function ProductSortBy() {
   const [selectedOption, setSelectedOption] = useState<OptionTypeWithIcon>(
     constants.productSortOption[0]
   );
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <HStack w={"full"} justify={"end"}>
       <Text fontSize={"14px"} color={"secondaryColor"}>
@@ -26,6 +30,12 @@ export default function ProductSortBy() {
         value={selectedOption}
         onChange={(selected) => {
           setSelectedOption(selected as OptionTypeWithIcon);
+          dispatch(
+            setLandingpageProductSortBy({
+              sortBy: selected?.value,
+              order: selected?.sort,
+            })
+          );
         }}
       />
     </HStack>

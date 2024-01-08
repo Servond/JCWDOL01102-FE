@@ -5,8 +5,9 @@ import {
   LandingpageProductResponse,
 } from "../../../../data/product/interface";
 import { IPaginate } from "../../../../data/interfaces";
-import { getLandingPageProductPaginate } from "../../../../api/landingPage";
+
 import { AxiosError } from "axios";
+import { getExploreProductPaginate } from "../../../../api/explore";
 
 interface ILandingpageProductState {
   apiState: "idle" | "pending" | "rejected" | "done";
@@ -16,6 +17,7 @@ interface ILandingpageProductState {
   totalPages: number;
   currentPages: number;
   sortBy: string;
+  order: string;
   filterBy: string;
   name: string;
 }
@@ -26,7 +28,7 @@ export const fetchLandingpageProduct = createAsyncThunk<
   { rejectValue: LandingpageProductResponse }
 >("paginatePromotion/get", async (input, thunkApi) => {
   try {
-    const res = await getLandingPageProductPaginate(input);
+    const res = await getExploreProductPaginate(input);
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -59,6 +61,7 @@ const getLandingpageProductSlice = createSlice({
     totalPages: 0,
     currentPages: 1,
     sortBy: "",
+    order: "asc",
     filterBy: "",
     name: "",
   } as ILandingpageProductState,
@@ -67,7 +70,8 @@ const getLandingpageProductSlice = createSlice({
       state.name = action.payload;
     },
     setLandingpageProductSortBy: (state, action) => {
-      state.sortBy = action.payload;
+      state.sortBy = action.payload.sortBy;
+      state.order = action.payload.order;
     },
     setLandingpageProductFilterBy: (state, action) => {
       state.filterBy = action.payload;
@@ -82,6 +86,7 @@ const getLandingpageProductSlice = createSlice({
       state.name = "";
       state.sortBy = "";
       state.filterBy = "";
+      state.order = "asc";
     },
   },
   extraReducers(builder) {

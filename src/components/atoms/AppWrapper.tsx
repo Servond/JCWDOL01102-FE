@@ -15,6 +15,7 @@ import {
 } from "../../app/redux/slice/User/login";
 import { IUserFromToken } from "../../data/user/interfaces";
 import { parseToken } from "../../utils/function/parseToken";
+import { setCurrentPageIndex } from "../../app/redux/slice/Navbar/Navbar";
 
 export default function AppWrapper() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
@@ -48,7 +49,7 @@ export default function AppWrapper() {
     }
   };
 
-  const isShowDashboard = (path: string) => {
+  const isShowNavbar = (path: string) => {
     const whitelist = ["/", "/menu", "/cart", "/notification", "/explore"];
     return whitelist.some((whitelist) => whitelist === path);
   };
@@ -66,7 +67,6 @@ export default function AppWrapper() {
   }, [user, userRole, userPermission, userIsAuth, token]);
 
   useEffect(() => {
-    boxRef.current?.scrollTo(0, 0);
     const userObj = parseToken(localStorage.getItem("token")) as IUserFromToken;
     if (userObj) {
       dispatch(setRole(userObj.role));
@@ -77,7 +77,19 @@ export default function AppWrapper() {
     } else {
       setIsRender(true);
     }
+  }, []);
 
+  useEffect(() => {
+    const determineNavbarIndex = (path: string) => {
+      const whitelist = ["/", "/explore", "/cart", "/notification", "/menu"];
+      const index = whitelist.indexOf(path);
+      if (index === -1) {
+        return;
+      }
+      dispatch(setCurrentPageIndex(index));
+    };
+    determineNavbarIndex(location.pathname);
+    boxRef.current?.scrollTo(0, 0);
     if (location.pathname.startsWith("/dashboard")) {
       setDashboard(true);
     }
@@ -122,7 +134,7 @@ export default function AppWrapper() {
           <Outlet />
         </Box>
       ) : null}
-      {isShowDashboard(location.pathname) ? <DummyNavBar /> : null}
+      {isShowNavbar(location.pathname) ? <DummyNavBar /> : null}
     </Box>
   );
 }

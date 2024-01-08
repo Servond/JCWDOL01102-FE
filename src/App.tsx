@@ -31,6 +31,8 @@ import CategoryPage from "./pages/Admin/Category/CategoryPage";
 import VoucherManagementPage from "./pages/VoucherManagement/VoucherMangementPage";
 import CreateVoucherPage from "./pages/CreateVoucherPage/CreateVoucherPage";
 import ProductDetailsPage from "./pages/ProductDetailPage/productDetailPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
+import CartPage from "./pages/CartPage/CartPage";
 
 function App() {
   return (
@@ -41,8 +43,10 @@ function App() {
           path="/user-verification/:verifyToken"
           element={<UserVerification />}
         />
-        <Route path="/product-details" element={<ProductDetailsPage />} />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/explore" element={<SearchPage />} />
+        <Route path="/product-details" element={<ProductDetailsPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="login" element={<DummyLoginPage />} />
         <Route

@@ -1,20 +1,8 @@
 import { IGetNearestBranchInput } from "../data/branch/interface";
-import {
-  ICategoryAttributes,
-  IGetCategoriesWithLimitInput,
-} from "../data/category/interface";
+import { ICategoryAttributes } from "../data/category/interface";
 import { IApiResponse } from "../data/interfaces";
-import {
-  ILandingpageProductInput,
-  LandingpageProductResponse,
-} from "../data/product/interface";
-import { server } from "./server";
 
-export const getCategoriesWithLimit = (input: IGetCategoriesWithLimitInput) => {
-  return server.get("/api/category", {
-    params: input,
-  });
-};
+import { server } from "./server";
 
 export const getNearestBranch = (input: IGetNearestBranchInput) => {
   return server.get("/api/branches", {
@@ -25,13 +13,6 @@ export const getNearestBranch = (input: IGetNearestBranchInput) => {
 export const getProductRecommendation = (branchId: number) => {
   return server.get("/api/store/recommendation", {
     params: { branchId },
-  });
-};
-export const getLandingPageProductPaginate = (
-  input: ILandingpageProductInput
-) => {
-  return server.get<LandingpageProductResponse>("/api/product/landing-page", {
-    params: input,
   });
 };
 

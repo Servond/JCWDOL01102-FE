@@ -37,7 +37,7 @@ export default function ProductRecomendation() {
   }, [dispatch]);
 
   return (
-    <VStack w={"full"} align={"start"} pb={"1rem"}>
+    <VStack w={"full"} align={"start"} pb={"1rem"} mt={"1rem"}>
       <Heading fontSize={"20px"} mb={"1rem"} fontWeight={"bold"}>
         Recommendation
       </Heading>

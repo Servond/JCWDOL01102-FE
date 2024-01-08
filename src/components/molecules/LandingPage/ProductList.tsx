@@ -1,18 +1,17 @@
-import { Grid, GridItem, VStack } from "@chakra-ui/layout";
+import { VStack } from "@chakra-ui/layout";
 import ProductCard from "./ProductCard";
 import { useMediaQuery } from "@chakra-ui/media-query";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useEffect, useRef, useState } from "react";
-import { fetchLandingpageProduct } from "../../../app/redux/slice/LandingPage/productPagination";
+import { fetchLandingpageProduct } from "../../../app/redux/slice/Explore/productPagination";
 import Paginate from "../Paginate";
 import ProductCardSkeleleton from "./ProductCardSkeleton";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import Masonry from "react-responsive-masonry";
 import { Skeleton } from "@chakra-ui/skeleton";
 import ProductNotFound from "../../atoms/LandingPage/ProductNotFound";
 
 export default function ProductList() {
-  const [isMobile] = useMediaQuery("(max-width: 500px)");
   const [isSmallMobile] = useMediaQuery("(max-width: 320px)");
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -23,18 +22,19 @@ export default function ProductList() {
     name,
     totalPages,
     apiState,
+    order,
   } = useSelector((state: RootState) => state.landingpageProduct);
   const [selectedPage, setSelectedPage] = useState<number>(0);
-  const calculateGridWidth = (isMobile: boolean) => {
-    if (isSmallMobile) {
-      return `repeat(1, calc((${window.screen.width}px - 3rem)/2)))`;
-    }
-    if (!isMobile) {
-      return "repeat(2, calc((500px - 3rem)/2))";
-    } else {
-      return `repeat(2, calc((${window.screen.width}px - 3rem)/2))`;
-    }
-  };
+  // const calculateGridWidth = (isMobile: boolean) => {
+  //   if (isSmallMobile) {
+  //     return `repeat(1, calc((${window.screen.width}px - 3rem)/2)))`;
+  //   }
+  //   if (!isMobile) {
+  //     return "repeat(2, calc((500px - 3rem)/2))";
+  //   } else {
+  //     return `repeat(2, calc((${window.screen.width}px - 3rem)/2))`;
+  //   }
+  // };
 
   const branchId = useSelector(
     (state: RootState) => state.nearestBranch.branch.id
@@ -50,21 +50,50 @@ export default function ProductList() {
   };
   const prevSelectedPage = useRef<number>(0);
   useEffect(() => {
-    dispatch(
-      fetchLandingpageProduct({
-        branchId: branchId,
-        page: prevSelectedPage.current === selectedPage ? 1 : selectedPage + 1,
-        categoryId: String(categoryId) === "0" ? "" : String(categoryId),
-        filterBy,
-        limit: 10,
-        includePromotion: true,
-        sortBy: "id",
-        name,
-        order: "asc",
-      })
-    );
+    console.log(sortBy);
+    if (branchId) {
+      dispatch(
+        fetchLandingpageProduct({
+          branchId: branchId,
+          page:
+            prevSelectedPage.current === selectedPage ? 1 : selectedPage + 1,
+          categoryId: String(categoryId) === "0" ? "" : String(categoryId),
+          filterBy,
+          limit: 10,
+          includePromotion: true,
+          sortBy,
+          name,
+          order,
+        })
+      );
+    } else {
+      const branchId = JSON.parse(localStorage.getItem("branch")!).id;
+      dispatch(
+        fetchLandingpageProduct({
+          branchId: branchId,
+          page:
+            prevSelectedPage.current === selectedPage ? 1 : selectedPage + 1,
+          categoryId: String(categoryId) === "0" ? "" : String(categoryId),
+          filterBy,
+          limit: 10,
+          includePromotion: true,
+          sortBy,
+          name,
+          order,
+        })
+      );
+    }
     prevSelectedPage.current = selectedPage;
-  }, [selectedPage, categoryId, filterBy, sortBy, name, dispatch, branchId]);
+  }, [
+    selectedPage,
+    categoryId,
+    filterBy,
+    sortBy,
+    name,
+    dispatch,
+    branchId,
+    order,
+  ]);
   return (
     <VStack w={"full"}>
       {apiState === "done" && products.length === 0 ? (
@@ -87,21 +116,16 @@ export default function ProductList() {
         //         </GridItem>
         //       ))}
         // </Grid>
-        <ResponsiveMasonry columnsCountBreakPoints={{ 320: 1, 350: 2 }}>
-          <Masonry>
-            {apiState !== "done"
-              ? [...new Array(10)].map((_, index) => (
-                  // <GridItem key={index} w={"full"}>
-                  <ProductCardSkeleleton key={index} />
-                  // </GridItem>
-                ))
-              : products.map((product, index) => (
-                  // <GridItem key={index} w={"full"}>
-                  <ProductCard product={product} key={index} />
-                  // </GridItem>
-                ))}
-          </Masonry>
-        </ResponsiveMasonry>
+
+        <Masonry columnsCount={isSmallMobile ? 1 : 2} gutter="0.6rem">
+          {apiState !== "done"
+            ? [...new Array(10)].map((_, index) => (
+                <ProductCardSkeleleton key={index} />
+              ))
+            : products.map((product, index) => (
+                <ProductCard product={product} key={index} />
+              ))}
+        </Masonry>
       )}
 
       {apiState !== "done" ? (

@@ -2,9 +2,10 @@ import { HStack, Skeleton } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useEffect } from "react";
-import { fetchCategoriesWithLimit } from "../../../app/redux/slice/LandingPage/getCategoriesWithLimit";
+import { fetchCategoriesWithLimit } from "../../../app/redux/slice/Explore/getCategoriesWithLimit";
 import ProductCategoryItem from "../../atoms/LandingPage/ProductCategoryItem";
 import MoreButton from "../../atoms/LandingPage/MoreButton";
+import { IBranchWithDistanceAttributes } from "../../../data/branch/interface";
 
 export default function Categories() {
   const currentCategories = useSelector(
@@ -20,7 +21,14 @@ export default function Categories() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchCategoriesWithLimit({ limit: 4, branchId: branch.id }));
+    if (Object.keys(branch).length === 0) {
+      const branchTemp: IBranchWithDistanceAttributes = JSON.parse(
+        localStorage.getItem("branch")!
+      );
+      dispatch(fetchCategoriesWithLimit({ limit: 4, branchId: branchTemp.id }));
+    } else {
+      dispatch(fetchCategoriesWithLimit({ limit: 4, branchId: branch.id }));
+    }
   }, []);
 
   return (
