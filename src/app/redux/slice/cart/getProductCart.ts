@@ -65,6 +65,11 @@ const fetchProductCartSlice = createSlice({
     addCartItem(state, action) {
       state.cart.push(action.payload);
     },
+    resetCartState(state) {
+      state.apiState = "idle";
+      state.resp = {};
+      state.cart = [];
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchProductCart.fulfilled, (state, action) => {
@@ -87,5 +92,9 @@ const fetchProductCartSlice = createSlice({
 });
 
 export default fetchProductCartSlice.reducer;
-export const { setCartItemQuantity, deleteCartItem, addCartItem } =
-  fetchProductCartSlice.actions;
+export const {
+  setCartItemQuantity,
+  deleteCartItem,
+  addCartItem,
+  resetCartState,
+} = fetchProductCartSlice.actions;
