@@ -46,7 +46,6 @@ export default function OrderPage() {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    console.log(orderState.cart);
     const productid = orderState.cart.map((item) => item.id).join(",");
     dispatch(fetchOrderProduct(productid));
   }, [dispatch, orderState.cart]);
@@ -148,7 +147,6 @@ export default function OrderPage() {
                 const productFromCart = orderState.cart.find(
                   (cart) => cart.id === item.id
                 );
-                console.log(productFromCart);
                 return (
                   <OrderItem
                     key={item.id}

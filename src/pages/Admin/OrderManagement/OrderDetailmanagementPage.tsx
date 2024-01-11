@@ -52,10 +52,7 @@ export default function OrderDetailmanagementPage() {
   }, [dispatch, params.invoiceId, isRefresh]);
 
   useEffect(() => {
-    console.log("update woi");
-    console.log(orderDetailState.data?.data.order_details);
     if (orderDetailState.data?.data.order_details) {
-      console.log("update woi 2");
       const payload: IData[] = orderDetailState.data?.data.order_details.map(
         (item) => ({
           key: item.productId.toString(),
@@ -69,7 +66,6 @@ export default function OrderDetailmanagementPage() {
           total: item.qty * item.price,
         })
       );
-      console.log(payload);
       setData(payload);
     }
   }, [orderDetailState.data?.data.order_details]);
