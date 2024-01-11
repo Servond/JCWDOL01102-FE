@@ -3,6 +3,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { IReqCourierPrice, getCourierPrice } from "../../../../api/order";
+import { handleAsyncThunkError } from "../../../../utils/function/errorThunkAPIHandler";
 
 export const fetchJnePrice = createAsyncThunk(
   "shippingPrice/fetchJnePrice",
@@ -14,23 +15,7 @@ export const fetchJnePrice = createAsyncThunk(
       });
       return response.data.data;
     } catch (error: any) {
-      if (error.response) {
-        thunkAPI.rejectWithValue({
-          error: error.response.data,
-          status: error.response.status,
-        });
-      } else if (error.request) {
-        thunkAPI.rejectWithValue({
-          error: "No response received from the server",
-          status: 500,
-        });
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        thunkAPI.rejectWithValue({
-          error: "An error occurred while setting up the request",
-          status: 500,
-        });
-      }
+      handleAsyncThunkError(error, thunkAPI);
     }
   }
 );
@@ -45,23 +30,7 @@ export const fetchTikiPrice = createAsyncThunk(
       });
       return response.data.data;
     } catch (error: any) {
-      if (error.response) {
-        thunkAPI.rejectWithValue({
-          error: error.response.data,
-          status: error.response.status,
-        });
-      } else if (error.request) {
-        thunkAPI.rejectWithValue({
-          error: "No response received from the server",
-          status: 500,
-        });
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        thunkAPI.rejectWithValue({
-          error: "An error occurred while setting up the request",
-          status: 500,
-        });
-      }
+      handleAsyncThunkError(error, thunkAPI);
     }
   }
 );

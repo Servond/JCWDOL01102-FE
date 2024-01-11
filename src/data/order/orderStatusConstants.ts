@@ -1,7 +1,7 @@
 export const orderStatusConstants = {
   created: {
     code: "created",
-    description: "Pesanan telah dibuat",
+    description: "Pesanan dibuat",
   },
   payment_success: {
     code: "payment_success",
@@ -26,6 +26,10 @@ export const orderStatusConstants = {
   received: {
     code: "received",
     description: "Pesanan diterima",
+  },
+  done: {
+    code: "done",
+    description: "Pesanan selesai",
   },
   canceled: {
     code: "canceled",
