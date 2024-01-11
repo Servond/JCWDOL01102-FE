@@ -7,6 +7,7 @@ import { RootState } from "../../app/redux/store";
 export default function DummyNavBar() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const userRole = useSelector((state: RootState) => state.login.role);
+  const carts = useSelector((state: RootState) => state.getCart.cart);
   const currentPageIndex = useSelector(
     (state: RootState) => state.navbar.currentPageIndex
   );
@@ -45,6 +46,10 @@ export default function DummyNavBar() {
               path={item.path}
               index={index}
               currentIndex={currentPageIndex}
+              usingBadge={
+                item.fieldName === "Cart" || item.fieldName === "Notification"
+              }
+              badgeData={item.fieldName === "Cart" ? carts : undefined}
             />
           );
         })}

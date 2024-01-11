@@ -6,8 +6,12 @@ import { IProductLandingPage } from "../../../data/product/interface";
 import ProductPrice from "../../atoms/LandingPage/ProductPrice";
 import { Skeleton } from "@chakra-ui/skeleton";
 import { useState } from "react";
-import { useMediaQuery, HStack, IconButton } from "@chakra-ui/react";
+import { useMediaQuery, HStack, IconButton, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import { manageProductCart } from "../../../app/redux/slice/cart/manageCart";
+import { fetchProductCart } from "../../../app/redux/slice/cart/getProductCart";
 // import { useEffect } from "react";
 
 interface IProductCardProps {
@@ -19,10 +23,61 @@ export default function ProductCard(props: IProductCardProps) {
   const [isMediumMobile] = useMediaQuery(
     "(min-width: 320px) and (max-width: 425px)"
   );
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
+  const toast = useToast();
   const onLoad = () => setIsLoaded(true);
   const onClick = () => navigate("/product-details", { state: props.product });
+  const userId = useSelector((state: RootState) => state.login.user?.userId);
+  const branchId = useSelector(
+    (state: RootState) => state.nearestBranch.branch.id
+  );
+  const isAuthentcated = useSelector(
+    (state: RootState) => state.login.isAuthenticated
+  );
+  const carts = useSelector((state: RootState) => state.getCart.cart);
+  const onAddCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    const index = carts.findIndex(
+      (item) => props.product.id === item.product.id
+    );
+    let quantity: number;
+    if (carts.length === 0 || index < 0) {
+      quantity = 1;
+    } else {
+      quantity = carts[index].qty + 1;
+    }
+    dispatch(
+      manageProductCart({
+        action: "add",
+        data: {
+          qty: quantity,
+          productId: index !== -1 ? undefined : props.product.id,
+          userId: index !== -1 ? undefined : userId,
+          branchId: index !== -1 ? undefined : branchId,
+        },
+        userId: userId!,
+        productId: props.product.id,
+        branchId: branchId
+          ? branchId
+          : JSON.parse(localStorage.getItem("branch")!).id,
+      })
+    ).then((data) => {
+      const isSuccess = data.payload?.statusCode?.toString().startsWith("2");
+      dispatch(fetchProductCart({ userId, branchId }));
+      toast({
+        duration: 3000,
+        position: "top",
+        title: "Cart",
+        description: isSuccess
+          ? "Product was successfully added to cart"
+          : "Something wrong, Product cannot be add to cart",
+        status: isSuccess ? "success" : "error",
+        isClosable: true,
+      });
+    });
+  };
+
   return (
     <Card
       bg={"white"}
@@ -64,16 +119,19 @@ export default function ProductCard(props: IProductCardProps) {
             align={"center"}
           >
             <ProductPrice
+              variant="productCard"
               promo={props.product.promotion[0]}
               price={props.product.price}
             />
             <IconButton
+              isDisabled={!isAuthentcated}
               _hover={{ fontSize: "24px", transition: "0.2s ease" }}
               transition={"0.2s ease"}
               aria-label=""
               borderRadius={isMediumMobile ? "10px" : "full"}
               mt={isMediumMobile ? "1rem" : "none"}
               w={isMediumMobile ? "full" : "auto"}
+              onClick={onAddCart}
               icon={
                 <HStack>
                   <FaBagShopping />

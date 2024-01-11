@@ -1,4 +1,4 @@
-import { Box, Text, VStack } from "@chakra-ui/react";
+import { Badge, Box, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { setCurrentPageIndex } from "../../../app/redux/slice/Navbar/Navbar";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,9 @@ interface INavbarComponentProps {
   path: string;
   index: number;
   currentIndex: number;
+  usingBadge?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  badgeData?: any[];
 }
 export default function NavbarComponent(props: INavbarComponentProps) {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,7 +34,27 @@ export default function NavbarComponent(props: INavbarComponentProps) {
       w={"55px"}
       h={"full"}
       spacing={"1px"}
+      position={"relative"}
     >
+      {props.usingBadge && Number(props.badgeData?.length) > 0 ? (
+        <Badge
+          borderRadius={"full"}
+          position={"absolute"}
+          top={"5px"}
+          right={"0px"}
+          fontSize={"10px"}
+          w={"15px"}
+          h={"15px"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          bg={"errorColor"}
+          color={"white"}
+        >
+          {props.badgeData?.length}
+        </Badge>
+      ) : null}
+
       {props.index === props.currentIndex ? (
         <Box bg={"primaryColor"} w={"full"} h={"4px"} borderRadius={"full"} />
       ) : null}

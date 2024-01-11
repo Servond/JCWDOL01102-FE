@@ -46,7 +46,14 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/explore" element={<SearchPage />} />
         <Route path="/product-details" element={<ProductDetailsPage />} />
-        <Route path="/cart" element={<CartPage />} />
+        <Route
+          path="/cart"
+          element={
+            <PrivateRoute>
+              <CartPage />
+            </PrivateRoute>
+          }
+        />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="login" element={<DummyLoginPage />} />
         <Route

@@ -9,12 +9,14 @@ import {
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/redux/store";
+import { useNavigate } from "react-router-dom";
 
 export default function Welcoming() {
   const userName = useSelector((state: RootState) => state.login.user?.name);
   const isAuthenticated = useSelector(
     (state: RootState) => state.login.isAuthenticated
   );
+  const navigate = useNavigate();
   return isAuthenticated && userName ? (
     <HStack w={"full"} justify={"space-between"}>
       <VStack w={"full"} justify={"center"} align={"start"} spacing={"4px"}>
@@ -48,10 +50,16 @@ export default function Welcoming() {
         </Heading>
         Easily With Us
       </Heading>
-      <Button mt={"1rem"} variant={"secondaryButton"}>
+      <Button
+        mt={"1rem"}
+        variant={"secondaryButton"}
+        onClick={() => navigate("/signup")}
+      >
         Sign Up
       </Button>
-      <Button mt={"1rem"}>Log In</Button>
+      <Button mt={"1rem"} onClick={() => navigate("/login")} py={"1rem"}>
+        Log In
+      </Button>
     </Flex>
   );
 }

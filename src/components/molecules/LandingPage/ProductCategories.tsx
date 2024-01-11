@@ -75,9 +75,12 @@ export default function ProductCategories() {
               {categories.map((category, index) => (
                 <GridItem key={index}>
                   <Button
+                    w={"150px"}
                     variant={"secondaryButton"}
                     borderRadius={"full"}
-                    fontSize={"16px"}
+                    fontSize={"14px"}
+                    noOfLines={1}
+                    whiteSpace={"normal"}
                   >
                     {category.name}
                   </Button>

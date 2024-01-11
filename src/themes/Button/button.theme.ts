@@ -7,7 +7,7 @@ const Button = defineStyleConfig({
       bg: "primaryColor",
       fontSize: "18px",
       color: "thirdColor",
-      py: "1.5rem",
+      py: "1rem",
       _hover: {
         cursor: "pointer",
       },
@@ -15,11 +15,13 @@ const Button = defineStyleConfig({
     secondaryButton: {
       borderRadius: "17px",
       border: "2px solid",
+      ontSize: "18px",
       borderColor: "primaryColor",
       color: "primaryColor",
     },
     tertiaryButton: {
       color: "primaryColor",
+      ontSize: "18px",
       border: "none",
     },
   },

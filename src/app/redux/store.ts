@@ -31,6 +31,9 @@ import getCategoriesWithLimit from "./slice/Explore/getCategoriesWithLimit";
 import getLandingpageProductReducer from "./slice/Explore/productPagination";
 import getProductRecommendationReducer from "./slice/LandingPage/productRecommendation";
 import getLandingpageCategoriesReducer from "./slice/LandingPage/getLandingpageCategories";
+import manageCartReducer from "./slice/cart/manageCart";
+import getCartReducer from "./slice/cart/getProductCart";
+import clearCartReducer from "./slice/cart/clearCart";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -68,5 +71,8 @@ export const store = configureStore({
     landingpageProduct: getLandingpageProductReducer,
     productRecommendation: getProductRecommendationReducer,
     landingPageCategories: getLandingpageCategoriesReducer,
+    manageCart: manageCartReducer,
+    getCart: getCartReducer,
+    clearCart: clearCartReducer,
   },
 });

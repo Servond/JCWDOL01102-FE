@@ -125,9 +125,7 @@ export default function AppWrapper() {
           }}
           px={"1rem"}
           maxHeight={
-            isDashboard || location.pathname.includes("/product-details")
-              ? "full"
-              : "calc(100vh - 60px)"
+            isShowNavbar(location.pathname) ? "calc(100vh - 60px)" : "full"
           }
           overflowY="auto"
         >

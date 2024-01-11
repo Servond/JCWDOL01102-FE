@@ -13,11 +13,13 @@ import MainContent from "../../components/organism/LandingPage/MainContent";
 import { fetchNearestBranch } from "../../app/redux/slice/LandingPage/getNearestBranch";
 import LoadingCenter from "../../components/molecules/Loading";
 import LocationPermissionAlert from "../../components/molecules/LandingPage/LocationPermissionAlert";
+import { fetchProductCart } from "../../app/redux/slice/cart/getProductCart";
 
 export default function LandingPage() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.login.isAuthenticated
   );
+  const user = useSelector((state: RootState) => state.login.user);
   const nearestBranchState = useSelector(
     (state: RootState) => state.nearestBranch.apiState
   );
@@ -37,8 +39,17 @@ export default function LandingPage() {
         );
         const { latitude, longitude } = position.coords;
         await dispatch(fetchNearestBranch({ latitude, longitude })).then(
-          (data) =>
-            localStorage.setItem("branch", JSON.stringify(data.payload?.data))
+          (data) => {
+            localStorage.setItem("branch", JSON.stringify(data.payload?.data));
+            if (isAuthenticated) {
+              dispatch(
+                fetchProductCart({
+                  userId: user?.userId,
+                  branchId: data.payload?.data?.id,
+                })
+              ).then((data) => console.log(data));
+            }
+          }
         );
       } catch (e) {
         console.log(e);

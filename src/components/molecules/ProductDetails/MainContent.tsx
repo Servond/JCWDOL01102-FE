@@ -67,7 +67,10 @@ export default function MainContent(props: IMainContentProps) {
           {props.product.desc}
         </Heading>
       </VStack>
-      <AddChartSection flexGrow={!isOverflow ? "1" : "none"} />
+      <AddChartSection
+        flexGrow={!isOverflow ? "1" : "none"}
+        productId={props.product.id}
+      />
     </VStack>
   );
 }

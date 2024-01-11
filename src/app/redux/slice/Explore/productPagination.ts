@@ -60,7 +60,7 @@ const getLandingpageProductSlice = createSlice({
     pageSize: 0,
     totalPages: 0,
     currentPages: 1,
-    sortBy: "",
+    sortBy: "id",
     order: "asc",
     filterBy: "",
     name: "",
@@ -84,7 +84,7 @@ const getLandingpageProductSlice = createSlice({
       state.totalPages = 0;
       state.currentPages = 1;
       state.name = "";
-      state.sortBy = "";
+      state.sortBy = "id";
       state.filterBy = "";
       state.order = "asc";
     },

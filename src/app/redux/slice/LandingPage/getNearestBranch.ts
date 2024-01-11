@@ -49,7 +49,9 @@ const getNearestBranchSlice = createSlice({
     branch: {},
     resp: {},
   } as IGetNearestBranchState,
-  reducers: {},
+  reducers: {
+    // setNearestBranch
+  },
   extraReducers(builder) {
     builder.addCase(fetchNearestBranch.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
