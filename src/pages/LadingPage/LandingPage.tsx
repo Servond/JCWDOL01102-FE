@@ -14,6 +14,7 @@ import { fetchNearestBranch } from "../../app/redux/slice/LandingPage/getNearest
 import LoadingCenter from "../../components/molecules/Loading";
 import LocationPermissionAlert from "../../components/molecules/LandingPage/LocationPermissionAlert";
 import { fetchProductCart } from "../../app/redux/slice/cart/getProductCart";
+import { updateUserById } from "../../app/redux/slice/User/updateUser";
 
 export default function LandingPage() {
   const isAuthenticated = useSelector(
@@ -46,6 +47,12 @@ export default function LandingPage() {
                 fetchProductCart({
                   userId: user?.userId,
                   branchId: data.payload?.data?.id,
+                })
+              ).then((data) => console.log(data));
+              dispatch(
+                updateUserById({
+                  id: user?.userId,
+                  branch_id: data.payload?.data?.id,
                 })
               ).then((data) => console.log(data));
             }
