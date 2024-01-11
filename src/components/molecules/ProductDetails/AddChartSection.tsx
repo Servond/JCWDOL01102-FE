@@ -30,6 +30,9 @@ export default function AddChartSection(props: IAddChartSectionProps) {
   const isAuthenticated = useSelector(
     (state: RootState) => state.login.isAuthenticated
   );
+  const apaiState = useSelector(
+    (state: RootState) => state.manageCart.apiState
+  );
   const carts = useSelector((state: RootState) => state.getCart.cart);
   const onAddCart = () => {
     console.log(quantity);
@@ -101,10 +104,14 @@ export default function AddChartSection(props: IAddChartSectionProps) {
               onQuantityChange={setQuantity}
               variant="ProductDetail"
             />
-            <Button onClick={onAddCart}>Add to Cart</Button>
+            <Button onClick={onAddCart} isLoading={apaiState === "pending"}>
+              Add to Cart
+            </Button>
           </>
         ) : (
-          <Heading fontSize={"16px"} color={"secondaryColor"}>Please login to buy our grocery</Heading>
+          <Heading fontSize={"16px"} color={"secondaryColor"}>
+            Please login to buy our grocery
+          </Heading>
         )}
       </HStack>
     </VStack>
