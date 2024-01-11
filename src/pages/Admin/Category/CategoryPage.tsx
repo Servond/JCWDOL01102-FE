@@ -149,13 +149,13 @@ export default function CategoryPage() {
       maxH={"100vh"}
       overflowY={"scroll"}
       overflowX={"hidden"}
+      margin={"0 15px"}
     >
       <VStack height={"full"} width={"full"} overflow={"auto"} minW={"800px"}>
         <HStack w={"100%"} my={"15px"}>
           <Input
             placeholder='Cari Kategori'
             width={"450px"}
-            margin={"0"}
             onChange={(e) => setSearchCategory(e.target.value)}
             value={searchCategory}
           />
@@ -179,7 +179,7 @@ export default function CategoryPage() {
         </Box>
         <Box
           display={
-            categoryState.pageData?.totalPages ?? 0 > 1 ? "flex" : "none"
+            (categoryState.pageData?.totalPages ?? 0) > 1 ? "flex" : "none"
           }
         >
           <Paginate

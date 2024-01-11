@@ -1,4 +1,5 @@
 import {
+  Button,
   HStack,
   Input,
   InputGroup,
@@ -12,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
 import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
 import { AppDispatch, RootState } from "../../../../app/redux/store";
+import { useNavigate } from "react-router-dom";
 
 interface SearchAdminProductProps {
   handleSearch: (value: string) => void;
@@ -71,7 +73,10 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
   useEffect(() => {
     props.handleSearch(productNameSearch);
   }, [productNameSearch, props]);
-
+  const navigate = useNavigate();
+  const handleAddProduct = () => {
+    navigate("/dashboard/add-product");
+  };
   return (
     <HStack w={"100%"} gap={"1rem"}>
       <InputGroup width={"500px"}>
@@ -118,6 +123,9 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
         <option value={"stok-terbanyak"}>Stok Terbanyak</option>
         <option value={"stok-terendah"}>Stok Terendah</option>
       </Select>
+      <Button onClick={handleAddProduct} variant={"outline"}>
+        Add Product
+      </Button>
     </HStack>
   );
 }
