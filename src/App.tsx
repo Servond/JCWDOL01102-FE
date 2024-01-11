@@ -30,6 +30,11 @@ import UserVerification from "./pages/UserVerification/UserVerification";
 import CategoryPage from "./pages/Admin/Category/CategoryPage";
 import VoucherManagementPage from "./pages/VoucherManagement/VoucherMangementPage";
 import CreateVoucherPage from "./pages/CreateVoucherPage/CreateVoucherPage";
+import OrderPage from "./pages/order/OrderPage";
+import NotificationPage from "./pages/Notification/NotificationPage";
+import OrderDetailPage from "./pages/OrderDetail/OrderDetailPage";
+import OrderManagementPage from "./pages/Admin/OrderManagement/OrderManagementPage";
+import OrderDetailmanagementPage from "./pages/Admin/OrderManagement/OrderDetailmanagementPage";
 import ProductDetailsPage from "./pages/ProductDetailPage/productDetailPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import CartPage from "./pages/CartPage/CartPage";
@@ -44,6 +49,8 @@ function App() {
           element={<UserVerification />}
         />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="login" element={<DummyLoginPage />} />
         <Route path="/explore" element={<SearchPage />} />
         <Route path="/product-details" element={<ProductDetailsPage />} />
         <Route
@@ -58,43 +65,35 @@ function App() {
         <Route path="login" element={<DummyLoginPage />} />
         <Route
           path="/menu"
-          element={
-            <PrivateRoute>
-              <MenuPage />
-            </PrivateRoute>
-          }
+          element={<PrivateRoute children={<MenuPage />} />}
         />
         <Route
           path="/my-details"
-          element={
-            <PrivateRoute>
-              <MyDetailsPage />
-            </PrivateRoute>
-          }
+          element={<PrivateRoute children={<MyDetailsPage />} />}
         />
         <Route
           path="/my-address"
-          element={
-            <PrivateRoute>
-              <AddressListPage />
-            </PrivateRoute>
-          }
+          element={<PrivateRoute children={<AddressListPage />} />}
+        />
+        <Route
+          path="/order"
+          element={<PrivateRoute children={<OrderPage />} />}
+        />
+        <Route
+          path="/order/:id"
+          element={<PrivateRoute children={<OrderDetailPage />} />}
+        />
+        <Route
+          path="/notifications"
+          element={<PrivateRoute children={<NotificationPage />} />}
         />
         <Route
           path="/add-address"
-          element={
-            <PrivateRoute>
-              <AddAddressPage />
-            </PrivateRoute>
-          }
+          element={<PrivateRoute children={<AddAddressPage />} />}
         />
         <Route
           path="/update-address/:id"
-          element={
-            <PrivateRoute>
-              <UpdateAddressPage />
-            </PrivateRoute>
-          }
+          element={<PrivateRoute children={<UpdateAddressPage />} />}
         />
         <Route path="/dashboard" element={<DashboardPage />}>
           <Route
@@ -128,6 +127,16 @@ function App() {
           <Route
             path="/dashboard/categories"
             element={<BranchAdminProtect children={<CategoryPage />} />}
+          />
+          <Route
+            path="/dashboard/order-management"
+            element={<BranchAdminProtect children={<OrderManagementPage />} />}
+          />
+          <Route
+            path="/dashboard/order-management/:invoiceId"
+            element={
+              <BranchAdminProtect children={<OrderDetailmanagementPage />} />
+            }
           />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

@@ -21,7 +21,7 @@ export default function ProfileHeader() {
           borderRadius={"50%"}
         >
           <img
-            src='http://203.175.11.82:9001/api/v1/buckets/grocery/objects/download?preview=true&prefix=cHJvZmlsZS9Beml6aS1aZWUtMTc3NDQ0ODQ3MS53ZWJw&version_id=null'
+            src='default.jpg'
             alt='profile'
             style={{
               borderRadius: "50%",

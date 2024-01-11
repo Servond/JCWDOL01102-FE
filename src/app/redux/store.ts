@@ -27,6 +27,10 @@ import deletePromotionReducer from "./slice/Admin/discount/deletePromotion";
 import NavbarReducer from "./slice/Navbar/Navbar";
 import landingpageCategoryReducer from "./slice/LandingPage/categories";
 import getNearestBranchReducer from "./slice/LandingPage/getNearestBranch";
+import courierPriceReducer from "./slice/Order/ShippingPriceSlice";
+import orderReducer from "./slice/Order/OrderSlice";
+import orderManagementReducer from "./slice/Admin/orderManagement/orderManagementSlice";
+import orderDetailDashboardReducer from "./slice/Admin/orderManagement/orderDetailSlice";
 import getCategoriesWithLimit from "./slice/Explore/getCategoriesWithLimit";
 import getLandingpageProductReducer from "./slice/Explore/productPagination";
 import getProductRecommendationReducer from "./slice/LandingPage/productRecommendation";
@@ -69,6 +73,10 @@ export const store = configureStore({
     deletePromotoin: deletePromotionReducer,
     nearestBranch: getNearestBranchReducer,
     getCategoriesWithLimit: getCategoriesWithLimit,
+    courierPrice: courierPriceReducer,
+    order: orderReducer,
+    orderManagement: orderManagementReducer,
+    orderDetailDashboard: orderDetailDashboardReducer,
     landingpageProduct: getLandingpageProductReducer,
     productRecommendation: getProductRecommendationReducer,
     landingPageCategories: getLandingpageCategoriesReducer,

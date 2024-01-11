@@ -2,7 +2,7 @@ import { FaUserGear } from "react-icons/fa6";
 import { FaBoxes } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
 import { BiSolidCategoryAlt } from "react-icons/bi";
-import { BsClipboard2DataFill } from "react-icons/bs";
+import { BsClipboard2DataFill, BsFillCartFill } from "react-icons/bs";
 import { OptionType, OptionTypeWithIcon } from "./interfaces";
 import { FaStore } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
@@ -146,6 +146,12 @@ export const constants = {
       fieldName: "Categories",
       icon: BiSolidCategoryAlt,
       path: "/dashboard/categories",
+      role: [Role.BRANCH_ADMIN],
+    },
+    {
+      fieldName: "Transaction",
+      icon: BsFillCartFill,
+      path: "/dashboard/order-management",
       role: [Role.BRANCH_ADMIN],
     },
     {
