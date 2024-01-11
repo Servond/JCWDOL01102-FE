@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardBody, Grid, Text, VStack, useToast } from "@chakra-ui/react";
-import { ChangeEvent, FocusEvent, useRef, useState } from "react";
+import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from "react";
 import ImageForm from "../../../molecules/Admin/Product/ProductDetail/ImageForm";
 import PriceForm from "../../../molecules/Admin/Product/ProductDetail/PriceForm";
 import ProductDescription from "../../../molecules/Admin/Product/ProductDetail/ProductDescription";
@@ -48,6 +48,10 @@ export default function ProductDetailForm(props: ProductDetailFormProps) {
   };
 
   const fileRef = useRef<HTMLInputElement>(null);
+  // console.log(props.values);
+  useEffect(() => {
+    console.log(props.values);
+  }, [props.values.image]);
 
   return (
     <Card my={"1rem"}>
