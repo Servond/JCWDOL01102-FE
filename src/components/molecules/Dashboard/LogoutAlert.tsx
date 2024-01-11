@@ -14,12 +14,14 @@ import {
 import { useRef } from "react";
 import { resetUserLoginState } from "../../../app/redux/slice/User/login";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../../app/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../app/redux/store";
 import logoutSvg from "../../../assets/logout.svg";
 import { resetVoucherPagination } from "../../../app/redux/slice/Admin/discount/getVoucher";
 import { resetPromotionPagination } from "../../../app/redux/slice/Admin/discount/getPromo";
 import { resetUserPagination } from "../../../app/redux/slice/Admin/userManagement/adminManagement";
+import { Role } from "../../../data/constants";
+import { resetCartState } from "../../../app/redux/slice/cart/getProductCart";
 
 interface ILogoutAlertProps {
   isOpen: boolean;
@@ -31,8 +33,12 @@ export default function LogoutAlert(props: ILogoutAlertProps) {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
+  const userRole = useSelector((state: RootState) => state.login.role);
   const onLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
+    if (userRole === Role.USER) {
+      dispatch(resetCartState());
+    }
     dispatch(resetUserLoginState());
     if (location.pathname.includes("user-management")) {
       dispatch(resetUserPagination());

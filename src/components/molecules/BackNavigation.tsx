@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 interface IBackNavigationProps {
   pageBefore: string;
+  landingPage?: boolean;
 }
 
 export default function BackNavigation(props: IBackNavigationProps) {
@@ -12,7 +13,7 @@ export default function BackNavigation(props: IBackNavigationProps) {
     <HStack w={"full"} align={"center"} mb={"2rem"}>
       <Box
         fontSize={"18px"}
-        onClick={() => navigate(-1)}
+        onClick={() => (props.landingPage ? navigate("/") : navigate(-1))}
         _hover={{ cursor: "pointer" }}
       >
         <FaChevronLeft />

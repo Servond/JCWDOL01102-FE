@@ -1,8 +1,11 @@
 import { Button, HStack, useMediaQuery } from "@chakra-ui/react";
 import TotalPrice from "../../atoms/cart/TotalPrice";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const navigate = useNavigate();
+  const onClick = () => navigate("/order");
   return (
     <HStack
       mx={"-1rem"}
@@ -17,7 +20,7 @@ export default function Checkout() {
     >
       <TotalPrice />
       <HStack>
-        <Button>Checkout</Button>
+        <Button onClick={onClick}>Checkout</Button>
       </HStack>
     </HStack>
   );
