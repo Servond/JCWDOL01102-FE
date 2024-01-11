@@ -27,7 +27,11 @@ export default function ProfileMenu() {
       />
       <ProfileSubMenu icon={<PiCreditCard />} menu={"Payment Methods"} />
       <ProfileSubMenu icon={<PiTicket />} menu={"Promo Cards"} />
-      <ProfileSubMenu icon={<PiNotification />} menu={"Notifications"} />
+      <ProfileSubMenu
+        icon={<PiNotification />}
+        menu={"Notifications"}
+        href='/notifications'
+      />
       <ProfileSubMenu icon={<PiQuestion />} menu={"Help"} />
       <ProfileSubMenu icon={<PiInfo />} menu={"About"} />
       <Divider />

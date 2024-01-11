@@ -1,0 +1,45 @@
+.h-stack-add-product{
+    width: 100%;
+    justify-content: center;
+    @media screen and (min-width: 768px){
+        justify-content: flex-start;
+    }
+}
+.title-add-product{
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    @media screen and (min-width: 768px){
+        text-align: left;
+    }
+
+}
+.subtitle-add-product{
+    text-align: left;
+    font-weight: bold;
+}
+
+.grid-add-product{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 3rem;
+    row-gap: 2rem;
+    max-width: 100vw;
+}
+
+.key-grid-add-product{
+    grid-column: span 12;
+    max-width: 100vw;
+    @media screen and (min-width: 768px){
+        grid-column: span 4;
+    }
+}
+
+.value-grid-add-product{
+    grid-column: span 12;
+    max-width: 100vw;
+    @media screen and (min-width: 768px){
+        grid-column: span 8;
+    }
+}

@@ -6,25 +6,39 @@ import DummyNavBar from "../organism/dummyNavBar";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/redux/store";
-import { setPermission, setRole } from "../../app/redux/slice/User/login";
+import {
+  setAuthenticated,
+  setPermission,
+  setRole,
+  setToken,
+  setUser,
+} from "../../app/redux/slice/User/login";
 import { IUserFromToken } from "../../data/user/interfaces";
 import { parseToken } from "../../utils/function/parseToken";
+import { setCurrentPageIndex } from "../../app/redux/slice/Navbar/Navbar";
 
 export default function AppWrapper() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const boxRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const [isDashboard, setDashboard] = useState<boolean>(true);
+  const [isRender, setIsRender] = useState<boolean>(false);
   const userRole = useSelector((state: RootState) => state.login.role);
   const userPermission = useSelector(
     (state: RootState) => state.login.permission
   );
+  const userIsAuth = useSelector(
+    (state: RootState) => state.login.isAuthenticated
+  );
+  const user = useSelector((state: RootState) => state.login.user);
+  const token = useSelector((state: RootState) => state.login.token);
   const dispatch = useDispatch<AppDispatch>();
 
-  const scrollHandle = () => {
+  const scrollHandle = (ev: globalThis.WheelEvent) => {
     boxRef.current?.scrollTo({
-      top: window.scrollY,
+      top: (boxRef.current.scrollTop += ev.deltaY),
     });
+    return;
   };
 
   const widthhandler = (isDashboard: boolean) => {
@@ -35,48 +49,90 @@ export default function AppWrapper() {
     }
   };
 
-  useEffect(() => {
-    if (userRole === "" || userPermission?.length === 0) {
-      const userObj = parseToken(
-        localStorage.getItem("token")
-      ) as IUserFromToken;
-      dispatch(setRole(userObj.role));
-      dispatch(setPermission(userObj.permission));
-    }
+  const isShowNavbar = (path: string) => {
+    const whitelist = ["/", "/menu", "/cart", "/notification", "/explore"];
+    return whitelist.some((whitelist) => whitelist === path);
+  };
 
+  useEffect(() => {
+    if (
+      !user ||
+      !userRole ||
+      userPermission?.length === 0 ||
+      !userIsAuth ||
+      !token
+    )
+      return;
+    setIsRender(true);
+  }, [user, userRole, userPermission, userIsAuth, token]);
+
+  useEffect(() => {
+    const userObj = parseToken(localStorage.getItem("token")) as IUserFromToken;
+    if (userObj) {
+      dispatch(setRole(userObj.role));
+      dispatch(setToken(localStorage.getItem("token")));
+      dispatch(setPermission(userObj.permission));
+      dispatch(setAuthenticated(true));
+      dispatch(setUser(userObj));
+    } else {
+      setIsRender(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const determineNavbarIndex = (path: string) => {
+      const whitelist = ["/", "/explore", "/cart", "/notification", "/menu"];
+      const index = whitelist.indexOf(path);
+      if (index === -1) {
+        return;
+      }
+      dispatch(setCurrentPageIndex(index));
+    };
+    determineNavbarIndex(location.pathname);
+    boxRef.current?.scrollTo(0, 0);
     if (location.pathname.startsWith("/dashboard")) {
       setDashboard(true);
     }
 
     if (isDashboard && !location.pathname.startsWith("/dashboard")) {
-      console.log("here");
       setDashboard(false);
     }
   }, [location]);
 
   return (
     <Box
-      onMouseLeave={() => window.addEventListener("scroll", scrollHandle, true)}
-      onMouseEnter={() =>
-        window.removeEventListener("scroll", scrollHandle, true)
-      }
       maxW={widthhandler(isDashboard)}
-      ref={boxRef}
       m={"auto"}
       h={"100dvh"}
-      bg={"thirdColor"}
+      bg={"#F4F4F4"}
       shadow={"xl"}
-      overflowY={"auto"}
-      sx={{
-        "::-webkit-scrollbar": {
-          display: "none",
-        },
+      display={"flex"}
+      flexDir={"column"}
+      onMouseLeave={() => {
+        window.addEventListener("wheel", scrollHandle, true);
       }}
+      onMouseEnter={() =>
+        window.removeEventListener("wheel", scrollHandle, true)
+      }
     >
-      {location.pathname === "/" ? <DummyNavBar /> : null}
-      <Box px={"1.5rem"}>
-        <Outlet />
-      </Box>
+      {isRender ? (
+        <Box
+          ref={boxRef}
+          sx={{
+            "::-webkit-scrollbar": {
+              display: "none",
+            },
+          }}
+          px={"1rem"}
+          maxHeight={
+            isShowNavbar(location.pathname) ? "calc(100vh - 60px)" : "full"
+          }
+          overflowY="auto"
+        >
+          <Outlet />
+        </Box>
+      ) : null}
+      {isShowNavbar(location.pathname) ? <DummyNavBar /> : null}
     </Box>
   );
 }

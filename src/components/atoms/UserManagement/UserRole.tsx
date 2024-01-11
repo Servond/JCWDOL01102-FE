@@ -15,7 +15,6 @@ export default function UserRole(props: PropsWithChildren) {
   };
 
   const toCamelCase = (data: string | undefined) => {
-    console.log(data);
     return !data ? "" : data.replace(/[_]/g, " ");
   };
   return (

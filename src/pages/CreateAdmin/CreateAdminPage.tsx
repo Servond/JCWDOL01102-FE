@@ -1,25 +1,32 @@
-import { HStack, VStack, useToast } from "@chakra-ui/react";
+import {
+  AbsoluteCenter,
+  Container,
+  HStack,
+  VStack,
+  useToast,
+} from "@chakra-ui/react";
 import AdminCreationForm from "../../components/molecules/CreateAdmin/AdminCreationForm";
 import UploadPhoto from "../../components/atoms/CreateAdmin/UploadPhoto";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/redux/store";
-import { fetchBranches } from "../../app/redux/slice/User/createAdmin";
 import { useEffect } from "react";
+import Navigation from "../../components/molecules/BackNavigation";
+import { resetUserState } from "../../app/redux/slice/userSlicer";
+import { fetchBranches } from "../../app/redux/slice/Admin/userManagement/createAdmin";
 import LoadingCenter from "../../components/molecules/Loading";
-import Navigation from "../../components/molecules/CreateAdmin/Navigation";
 
 export default function CreateAdminPage() {
-  const dispatch = useDispatch<AppDispatch>();
   const toast = useToast();
-  const apiState = useSelector(
-    (state: RootState) => state.createAdmin.apiState
-  );
   const postUserResp = useSelector(
     (state: RootState) => state.user.postUserResp
   );
-  useEffect(() => {
-    dispatch(fetchBranches());
-  }, [dispatch]);
+  const branches = useSelector(
+    (state: RootState) => state.createAdmin.branches
+  );
+  const apiState = useSelector(
+    (state: RootState) => state.createAdmin.apiState
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (
@@ -36,17 +43,31 @@ export default function CreateAdminPage() {
       status: postUserResp?.statusCode === 200 ? "success" : "error",
       duration: 5000,
     });
-  }, [postUserResp, toast]);
+    dispatch(resetUserState());
+  }, [postUserResp, toast, dispatch]);
 
-  return apiState === "pending" ? (
-    <LoadingCenter />
-  ) : (
+  useEffect(() => {
+    if (branches.length > 0 || apiState === "done") return;
+    dispatch(fetchBranches());
+  }, []);
+
+  return (
     <VStack h={"full"} w={"full"}>
-      <Navigation />
-      <HStack w={"full"} align={"start"} h={"full"} spacing={"1rem"}>
-        <AdminCreationForm />
-        <UploadPhoto />
-      </HStack>
+      {apiState === "pending" ? (
+        <Container>
+          <AbsoluteCenter>
+            <LoadingCenter />
+          </AbsoluteCenter>
+        </Container>
+      ) : (
+        <>
+          <Navigation pageBefore="Admin List" />
+          <HStack w={"full"} align={"start"} h={"full"} spacing={"1rem"}>
+            <AdminCreationForm />
+            <UploadPhoto />
+          </HStack>
+        </>
+      )}
     </VStack>
   );
 }

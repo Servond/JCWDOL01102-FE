@@ -1,8 +1,10 @@
 import { Heading, Text, VStack } from "@chakra-ui/react";
+import BackNavigation from "../../molecules/BackNavigation";
 
 export default function LoginHeader() {
   return (
     <VStack w={"full"} align={{ base: "left", sm: "center" }}>
+      <BackNavigation pageBefore="Landing Page" landingPage />
       <Heading
         fontSize={"30px"}
         fontWeight={"semibold"}

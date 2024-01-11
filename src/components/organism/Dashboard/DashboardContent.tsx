@@ -10,6 +10,7 @@ export default function DashboardContent() {
       borderRadius={"10px"}
       shadow={"xl"}
       ml={"1rem"}
+      overflow={"auto"}
     >
       <Outlet />
     </Card>

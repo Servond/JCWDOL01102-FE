@@ -19,7 +19,21 @@ export interface UserResponseData {
   created_at?: Date;
   updated_at?: Date;
   role?: { role: string };
-  branch?: { name: string };
+  branch?: { name: string; id: number };
+  permission?: string[];
+}
+
+export interface IUserLoginAttributes {
+  name: string;
+  email: string;
+  branchId: number | null;
+  userId: number;
+  phoneNumber: string;
+  referralCode: string;
+  role: string;
+  permission: string[];
+  branch: { name: string; id: number } | null;
+  iat: number;
 }
 
 export interface IEmailCheckResponse {
@@ -46,8 +60,7 @@ export interface ISendEmailCheckInput {
 }
 
 export interface ILoginResponse {
-  email: string;
-  password: string;
+  user: IUserLoginAttributes;
   token: string;
 }
 
@@ -59,8 +72,17 @@ export interface ILoginInput {
 export interface IUserPaginateInput {
   page: number;
   limit: number;
+  sortBy?: unknown;
+  filterBy?: unknown;
+  key?: string;
+}
+
+export interface AdminEditByIdInput {
+  id: number;
+  data: UserCreationAttributes;
 }
 export interface UserCreationAttributes {
+  id?: number;
   image_id?: number | null;
   name?: string;
   email?: string;
