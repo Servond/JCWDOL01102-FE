@@ -33,6 +33,8 @@ import CreateVoucherPage from "./pages/CreateVoucherPage/CreateVoucherPage";
 import OrderPage from "./pages/order/OrderPage";
 import NotificationPage from "./pages/Notification/NotificationPage";
 import OrderDetailPage from "./pages/OrderDetail/OrderDetailPage";
+import OrderManagementPage from "./pages/Admin/OrderManagement/OrderManagementPage";
+import OrderDetailmanagementPage from "./pages/Admin/OrderManagement/OrderDetailmanagementPage";
 
 function App() {
   return (
@@ -110,6 +112,16 @@ function App() {
           <Route
             path='/dashboard/categories'
             element={<BranchAdminProtect children={<CategoryPage />} />}
+          />
+          <Route
+            path='/dashboard/order-management'
+            element={<BranchAdminProtect children={<OrderManagementPage />} />}
+          />
+          <Route
+            path='/dashboard/order-management/:invoiceId'
+            element={
+              <BranchAdminProtect children={<OrderDetailmanagementPage />} />
+            }
           />
         </Route>
         <Route path='*' element={<NotFoundPage />} />

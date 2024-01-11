@@ -30,6 +30,8 @@ import getNearestBranchReducer from "./slice/LandingPage/getNearestBranch";
 import getCategoriesWithLimit from "./slice/LandingPage/getCategoriesWithLimit";
 import courierPriceReducer from "./slice/Order/ShippingPriceSlice";
 import orderReducer from "./slice/Order/OrderSlice";
+import orderManagementReducer from "./slice/Admin/orderManagement/orderManagementSlice";
+import orderDetailDashboardReducer from "./slice/Admin/orderManagement/orderDetailSlice";
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -67,5 +69,7 @@ export const store = configureStore({
     getCategoriesWithLimit: getCategoriesWithLimit,
     courierPrice: courierPriceReducer,
     order: orderReducer,
+    orderManagement: orderManagementReducer,
+    orderDetailDashboard: orderDetailDashboardReducer,
   },
 });
