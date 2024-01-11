@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IApiResponse } from "../../../../data/interfaces";
 import { AxiosError } from "axios";
-import { getCategoriesWithLimit } from "../../../../api/landingPage";
 import {
   ICategoryAttributes,
   IGetCategoriesWithLimitInput,
 } from "../../../../data/category/interface";
+import { getCategoriesWithLimit } from "../../../../api/explore";
 
 interface IGetCategoriesWithLimitState {
   apiState: "idle" | "pending" | "rejected" | "done";
@@ -62,6 +62,11 @@ const getCategoriesWithLimitSlice = createSlice({
             name: "All",
           },
           ...(action.payload as IApiResponse<ICategoryAttributes[]>).data!,
+          {
+            branchId: 0,
+            id: 5,
+            name: "More",
+          },
         ];
       }
     });

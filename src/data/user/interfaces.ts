@@ -82,6 +82,7 @@ export interface AdminEditByIdInput {
   data: UserCreationAttributes;
 }
 export interface UserCreationAttributes {
+  id?: number;
   image_id?: number | null;
   name?: string;
   email?: string;

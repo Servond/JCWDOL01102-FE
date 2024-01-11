@@ -13,7 +13,7 @@ import { RootState } from "../../../app/redux/store";
 export default function NearestBranch() {
   const branch = useSelector((state: RootState) => state.nearestBranch.branch);
   return (
-    <Card w={"full"} borderRadius={"10px"}>
+    <Card w={"full"} borderRadius={"10px"} shadow={"md"}>
       <CardBody py={"8px"} px={"1rem"}>
         <HStack h={"full"} w={"full"} justify={"start"} spacing={"1rem"}>
           <Box w={"70px"} h={"100px"}>

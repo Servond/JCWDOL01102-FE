@@ -3,13 +3,18 @@ import { FaBoxes } from "react-icons/fa";
 import { IoTicket } from "react-icons/io5";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { BsClipboard2DataFill, BsFillCartFill } from "react-icons/bs";
-import { OptionType } from "./interfaces";
+import { OptionType, OptionTypeWithIcon } from "./interfaces";
 import { FaStore } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaBell } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
+import { FaSortAlphaDown } from "react-icons/fa";
+import { GrUnsorted } from "react-icons/gr";
+import { FaSortAlphaDownAlt } from "react-icons/fa";
+import { FaSortNumericDownAlt } from "react-icons/fa";
+import { FaSortNumericDown } from "react-icons/fa";
 
 interface INavbarMeta {
   fieldName: string;
@@ -188,6 +193,39 @@ export const constants = {
       path: "/dashboard",
     },
   ] as NavbarMeta[],
+
+  productSortOption: [
+    {
+      label: "None",
+      value: "id",
+      sort: "asc",
+      icon: GrUnsorted,
+    },
+    {
+      label: "A-Z",
+      value: "name",
+      sort: "asc",
+      icon: FaSortAlphaDown,
+    },
+    {
+      label: "Z-A",
+      value: "name",
+      sort: "desc",
+      icon: FaSortAlphaDownAlt,
+    },
+    {
+      label: "Highest Price",
+      value: "price",
+      sort: "desc",
+      icon: FaSortNumericDownAlt,
+    },
+    {
+      label: "Lowest Price",
+      value: "price",
+      sort: "asc",
+      icon: FaSortNumericDown,
+    },
+  ] as OptionTypeWithIcon[],
 };
 
 export enum Permission {

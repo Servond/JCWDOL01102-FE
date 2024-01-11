@@ -17,6 +17,7 @@ import {
 } from "../../app/redux/slice/userSlicer";
 import RedirectLoading from "../../components/molecules/Signup/RedirectLoading";
 import { UserResponseData } from "../../data/user/interfaces";
+import BackNavigation from "../../components/molecules/BackNavigation";
 
 export default function SignupPage() {
   const postUserResp = useSelector(
@@ -80,6 +81,7 @@ export default function SignupPage() {
 
   return (
     <VStack justify={"center"} py={"1.5rem"} animation={animation}>
+      <BackNavigation pageBefore="Landing Page" />
       <SignupCaption />
       <CredetialInputs />
       <Text textAlign={"center"}>

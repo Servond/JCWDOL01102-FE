@@ -1,4 +1,4 @@
-import { IPaginate } from "../interfaces";
+import { IApiResponse, IPaginate } from "../interfaces";
 
 export interface ICategoryAttributes {
   id: number;
@@ -11,3 +11,4 @@ export interface IGetCategoriesWithLimitInput {
   branchId: number;
 }
 export type CategoryLimitResponse = IPaginate<ICategoryAttributes>;
+export type LandingpageCatgoriesResponse = IApiResponse<ICategoryAttributes[]>;

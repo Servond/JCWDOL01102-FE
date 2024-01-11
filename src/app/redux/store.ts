@@ -27,12 +27,18 @@ import deletePromotionReducer from "./slice/Admin/discount/deletePromotion";
 import NavbarReducer from "./slice/Navbar/Navbar";
 import landingpageCategoryReducer from "./slice/LandingPage/categories";
 import getNearestBranchReducer from "./slice/LandingPage/getNearestBranch";
-import getCategoriesWithLimit from "./slice/LandingPage/getCategoriesWithLimit";
 import courierPriceReducer from "./slice/Order/ShippingPriceSlice";
 import orderReducer from "./slice/Order/OrderSlice";
 import orderManagementReducer from "./slice/Admin/orderManagement/orderManagementSlice";
 import orderDetailDashboardReducer from "./slice/Admin/orderManagement/orderDetailSlice";
-
+import getCategoriesWithLimit from "./slice/Explore/getCategoriesWithLimit";
+import getLandingpageProductReducer from "./slice/Explore/productPagination";
+import getProductRecommendationReducer from "./slice/LandingPage/productRecommendation";
+import getLandingpageCategoriesReducer from "./slice/LandingPage/getLandingpageCategories";
+import manageCartReducer from "./slice/cart/manageCart";
+import getCartReducer from "./slice/cart/getProductCart";
+import clearCartReducer from "./slice/cart/clearCart";
+import updateuserReducer from "./slice/User/updateUser";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -71,5 +77,12 @@ export const store = configureStore({
     order: orderReducer,
     orderManagement: orderManagementReducer,
     orderDetailDashboard: orderDetailDashboardReducer,
+    landingpageProduct: getLandingpageProductReducer,
+    productRecommendation: getProductRecommendationReducer,
+    landingPageCategories: getLandingpageCategoriesReducer,
+    manageCart: manageCartReducer,
+    getCart: getCartReducer,
+    clearCart: clearCartReducer,
+    updateUser: updateuserReducer,
   },
 });

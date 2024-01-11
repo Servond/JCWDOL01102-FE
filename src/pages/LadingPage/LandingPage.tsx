@@ -13,11 +13,14 @@ import MainContent from "../../components/organism/LandingPage/MainContent";
 import { fetchNearestBranch } from "../../app/redux/slice/LandingPage/getNearestBranch";
 import LoadingCenter from "../../components/molecules/Loading";
 import LocationPermissionAlert from "../../components/molecules/LandingPage/LocationPermissionAlert";
+import { fetchProductCart } from "../../app/redux/slice/cart/getProductCart";
+import { updateUserById } from "../../app/redux/slice/User/updateUser";
 
 export default function LandingPage() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.login.isAuthenticated
   );
+  const user = useSelector((state: RootState) => state.login.user);
   const nearestBranchState = useSelector(
     (state: RootState) => state.nearestBranch.apiState
   );
@@ -28,13 +31,6 @@ export default function LandingPage() {
   useEffect(() => {
     const getLocation = async () => {
       try {
-        const permission = await navigator.permissions.query({
-          name: "geolocation",
-        });
-
-        if (permission.state !== "granted") {
-          return;
-        }
         const position = await new Promise<GeolocationPosition>(
           (resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -43,7 +39,25 @@ export default function LandingPage() {
           }
         );
         const { latitude, longitude } = position.coords;
-        dispatch(fetchNearestBranch({ latitude, longitude }));
+        await dispatch(fetchNearestBranch({ latitude, longitude })).then(
+          (data) => {
+            localStorage.setItem("branch", JSON.stringify(data.payload?.data));
+            if (isAuthenticated) {
+              dispatch(
+                fetchProductCart({
+                  userId: user?.userId,
+                  branchId: data.payload?.data?.id,
+                })
+              ).then((data) => console.log(data));
+              dispatch(
+                updateUserById({
+                  id: user?.userId,
+                  branch_id: data.payload?.data?.id,
+                })
+              ).then((data) => console.log(data));
+            }
+          }
+        );
       } catch (e) {
         console.log(e);
       }
@@ -84,7 +98,7 @@ export default function LandingPage() {
         onOpen();
         return;
       }
-    }, 1000);
+    }, 200);
     if (!isAuthenticated) {
       const token = localStorage.getItem("token");
       if (token) {

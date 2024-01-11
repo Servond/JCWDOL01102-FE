@@ -35,96 +35,111 @@ import NotificationPage from "./pages/Notification/NotificationPage";
 import OrderDetailPage from "./pages/OrderDetail/OrderDetailPage";
 import OrderManagementPage from "./pages/Admin/OrderManagement/OrderManagementPage";
 import OrderDetailmanagementPage from "./pages/Admin/OrderManagement/OrderDetailmanagementPage";
+import ProductDetailsPage from "./pages/ProductDetailPage/productDetailPage";
+import SearchPage from "./pages/SearchPage/SearchPage";
+import CartPage from "./pages/CartPage/CartPage";
 
 function App() {
   return (
     <Routes>
       <Route element={<AppWrapper />}>
-        <Route path='/email-notice' element={<EmailNoticePage />} />
+        <Route path="/email-notice" element={<EmailNoticePage />} />
         <Route
-          path='/user-verification/:verifyToken'
+          path="/user-verification/:verifyToken"
           element={<UserVerification />}
         />
-        <Route path='/' element={<LandingPage />} />
-        <Route path='/signup' element={<SignupPage />} />
-        <Route path='login' element={<DummyLoginPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="login" element={<DummyLoginPage />} />
+        <Route path="/explore" element={<SearchPage />} />
+        <Route path="/product-details" element={<ProductDetailsPage />} />
         <Route
-          path='/menu'
+          path="/cart"
+          element={
+            <PrivateRoute>
+              <CartPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="login" element={<DummyLoginPage />} />
+        <Route
+          path="/menu"
           element={<PrivateRoute children={<MenuPage />} />}
         />
         <Route
-          path='/my-details'
+          path="/my-details"
           element={<PrivateRoute children={<MyDetailsPage />} />}
         />
         <Route
-          path='/my-address'
+          path="/my-address"
           element={<PrivateRoute children={<AddressListPage />} />}
         />
         <Route
-          path='/order'
+          path="/order"
           element={<PrivateRoute children={<OrderPage />} />}
         />
         <Route
-          path='/order/:id'
+          path="/order/:id"
           element={<PrivateRoute children={<OrderDetailPage />} />}
         />
         <Route
-          path='/notifications'
+          path="/notifications"
           element={<PrivateRoute children={<NotificationPage />} />}
         />
         <Route
-          path='/add-address'
+          path="/add-address"
           element={<PrivateRoute children={<AddAddressPage />} />}
         />
         <Route
-          path='/update-address/:id'
+          path="/update-address/:id"
           element={<PrivateRoute children={<UpdateAddressPage />} />}
         />
-        <Route path='/dashboard' element={<DashboardPage />}>
+        <Route path="/dashboard" element={<DashboardPage />}>
           <Route
-            path='/dashboard/user-management'
+            path="/dashboard/user-management"
             element={<UserManagementPage />}
           />
-          <Route path='/dashboard/create-admin' element={<CreateAdminPage />} />
-          <Route path='/dashboard/report' element={<ReportPage />} />
+          <Route path="/dashboard/create-admin" element={<CreateAdminPage />} />
+          <Route path="/dashboard/report" element={<ReportPage />} />
           <Route
-            path='/dashboard/products'
+            path="/dashboard/products"
             element={<BranchAdminProtect children={<ProductsPage />} />}
           />
           <Route
-            path='/dashboard/discount-management'
+            path="/dashboard/discount-management"
             element={
               <BranchAdminProtect children={<VoucherManagementPage />} />
             }
           />
           <Route
-            path='/dashboard/create-discount'
+            path="/dashboard/create-discount"
             element={<BranchAdminProtect children={<CreateVoucherPage />} />}
           />
           <Route
-            path='/dashboard/add-product'
+            path="/dashboard/add-product"
             element={<BranchAdminProtect children={<AddProductPage />} />}
           />
           <Route
-            path='/dashboard/update-product/:id'
+            path="/dashboard/update-product/:id"
             element={<BranchAdminProtect children={<UpdateProductPage />} />}
           />
           <Route
-            path='/dashboard/categories'
+            path="/dashboard/categories"
             element={<BranchAdminProtect children={<CategoryPage />} />}
           />
           <Route
-            path='/dashboard/order-management'
+            path="/dashboard/order-management"
             element={<BranchAdminProtect children={<OrderManagementPage />} />}
           />
           <Route
-            path='/dashboard/order-management/:invoiceId'
+            path="/dashboard/order-management/:invoiceId"
             element={
               <BranchAdminProtect children={<OrderDetailmanagementPage />} />
             }
           />
         </Route>
-        <Route path='*' element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

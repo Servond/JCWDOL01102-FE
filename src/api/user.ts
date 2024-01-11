@@ -70,7 +70,7 @@ export const verifyUserByEmail = (verifyToken: string) => {
 };
 
 export const updateUser = (id: number, data: UserCreationAttributes) => {
-  return adminServer.put(`api/users/${id}`, data);
+  return server.put(`api/users/${id}`, data);
 };
 
 export const login = (email: string, password: string) => {

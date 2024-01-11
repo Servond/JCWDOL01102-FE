@@ -41,7 +41,12 @@ export default function ProductCategoryItem(props: IProductCategoryItemProps) {
         borderRadius={"full"}
         w={"4px"}
         transition={"color 0.3s ease"}
-        bg={props.id === props.currentCategoryIndex ? "primaryColor" : "white"}
+        bg={
+          props.id === props.currentCategoryIndex
+            ? "primaryColor"
+            : "transparent"
+        }
+        shadow={"none"}
       />
     </VStack>
   );
