@@ -120,7 +120,6 @@ export default function PaymentMethod(props: PaymentMethodProps) {
               cursor={"pointer"}
               onClick={() => {
                 setSelectedPaymentMethod(paymentMethod.id);
-                // console.log(paymentMethod.code);
                 handleChangePaymentMethod(paymentMethod.code);
               }}
               bgColor={
