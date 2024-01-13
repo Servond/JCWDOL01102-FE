@@ -48,10 +48,6 @@ export default function ProductDetailForm(props: ProductDetailFormProps) {
   };
 
   const fileRef = useRef<HTMLInputElement>(null);
-  // console.log(props.values);
-  useEffect(() => {
-    console.log(props.values);
-  }, [props.values.image]);
 
   return (
     <Card my={"1rem"}>

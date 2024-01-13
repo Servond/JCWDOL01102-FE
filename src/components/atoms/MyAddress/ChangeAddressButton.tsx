@@ -12,7 +12,7 @@ export default function ChangeAddressBtn(props: ChangeAddressBtnProps) {
       onClick={props.callback}
       isDisabled={props.isDisabled}
     >
-      <Text color={"gray.600"}>Ubah Alamat</Text>
+      <Text>Ubah Alamat</Text>
     </Button>
   );
 }

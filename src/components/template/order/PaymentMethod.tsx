@@ -20,7 +20,7 @@ import { AppDispatch, RootState } from "../../../app/redux/store";
 import { IPaymentGateway } from "../../../data/order.interface";
 import TitleHeader from "../../molecules/MyDetails/TitleHeader";
 import SuccessOrder from "./SuccessOrder";
-import { useNavigate } from "react-router-dom";
+import { clearCartAll } from "../../../api/cart";
 interface PaymentMethodProps {
   showPayment: boolean;
   setShowPayment: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,9 +28,12 @@ interface PaymentMethodProps {
 export default function PaymentMethod(props: PaymentMethodProps) {
   const [isMobile] = useMediaQuery("(max-width: 600px)");
   const [paymentMetods, setPaymentMethods] = useState<IPaymentGateway[]>([]);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     number | null
   >(null);
+  const [detailOrderUrl, setDetailOrderUrl] = useState<string>("");
+  const [redirectUrl, setRedirectUrl] = useState<string>("");
   const orderState = useSelector((state: RootState) => state.order);
   const dispatch = useDispatch<AppDispatch>();
   const toast = useToast();
@@ -59,12 +62,15 @@ export default function PaymentMethod(props: PaymentMethodProps) {
   useEffect(() => {
     handlePaymentMethod();
   }, []);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const handleCreatePayment = async () => {
     try {
+      console.log(orderState.dataOrder);
       const response = await createTransaction(orderState.dataOrder!);
-      const redirectUrl =
-        response.data.data.virtual_account_info.how_to_pay_page;
+      // const redirectUrl =
+      //   response.data.data.virtual_account_info.how_to_pay_page;
+      setRedirectUrl(response.data.data.virtual_account_info.how_to_pay_page);
+      setDetailOrderUrl(`/order/${response.data.data.order.invoice_number}`);
       toast({
         title: "Berhasil membuat pesanan",
         description: response.data.message,
@@ -73,8 +79,10 @@ export default function PaymentMethod(props: PaymentMethodProps) {
         isClosable: true,
         position: "top",
       });
-      window.open(redirectUrl, "_blank", "noopener,noreferrer");
-      navigate(`/order/${response.data.data.order.invoice_number}`);
+      setIsSuccess(true);
+      await clearCartAll();
+      // window.open(redirectUrl, "_blank", "noopener,noreferrer");
+      // navigate(`/order/${response.data.data.order.invoice_number}`);
     } catch (error: any) {
       toast({
         title: "Gagal membuat pesanan",
@@ -172,7 +180,11 @@ export default function PaymentMethod(props: PaymentMethodProps) {
           </Button>
         </VStack>
       </Box>
-      <SuccessOrder showSuccessPage={false} />
+      <SuccessOrder
+        detailOrderUrl={detailOrderUrl}
+        redirectUrl={redirectUrl}
+        showSuccessPage={isSuccess}
+      />
     </>
   );
 }

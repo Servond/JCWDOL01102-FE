@@ -180,7 +180,7 @@ export const constants = {
     {
       fieldName: "Notification",
       icon: FaBell,
-      path: "/notification",
+      path: "/notifications",
     },
     {
       fieldName: "Account",

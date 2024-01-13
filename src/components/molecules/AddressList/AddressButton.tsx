@@ -47,7 +47,8 @@ export default function AddressButton() {
       position={"absolute"}
       bottom={0}
       padding={"10px"}
-      width={"450px"}
+      width={"500px"}
+      left={"calc(50% - 250px)"}
       maxW={"calc(100vw - 50px)"}
       bgColor={"white"}
     >

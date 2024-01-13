@@ -39,3 +39,12 @@ export const clearCart = async (input: ICartAttributes[]) => {
     },
   });
 };
+
+export const clearCartAll = async () => {
+  return server.delete("/api/cart/clear", {
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+};
+

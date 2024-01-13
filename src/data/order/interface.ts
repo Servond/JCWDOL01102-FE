@@ -6,7 +6,7 @@ interface Courier {
   etd: string;
   image: string;
 }
-interface ICart {
+export interface ICart {
   id: number;
   name: string;
   price: number;
@@ -45,13 +45,24 @@ export interface IDataOrder {
   products?: ICart[];
   courier?: Courier;
   discountId?: number[];
+  promotions?: IPromotion[];
   totalAmount?: number;
   paymentCode?: string;
+}
+
+export interface IPromotion {
+  productId: number;
+  id: number;
+  name: string;
+  type: "price_cut" | "buy_one_get_one";
+  value: number;
+  valueType: "percentage" | "fixed_price";
 }
 
 export interface IOrderSlice {
   courier: Courier | null;
   cart: ICart[];
+  promotion: IPromotion[];
   isOpenDrawer: boolean;
   origin?: number;
   destination?: number;
@@ -63,5 +74,6 @@ export interface IOrderSlice {
   paymentCode: string;
   productAmount: number;
   shippingAmount: number;
+  cutPrice: number;
   totalAmount: number;
 }
