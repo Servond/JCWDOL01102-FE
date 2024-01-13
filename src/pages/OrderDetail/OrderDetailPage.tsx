@@ -29,11 +29,7 @@ export default function OrderDetailPage() {
       <VStack gap={"10px"}>
         <TitleHeader title={"Detail Order"} />
         <Divider />
-        {/* Invoice
-            Tanggal
-            Status Pembayaran
-            Status Pesanan
-        */}
+
         <Card width={"100%"}>
           <CardBody>
             <VStack
