@@ -28,6 +28,7 @@ interface PaymentMethodProps {
 export default function PaymentMethod(props: PaymentMethodProps) {
   const [isMobile] = useMediaQuery("(max-width: 600px)");
   const [paymentMetods, setPaymentMethods] = useState<IPaymentGateway[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
     number | null
@@ -65,7 +66,7 @@ export default function PaymentMethod(props: PaymentMethodProps) {
   // const navigate = useNavigate();
   const handleCreatePayment = async () => {
     try {
-      console.log(orderState.dataOrder);
+      setIsLoading(true);
       const response = await createTransaction(orderState.dataOrder!);
       // const redirectUrl =
       //   response.data.data.virtual_account_info.how_to_pay_page;
@@ -81,9 +82,9 @@ export default function PaymentMethod(props: PaymentMethodProps) {
       });
       setIsSuccess(true);
       await clearCartAll();
-      // window.open(redirectUrl, "_blank", "noopener,noreferrer");
-      // navigate(`/order/${response.data.data.order.invoice_number}`);
+      setIsLoading(false);
     } catch (error: any) {
+      setIsLoading(false);
       toast({
         title: "Gagal membuat pesanan",
         description: error?.response?.data?.message ?? "Terjadi kesalahan",
@@ -153,6 +154,7 @@ export default function PaymentMethod(props: PaymentMethodProps) {
               </HStack>
               <Radio
                 value={paymentMethod.id.toString()}
+                isDisabled={isLoading}
                 bgColor={"transparent"}
                 _hover={{ bgColor: "transparent" }}
                 border={"none"}
@@ -174,6 +176,7 @@ export default function PaymentMethod(props: PaymentMethodProps) {
                 color: "white",
               },
             }}
+            isLoading={isLoading}
             onClick={handleCreatePayment}
           >
             Buat Pesanan

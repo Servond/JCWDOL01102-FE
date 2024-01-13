@@ -120,16 +120,6 @@ export default function OrderPage() {
     dispatch(setDataOrder({ promotions: promotions }));
   }, [carts, dispatch]);
 
-  // const getTotalAmount = () => {
-  //   let totalAmount = 0;
-  //   orderState.cart.forEach((item) => {
-  //     const product = orderState.products.find(
-  //       (product) => product.id === item.id
-  //     );
-  //     totalAmount += product?.price! * item.qty;
-  //   });
-  //   return totalAmount;
-  // };
 
   useEffect(() => {
     dispatch(
