@@ -26,6 +26,7 @@ import { AddressAttributes } from "../../../data/address/interface";
 import AddressFormField from "../../molecules/AddressList/AddressFormField";
 
 interface AddressDetailProps {
+  updateId?: number;
   isUpdate?: boolean;
   receiverName?: string;
   phoneNumber?: string;
@@ -80,7 +81,6 @@ export default function AddressDetail(props: AddressDetailProps) {
   };
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const addressListState = useSelector((state: RootState) => state.addressList);
   const loginState = useSelector((state: RootState) => state.login);
   const handleFormSubmit = async (values: AddressFormValues) => {
     try {
@@ -104,7 +104,7 @@ export default function AddressDetail(props: AddressDetailProps) {
       } else {
         response = await updateAddress(
           loginState.user?.userId as number,
-          addressListState.selectedAddressId!,
+          props.updateId!,
           data
         );
       }
@@ -117,7 +117,7 @@ export default function AddressDetail(props: AddressDetailProps) {
         isClosable: true,
         position: "top",
       });
-      navigate("/my-address");
+      navigate("/my-address", { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setIsLoading(false);
@@ -144,7 +144,20 @@ export default function AddressDetail(props: AddressDetailProps) {
   const dispatch = useDispatch<AppDispatch>();
   const provinces = useSelector((state: RootState) => state.province);
   const cities = useSelector((state: RootState) => state.cities);
-
+  useEffect(() => {
+    if (props.province) {
+      const province = provinces.data.find(
+        (province) => province.province_id === parseInt(props.province!)
+      );
+      setProvinceName(province?.province_name as string);
+    }
+    if (props.city) {
+      const city = cities.data.find(
+        (city) => city.city_id === parseInt(props.city!)
+      );
+      setCityName(city?.city_name as string);
+    }
+  }, [props, provinces, cities]);
   useEffect(() => {
     dispatch(fetchProvinces());
   }, [dispatch]);
@@ -164,15 +177,16 @@ export default function AddressDetail(props: AddressDetailProps) {
 
   const handleGetLatLong = async () => {
     try {
+      if (!provinceName || !cityName) return;
       const response = await forwardGeocoding(provinceName, cityName);
 
       formik.setFieldValue(
         "latitude",
-        response.data.data.results[0].geometry.lat
+        String(response.data.data.results[0].geometry.lat)
       );
       formik.setFieldValue(
         "longitude",
-        response.data.data.results[0].geometry.lng
+        String(response.data.data.results[0].geometry.lng)
       );
     } catch (error: any) {
       toast({

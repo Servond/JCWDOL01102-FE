@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import {
@@ -37,6 +38,13 @@ import { localeCurrency } from "../../utils/function/localeCurrency";
 import LoadingCenter from "../../components/molecules/Loading";
 import { fetchProductCart } from "../../app/redux/slice/cart/getProductCart";
 import { ICart, IPromotion } from "../../data/order/interface";
+import {
+  Address,
+  fetchAddressList,
+} from "../../app/redux/slice/AddressList/addressListSlice";
+import haversine from "haversine-distance";
+import { fetchCities } from "../../app/redux/slice/MasterData/CitiesSlice";
+import { getBranchDetail } from "../../api/branch";
 
 export default function OrderPage() {
   const navigate = useNavigate();
@@ -44,12 +52,66 @@ export default function OrderPage() {
     navigate("/cart");
   };
   const handleChangeAddress = () => {
-    navigate("/my-address?back=order");
+    navigate("/my-address?back=order", { replace: true });
   };
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
 
   const [showPayment, setShowPayment] = useState(false);
   const orderState = useSelector((state: RootState) => state.order);
   const dispatch = useDispatch<AppDispatch>();
+  const addressListState = useSelector((state: RootState) => state.addressList);
+  const cities = useSelector((state: RootState) => state.cities);
+  const loginState = useSelector((state: RootState) => state.login);
+  const [isCoverage, setIsCoverage] = useState(false);
+  const [cityName, setCityName] = useState("");
+  const [destinationId, setDestinationId] = useState<string>("null");
+  const getLocationAndUpdateList = async () => {
+    try {
+      const position = await new Promise<GeolocationPosition>(
+        (resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+          });
+        }
+      );
+
+      const { latitude, longitude } = position.coords;
+      const userLocation = { latitude, longitude };
+      const branchLocation = {
+        latitude: parseFloat(selectedAddress!.latitude),
+        longitude: parseFloat(selectedAddress!.longitude),
+      };
+      const distance = haversine(userLocation, branchLocation);
+      if (distance < 35000) {
+        setIsCoverage(true);
+      } else {
+        setIsCoverage(false);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    const address = addressListState.addressList.find(
+      (item) => item.isDefault === true
+    );
+    if (address) {
+      getLocationAndUpdateList();
+    }
+    setSelectedAddress(address ?? null);
+  }, [addressListState.addressList]);
+
+  useEffect(() => {
+    dispatch(fetchCities(selectedAddress?.provinceId));
+  }, [selectedAddress]);
+
+  useEffect(() => {
+    const name = cities.data.find(
+      (item) => item.city_id === selectedAddress?.cityId
+    )?.city_name;
+    setCityName(name ?? "");
+  }, [cities]);
 
   useEffect(() => {
     if (orderState.statusFetchProduct === "pending") return;
@@ -65,10 +127,22 @@ export default function OrderPage() {
   const branchId = useSelector(
     (state: RootState) => state.nearestBranch.branch.id
   );
+
+  const getBranch = async () => {
+    try {
+      const response = await getBranchDetail();
+      setDestinationId(String(response.data.data?.cityId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
       return;
     }
+    getBranch();
+    dispatch(fetchAddressList(loginState.user?.userId as number));
     dispatch(
       fetchProductCart({
         branchId: branchId
@@ -77,7 +151,6 @@ export default function OrderPage() {
         userId: user?.userId,
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -119,7 +192,6 @@ export default function OrderPage() {
     dispatch(setPromotion(promotions));
     dispatch(setDataOrder({ promotions: promotions }));
   }, [carts, dispatch]);
-
 
   useEffect(() => {
     dispatch(
@@ -173,7 +245,19 @@ export default function OrderPage() {
           <CardBody padding={"15px"}>
             <HStack>
               <VStack width={"90%"} alignItems={"flex-start"}>
-                <Text fontSize={"medium"}>Alamat pengiriman kamu</Text>
+                <HStack width={"100%"}>
+                  <Text fontSize={"medium"}>Alamat pengiriman kamu</Text>
+                  {!isCoverage && (
+                    <Text
+                      fontSize={"8pt"}
+                      fontWeight={600}
+                      lineHeight={1}
+                      color={"red"}
+                    >
+                      (Lokasi Tidak Dapat Dijangkau)
+                    </Text>
+                  )}
+                </HStack>
                 <Box width={"100%"}>
                   <HStack>
                     <PiMapPinFill color='#53B175' />
@@ -182,7 +266,7 @@ export default function OrderPage() {
                       fontWeight={"bold"}
                       display={"inline"}
                     >
-                      Alamat Rumah - Galih Setyawan
+                      {selectedAddress?.name ?? "Pilih Alamat"}
                     </Text>
                   </HStack>
                   <Text
@@ -191,8 +275,7 @@ export default function OrderPage() {
                     textOverflow={"ellipsis"}
                     whiteSpace={"nowrap"}
                   >
-                    jl. kencana putri kusuma wijaya rano karno, kecamatan
-                    panjang sekali ini ceritanya
+                    {selectedAddress?.address ?? "-"}
                   </Text>
                 </Box>
               </VStack>
@@ -340,7 +423,7 @@ export default function OrderPage() {
           </HStack>
           <Divider my={"10px"} />
           <Button
-            isDisabled={orderState.courier === null}
+            isDisabled={orderState.courier === null || !isCoverage}
             _disabled={{
               bgColor: "gray.300",
               color: "white",
@@ -359,7 +442,12 @@ export default function OrderPage() {
           </Button>
         </VStack>
       </VStack>
-      <ShipperPriceList showShipper={orderState.isOpenDrawer} />
+      <ShipperPriceList
+        originName={cityName}
+        origin={selectedAddress?.cityId.toString()}
+        destination={destinationId}
+        showShipper={orderState.isOpenDrawer}
+      />
       <PaymentMethod
         showPayment={showPayment}
         setShowPayment={setShowPayment}

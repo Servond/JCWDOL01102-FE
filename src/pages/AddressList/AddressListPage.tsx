@@ -29,6 +29,7 @@ export default function AddressListPage() {
     navigate("/add-address");
   };
 
+
   return (
     <>
       <VStack pb={"15px"} animation={animation} height={"100vh"}>

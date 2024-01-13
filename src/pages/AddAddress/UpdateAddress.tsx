@@ -4,7 +4,7 @@ import {
   keyframes,
   usePrefersReducedMotion,
 } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { Address } from "../../app/redux/slice/AddressList/addressListSlice";
@@ -19,19 +19,22 @@ export default function UpdateAddressPage() {
   const motion = usePrefersReducedMotion();
   const animation = motion ? undefined : `${zoom} 0.2s ease-in-out`;
   const navigate = useNavigate();
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const addressListState = useSelector((state: RootState) => state.addressList);
+  // const [address, setAddress] = useState<Address | undefined>(undefined);
 
   const getData = () => {
-    const { id } = params as { id: string };
-    const address = addressListState.addressList.find(
-      (item) => parseInt(id) === item.id
+    const address2 = addressListState.addressList.find(
+      (item) => parseInt(params.id!) === item.id
     );
-    if (!address) {
-      navigate("/my-address");
+    if (!address2) {
+      navigate("/my-address", { replace: true });
     }
   };
-  getData();
+
+  useEffect(() => {
+    getData();
+  }, []);
   const address = useMemo<Address | undefined>(
     () =>
       addressListState.addressList.find(
@@ -41,13 +44,14 @@ export default function UpdateAddressPage() {
   );
 
   const handleBack = () => {
-    navigate("/my-address");
+    navigate("/my-address", { replace: true });
   };
   return (
     <VStack animation={animation}>
       <TitleHeader title='Detail Alamat' callback={handleBack} />
       <Divider />
       <AddressDetail
+        updateId={parseInt(params.id!)}
         isUpdate={true}
         addressLabel={address?.name}
         receiverName={address?.receiverName}

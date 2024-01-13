@@ -26,6 +26,9 @@ import tikilogo from "../../../assets/logo/tiki.png";
 import poslogo from "../../../assets/logo/pos.png";
 interface ShipperPriceListProps {
   showShipper: boolean;
+  origin?: string;
+  destination?: string;
+  originName?: string;
 }
 
 export default function ShipperPriceList(props: ShipperPriceListProps) {
@@ -40,16 +43,19 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
   const orderState = useSelector((state: RootState) => state.order);
 
   useEffect(() => {
+    if (!props.origin || !props.destination) {
+      return;
+    }
     const data = {
-      origin: "152",
-      destination: "23",
+      origin: props.origin ?? "152",
+      destination: props.destination ?? "23",
       weight: 400,
       courier: "jne",
     };
     dispatch(fetchJnePrice(data));
     dispatch(fetchTikiPrice(data));
     dispatch(fetchPosPrice(data));
-  }, [dispatch]);
+  }, [dispatch, props.origin, props.destination]);
 
   const getTotalWeight = () => {
     let totalWeight = 0;
@@ -92,7 +98,7 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           <FaBox />
           <Text fontSize={"small"}>
             {/* Dikirim dari Kabupaten Bogor - Berat 0.4 Kg */}
-            {`Dikirim dari Kab Bogor - Berat ${getTotalWeight()} Kg`}
+            {`Dikirim dari ${props.originName}- Berat ${getTotalWeight()} Kg`}
           </Text>
         </HStack>
       </Box>

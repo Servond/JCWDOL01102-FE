@@ -46,7 +46,7 @@ export default function LogoutAlert(props: ILogoutAlertProps) {
       dispatch(resetVoucherPagination());
       dispatch(resetPromotionPagination());
     }
-    navigate("/");
+    navigate("/", { replace: true });
     props.onClose();
   };
   return (
