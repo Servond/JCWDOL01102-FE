@@ -62,7 +62,7 @@ export default function MainContent(props: IMainContentProps) {
           fontSize={"16px"}
           textAlign={"left"}
           fontWeight={"normal"}
-          noOfLines={1}
+          // noOfLines={1}
         >
           {props.product.desc}
         </Heading>
@@ -70,6 +70,7 @@ export default function MainContent(props: IMainContentProps) {
       <AddChartSection
         flexGrow={!isOverflow ? "1" : "none"}
         productId={props.product.id}
+        stock={props.product.stock}
       />
     </VStack>
   );

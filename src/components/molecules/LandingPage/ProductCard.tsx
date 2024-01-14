@@ -86,8 +86,9 @@ export default function ProductCard(props: IProductCardProps) {
       shadow={"md"}
       _hover={{ cursor: "pointer" }}
       onClick={onClick}
+      opacity={props.product.stock === 0 ? "50%" : "100%"}
     >
-      <CardBody w={"full"} p={"1rem"}>
+      <CardBody w={"full"} p={"1rem"} position={"relative"}>
         <VStack w={"full"} align={"start"}>
           <Skeleton w={"full"} h={"150px"} isLoaded={isLoaded}>
             <Image
@@ -111,6 +112,7 @@ export default function ProductCard(props: IProductCardProps) {
               fontSize={"14px"}
               color={"secondaryColor"}
             >{`${props.product.weight} g`}</Text>
+            H
           </VStack>
           <Flex
             w={"full"}
@@ -124,7 +126,7 @@ export default function ProductCard(props: IProductCardProps) {
               price={props.product.price}
             />
             <IconButton
-              isDisabled={!isAuthentcated}
+              isDisabled={!isAuthentcated || props.product.stock === 0}
               _hover={{ fontSize: "24px", transition: "0.2s ease" }}
               transition={"0.2s ease"}
               aria-label=""
@@ -140,6 +142,20 @@ export default function ProductCard(props: IProductCardProps) {
               }
             />
           </Flex>
+          {props.product.stock === 0 && (
+            <Heading
+              // position={"absolute"}
+              top={"90px"}
+              // left={"20%"}
+              fontSize={"16px"}
+              // transform={"rotate(-30deg)"}
+              color={"red"}
+              // shadow={"md"}
+              // bg={"white"}
+            >
+              Sold Out
+            </Heading>
+          )}
         </VStack>
       </CardBody>
     </Card>

@@ -31,7 +31,12 @@ export default function ProductCart(props: IProductCartProps) {
   return (
     <Card w={"full"}>
       <CardBody>
-        <HStack w={"full"} justify={"space-between"} align={"start"} spacing={"1rem"}>
+        <HStack
+          w={"full"}
+          justify={"space-between"}
+          align={"start"}
+          spacing={"1rem"}
+        >
           <Skeleton h={"60px"} w={"60px"} isLoaded={isLoaded}>
             <Image
               onLoad={onLoad}
@@ -70,6 +75,7 @@ export default function ProductCart(props: IProductCartProps) {
                   userId={userId!}
                 />
                 <QuantityButton
+                  stock={props.product.stock}
                   initialQty={props.qty}
                   branchId={
                     branchId
