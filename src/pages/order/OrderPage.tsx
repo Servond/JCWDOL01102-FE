@@ -424,7 +424,7 @@ export default function OrderPage() {
           </HStack>
           <Divider my={"10px"} />
           <Button
-            // isDisabled={orderState.courier === null || !isCoverage}
+            isDisabled={orderState.courier === null || !isCoverage}
             _disabled={{
               bgColor: "gray.300",
               color: "white",
