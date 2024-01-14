@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import {
   Box,
+  Center,
   HStack,
   Img,
   Spacer,
@@ -43,6 +45,8 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
   const orderState = useSelector((state: RootState) => state.order);
 
   useEffect(() => {
+    console.log("origin", props.origin);
+    console.log("destination", props.destination);
     if (!props.origin || !props.destination) {
       return;
     }
@@ -53,8 +57,8 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
       courier: "jne",
     };
     dispatch(fetchJnePrice(data));
-    dispatch(fetchTikiPrice(data));
-    dispatch(fetchPosPrice(data));
+    // dispatch(fetchTikiPrice(data));
+    // dispatch(fetchPosPrice(data));
   }, [dispatch, props.origin, props.destination]);
 
   const getTotalWeight = () => {
@@ -67,6 +71,10 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
     });
     return totalWeight / 1000;
   };
+
+  useEffect(() => {
+    console.log("courierPriceState", courierPriceState);
+  }, [courierPriceState]);
   return (
     <Box
       position={"fixed"}
@@ -97,7 +105,6 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
         <HStack>
           <FaBox />
           <Text fontSize={"small"}>
-            {/* Dikirim dari Kabupaten Bogor - Berat 0.4 Kg */}
             {`Dikirim dari ${props.originName}- Berat ${getTotalWeight()} Kg`}
           </Text>
         </HStack>
@@ -119,20 +126,27 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           <Spacer />
           {isOpenJne ? <FaChevronUp /> : <FaChevronDown />}
         </Stack>
-        {courierPriceState.statusJne === "pending" ? (
+        {courierPriceState.jneData.length === 0 && (
+          <Center>Data Tidak Tersedia</Center>
+        )}
+        {courierPriceState.statusJne !== "done" &&
+        courierPriceState.jneData.length > 0 ? (
           <LoadingCenter />
         ) : (
           courierPriceState.statusJne === "done" &&
+          courierPriceState.jneData.length > 0 &&
           courierPriceState.jneData.map((data) => (
-            <Shipper
-              key={data.service}
-              shipper={"JNE"}
-              isOpen={isOpenJne}
-              code={data.service}
-              name={data.description}
-              price={data.cost[0].value}
-              duration={data.cost[0].etd}
-            />
+            <>
+              <Shipper
+                key={data.service ?? ""}
+                shipper={"JNE"}
+                isOpen={isOpenJne}
+                code={data.service}
+                name={data.description ?? ""}
+                price={data.cost[0].value ?? 0}
+                duration={data.cost[0].etd ?? ""}
+              />
+            </>
           ))
         )}
       </Box>
@@ -153,19 +167,19 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           <Spacer />
           {isOpenTiki ? <FaChevronUp /> : <FaChevronDown />}
         </Stack>
-        {courierPriceState.statusTiki === "pending" ? (
+        {courierPriceState.statusTiki !== "done" ? (
           <LoadingCenter />
         ) : (
           courierPriceState.statusTiki === "done" &&
           courierPriceState.tikiData.map((data) => (
             <Shipper
-              key={data.service}
+              key={data.service ?? ""}
               shipper='TIKI'
               isOpen={isOpenTiki}
-              code={data.service}
-              name={data.description}
-              price={data.cost[0].value}
-              duration={data.cost[0].etd}
+              code={data.service ?? ""}
+              name={data.description ?? ""}
+              price={data.cost[0].value ?? 0}
+              duration={data.cost[0].etd ?? ""}
             />
           ))
         )}
@@ -187,19 +201,19 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           <Spacer />
           {isOpenPos ? <FaChevronUp /> : <FaChevronDown />}
         </Stack>
-        {courierPriceState.statusPos === "pending" ? (
+        {courierPriceState.statusPos !== "done" ? (
           <LoadingCenter />
         ) : (
           courierPriceState.statusPos === "done" &&
           courierPriceState.posData.map((data) => (
             <Shipper
-              key={data.service}
+              key={data.service ?? ""}
               shipper='POS'
               isOpen={isOpenPos}
-              code={data.service}
-              name={data.description}
-              price={data.cost[0].value}
-              duration={data.cost[0].etd.replace("HARI", "")}
+              code={data.service ?? ""}
+              name={data.description ?? ""}
+              price={data.cost[0].value ?? 0}
+              duration={data.cost[0].etd.replace("HARI", "") ?? ""}
             />
           ))
         )}

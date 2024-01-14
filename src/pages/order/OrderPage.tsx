@@ -82,6 +82,7 @@ export default function OrderPage() {
         longitude: parseFloat(selectedAddress!.longitude),
       };
       const distance = haversine(userLocation, branchLocation);
+      console.log(distance);
       if (distance < 35000) {
         setIsCoverage(true);
       } else {
@@ -423,7 +424,7 @@ export default function OrderPage() {
           </HStack>
           <Divider my={"10px"} />
           <Button
-            isDisabled={orderState.courier === null || !isCoverage}
+            // isDisabled={orderState.courier === null || !isCoverage}
             _disabled={{
               bgColor: "gray.300",
               color: "white",
@@ -445,7 +446,7 @@ export default function OrderPage() {
       <ShipperPriceList
         originName={cityName}
         origin={selectedAddress?.cityId.toString()}
-        destination={destinationId}
+        destination={destinationId ?? ""}
         showShipper={orderState.isOpenDrawer}
       />
       <PaymentMethod
