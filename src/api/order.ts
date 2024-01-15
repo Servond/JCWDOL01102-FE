@@ -52,8 +52,8 @@ export const getOrderWithDetail = (invoiceNo: string) => {
 };
 
 export const getNotification = (page: number, limit: number) => {
-  return server.get<IResponseApi<IResponseNotifications>>(
-    `/api/order/notifications/?page=${page}&limit=${limit}`,
+  return server.get<IResponseNotifications>(
+    `/api/order/notifications/?page=${page}&pageSize=${limit}`,
     {
       headers: {
         Authorization: getToken(),

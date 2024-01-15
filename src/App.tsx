@@ -56,44 +56,70 @@ function App() {
         <Route
           path='/cart'
           element={
-            <PrivateRoute>
-              <CartPage />
-            </PrivateRoute>
+            <PrivateRoute roleAccess={["user"]} children={<CartPage />} />
           }
         />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='login' element={<DummyLoginPage />} />
         <Route
           path='/menu'
-          element={<PrivateRoute children={<MenuPage />} />}
+          element={
+            <PrivateRoute roleAccess={["user"]} children={<MenuPage />} />
+          }
         />
         <Route
           path='/my-details'
-          element={<PrivateRoute children={<MyDetailsPage />} />}
+          element={
+            <PrivateRoute roleAccess={["user"]} children={<MyDetailsPage />} />
+          }
         />
         <Route
           path='/my-address'
-          element={<PrivateRoute children={<AddressListPage />} />}
+          element={
+            <PrivateRoute
+              roleAccess={["user"]}
+              children={<AddressListPage />}
+            />
+          }
         />
         <Route
           path='/order'
-          element={<PrivateRoute children={<OrderPage />} />}
+          element={
+            <PrivateRoute roleAccess={["user"]} children={<OrderPage />} />
+          }
         />
         <Route
           path='/order/:invoiceNo'
-          element={<PrivateRoute children={<OrderDetailPage />} />}
+          element={
+            <PrivateRoute
+              roleAccess={["user"]}
+              children={<OrderDetailPage />}
+            />
+          }
         />
         <Route
           path='/notifications'
-          element={<PrivateRoute children={<NotificationPage />} />}
+          element={
+            <PrivateRoute
+              roleAccess={["user"]}
+              children={<NotificationPage />}
+            />
+          }
         />
         <Route
           path='/add-address'
-          element={<PrivateRoute children={<AddAddressPage />} />}
+          element={
+            <PrivateRoute roleAccess={["user"]} children={<AddAddressPage />} />
+          }
         />
         <Route
           path='/update-address/:id'
-          element={<PrivateRoute children={<UpdateAddressPage />} />}
+          element={
+            <PrivateRoute
+              roleAccess={["user"]}
+              children={<UpdateAddressPage />}
+            />
+          }
         />
         <Route path='/dashboard' element={<DashboardPage />}>
           <Route

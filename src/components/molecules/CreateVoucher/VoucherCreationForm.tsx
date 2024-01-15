@@ -132,11 +132,7 @@ export default function VoucherCreationForm() {
     }
   }, [formik.values.discountType]);
 
-  useEffect(() => {
-    console.log(new Date()
-    .toISOString()
-    .slice(0, new Date().toISOString().lastIndexOf(":")));
-  }, []);
+
 
   return (
     <Box minW="300px" w={"full"} h={"92%"} ref={boxRef}>

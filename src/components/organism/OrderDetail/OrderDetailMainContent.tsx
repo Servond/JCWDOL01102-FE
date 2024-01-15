@@ -25,9 +25,7 @@ export default function OrderDetailMainContent() {
     setIsShow(false);
   };
   useEffect(() => {
-    dispatch(fetchOrderWithDetail(param.invoiceNo!)).then((data) =>
-      console.log(data)
-    );
+    dispatch(fetchOrderWithDetail(param.invoiceNo!));
   }, []);
 
   return (
