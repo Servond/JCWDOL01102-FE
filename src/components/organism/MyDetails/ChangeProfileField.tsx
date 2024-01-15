@@ -98,7 +98,6 @@ export default function ChangeProfileField() {
       dispatch(
         fetchUserById_({
           id: loginState.user?.userId as number,
-          token: loginState.token as string,
         })
       );
       toast({

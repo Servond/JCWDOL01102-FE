@@ -130,7 +130,7 @@ export default function CategoryPage() {
       dataIndex: "action",
       key: "action",
       maxWidth: "80px",
-      render(text, record) {
+      render(_text, record) {
         return (
           <CategoryAction
             id={record.id as number}

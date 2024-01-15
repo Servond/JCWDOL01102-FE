@@ -112,7 +112,7 @@ export default function ProductListManagementWeb() {
       title: "Harga",
       dataIndex: "price",
       key: "price",
-      render(text, record) {
+      render(_text, record) {
         return <Text>{localeCurrency(record.price as number, "IDR")}</Text>;
       },
     },
@@ -131,7 +131,7 @@ export default function ProductListManagementWeb() {
       dataIndex: "action",
       key: "action",
       maxWidth: "120px",
-      render(text, record) {
+      render(_text, record) {
         return (
           <ProductAction
             key={record.id?.toString()}

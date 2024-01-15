@@ -22,7 +22,6 @@ export default function DetailProfile() {
       dispatch(
         fetchUserById_({
           id: loginState.user.userId,
-          token: loginState.token,
         })
       );
   }, [dispatch, loginState]);
