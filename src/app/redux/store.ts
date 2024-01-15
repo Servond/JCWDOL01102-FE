@@ -39,6 +39,7 @@ import manageCartReducer from "./slice/cart/manageCart";
 import getCartReducer from "./slice/cart/getProductCart";
 import clearCartReducer from "./slice/cart/clearCart";
 import updateuserReducer from "./slice/User/updateUser";
+import getOrderDetailReducer from "./slice/OrderDetail/OrderDetailSlice";
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 
@@ -84,5 +85,6 @@ export const store = configureStore({
     getCart: getCartReducer,
     clearCart: clearCartReducer,
     updateUser: updateuserReducer,
+    getOrderDetail: getOrderDetailReducer,
   },
 });

@@ -243,7 +243,7 @@ export default function OrderPage() {
   return (
     <>
       <VStack gap={"10px"} paddingBottom={"30px"}>
-        <TitleHeader title='Pengiriman' callback={handleBack} />
+        <TitleHeader title="Pengiriman" callback={handleBack} />
         <Divider />
         <Card
           cursor={"pointer"}
@@ -269,7 +269,7 @@ export default function OrderPage() {
                 </HStack>
                 <Box width={"100%"}>
                   <HStack>
-                    <PiMapPinFill color='#53B175' />
+                    <PiMapPinFill color="#53B175" />
                     <Text
                       fontSize={"medium"}
                       fontWeight={"bold"}
@@ -359,11 +359,11 @@ export default function OrderPage() {
                   width={"100%"}
                 >
                   <Img
-                    as='img'
+                    as="img"
                     src={orderState.courier.image}
                     maxH={"40px"}
                     maxW={"70px"}
-                    crossOrigin='anonymous'
+                    crossOrigin="anonymous"
                     objectFit={"contain"}
                   />
                   <VStack

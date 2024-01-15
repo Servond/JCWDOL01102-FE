@@ -77,7 +77,7 @@ export default function VoucherCreationForm() {
                 name: value.name,
                 type: value.type,
                 minimumPrice:
-                value.minPrice === null ? 0 : Number(value.minPrice),
+                  value.minPrice === null ? 0 : Number(value.minPrice),
                 dateStart: value.startDate,
                 dateEnd: value.endDate,
                 value: value.value === null ? 0 : Number(value.value),
@@ -132,9 +132,11 @@ export default function VoucherCreationForm() {
     }
   }, [formik.values.discountType]);
 
-  // useEffect(() => {
-  //   dispatch(getProductByBranch())
-  // }, [])
+  useEffect(() => {
+    console.log(new Date()
+    .toISOString()
+    .slice(0, new Date().toISOString().lastIndexOf(":")));
+  }, []);
 
   return (
     <Box minW="300px" w={"full"} h={"92%"} ref={boxRef}>
@@ -276,6 +278,9 @@ export default function VoucherCreationForm() {
                   formik.setFieldValue("startDate", e.target.value)
                 }
                 value={formik.values.startDate}
+                min={new Date()
+                  .toISOString()
+                  .slice(0, new Date().toISOString().lastIndexOf(":"))}
               />
             </FormField>
 
@@ -291,6 +296,9 @@ export default function VoucherCreationForm() {
                   formik.setFieldValue("endDate", e.target.value)
                 }
                 value={formik.values.endDate}
+                min={new Date()
+                  .toISOString()
+                  .slice(0, new Date().toISOString().lastIndexOf(":"))}
               />
             </FormField>
           </HStack>

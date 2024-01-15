@@ -1,5 +1,5 @@
 import { HStack, Img, Tag, Text, VStack } from "@chakra-ui/react";
-import { localeCurrency } from "../../../utils/function/localeCurrency";
+import { convertToRupiah } from "../../../utils/function/convertToRupiah";
 
 interface OrderItemProps {
   name: string;
@@ -20,20 +20,19 @@ export default function OrderItem(props: OrderItemProps) {
     ) {
       if (props.promoTypeValue === "percentage") {
         return (
-          <Tag colorScheme='yellow'>{`Discount ${props.promoValue}%`}</Tag>
+          <Tag colorScheme="yellow">{`Discount ${props.promoValue}%`}</Tag>
         );
       }
       if (props.promoTypeValue === "fixed_price") {
         return (
-          <Tag colorScheme='yellow'>{`Discount ${localeCurrency(
-            props.promoValue,
-            "IDR"
+          <Tag colorScheme="yellow">{`Discount ${convertToRupiah(
+            props.promoValue
           )}`}</Tag>
         );
       }
     }
     if (props.promoType === "buy_one_get_one") {
-      return <Tag colorScheme='yellow'>{"Buy One Get One"}</Tag>;
+      return <Tag colorScheme="yellow">{"Buy One Get One"}</Tag>;
     }
   };
   return (
@@ -41,25 +40,33 @@ export default function OrderItem(props: OrderItemProps) {
       <HStack>
         <Img
           as={"img"}
-          src={props.imgUrl}
+          src={`${import.meta.env.VITE_SERVER_URL}${props.imgUrl}`}
           borderRadius={"5px"}
-          crossOrigin='anonymous'
+          crossOrigin="anonymous"
           w={"75px"}
           h={"75px"}
           objectFit={"cover"}
           border={"1px solid #E2E2E2"}
         />
-        <VStack alignItems={"flex-start"} width={"100%"}>
+        <VStack
+          alignItems={"flex-start"}
+          width={"100%"}
+          spacing={"2px"}
+          borderRadius={"10px"}
+        >
           <HStack>
-            <Text fontSize={"medium"}>{props.name}</Text>
+            <Text fontSize={"16px"} fontWeight={"semibold"}>
+              {props.name}
+            </Text>
+
             {promoTag()}
           </HStack>
-          <Text fontSize={"medium"} fontWeight={"bold"}>
-            {`${props.quantity} x ${new Intl.NumberFormat("id-ID", {
-              style: "currency",
-              currency: "IDR",
-              maximumFractionDigits: 0,
-            }).format(props.price)}`}
+          <Text
+            fontSize={"14px"}
+            color={"secondaryColor"}
+          >{`Qty : ${props.quantity}`}</Text>
+          <Text fontSize={"18px"} fontWeight={"bold"}>
+            {convertToRupiah(props.price)}
           </Text>
         </VStack>
       </HStack>

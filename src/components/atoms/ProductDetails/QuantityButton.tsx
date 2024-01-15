@@ -9,6 +9,7 @@ import { fetchProductCart } from "../../../app/redux/slice/cart/getProductCart";
 
 interface IQuantityButtonProps {
   variant: "ProductCart" | "ProductDetail";
+  stock: number;
   initialQty?: number | undefined;
   userId?: number;
   branchId?: number;
@@ -20,6 +21,7 @@ export default function QuantityButton(
   props: IQuantityButtonProps = {
     initialQty: 1,
     variant: "ProductDetail",
+    stock: 1,
   }
 ) {
   const [quantity, setQuantity] = useState<number>(
@@ -85,7 +87,6 @@ export default function QuantityButton(
       p={"8px"}
       borderRadius={"10px"}
       border={"0.5px solid"}
-      w={"90px"}
       minW={"60px"}
       justify={"space-between"}
       padding={"2px"}
@@ -121,6 +122,7 @@ export default function QuantityButton(
         // border={"2px solid"}
         bg={"transparent"}
         color={"primaryColor"}
+        isDisabled={quantity === props.stock}
         size={"sm"}
       />
     </HStack>

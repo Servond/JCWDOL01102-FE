@@ -80,7 +80,7 @@ function App() {
           element={<PrivateRoute children={<OrderPage />} />}
         />
         <Route
-          path="/order/:id"
+          path="/order/:invoiceNo"
           element={<PrivateRoute children={<OrderDetailPage />} />}
         />
         <Route
