@@ -5,6 +5,7 @@ import Input from "./Input/input.theme";
 import Select from "./Select/Select.theme";
 import Menu from "./Menu/menu.theme";
 import Tabs from "./Tabs/tabs.theme";
+import Stepper from "./Stepper/stepper.theme";
 
 export const globalTheme = extendTheme({
   colors: {
@@ -39,5 +40,6 @@ export const globalTheme = extendTheme({
     Select,
     Menu,
     Tabs,
+    Stepper,
   },
 });

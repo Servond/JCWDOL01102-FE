@@ -11,17 +11,20 @@ import {
 
 interface ShipperProps {
   shipper: "JNE" | "TIKI" | "POS";
-  name: string;
-  code: string;
-  price: number;
-  duration: string;
-  isOpen: boolean;
+  name?: string;
+  code?: string;
+  price?: number;
+  duration?: string;
+  isOpen?: boolean;
 }
 
 export default function Shipper(props: ShipperProps) {
   const orderState = useSelector((state: RootState) => state.order);
   const dispatch = useDispatch<AppDispatch>();
   const handleChangeCourier = () => {
+    if (!props.price || !props.duration || !props.code || !props.name) {
+      return;
+    }
     dispatch(
       setDataOrder({
         courier: {
@@ -47,55 +50,71 @@ export default function Shipper(props: ShipperProps) {
       })
     );
   };
+  const isValidData = () => {
+    if (!props.price || !props.duration || !props.code || !props.name) {
+      return false;
+    }
+    return true;
+  };
+  const handleSelectCourier = () => {
+    if (!props.price || !props.duration || !props.code || !props.name) {
+      return;
+    }
+    dispatch(
+      setCourier({
+        name:
+          props.shipper === "JNE"
+            ? "Jalur Nugraha Ekakurir (JNE)"
+            : props.shipper === "TIKI"
+            ? "Titipan Kilat (TIKI)"
+            : "POS Indonesia",
+        code: props.code,
+        price: props.price,
+        etd: props.duration,
+        image:
+          props.shipper === "JNE"
+            ? "./logo/jne.png"
+            : props.shipper === "TIKI"
+            ? "./logo/tiki.png"
+            : "./logo/pos.png",
+      })
+    );
+    dispatch(setIsOpenDrawer(false));
+    handleChangeCourier();
+  };
   return (
-    <Box
-      maxHeight={props.isOpen ? "fit-content" : "0"}
-      overflow='hidden'
-      transformOrigin='top'
-      boxSizing='border-box'
-      onClick={() => {
-        dispatch(
-          setCourier({
-            name:
-              props.shipper === "JNE"
-                ? "Jalur Nugraha Ekakurir (JNE)"
-                : props.shipper === "TIKI"
-                ? "Titipan Kilat (TIKI)"
-                : "POS Indonesia",
-            code: props.code,
-            price: props.price,
-            etd: props.duration,
-            image:
-              props.shipper === "JNE"
-                ? "./logo/jne.png"
-                : props.shipper === "TIKI"
-                ? "./logo/tiki.png"
-                : "./logo/pos.png",
-          })
-        );
-        dispatch(setIsOpenDrawer(false));
-        handleChangeCourier();
-      }}
-    >
-      <Divider my='10px' />
-      <VStack
-        alignItems='flex-start'
-        gap='0px'
-        cursor='pointer'
-        _hover={{ fontWeight: "500" }}
-        flexDirection='column' // Set flexDirection to "column"
+    <>
+      <Box
+        maxHeight={props.isOpen ? "fit-content" : "0"}
+        overflow='hidden'
+        transformOrigin='top'
+        boxSizing='border-box'
+        onClick={() => {
+          isValidData() && handleSelectCourier();
+        }}
       >
-        <Text fontSize='medium'>
-          {`${props.name} (${new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            maximumFractionDigits: 0,
-          }).format(props.price)})`}
-        </Text>
-        <Text fontSize='small' color='gray.600'>
-          {`Estimasi ${props.duration} hari`}
-        </Text>
-      </VStack>
-    </Box>
+        <Divider my='10px' />
+        <VStack
+          alignItems='flex-start'
+          gap='0px'
+          cursor='pointer'
+          _hover={{ fontWeight: "500" }}
+          flexDirection='column' // Set flexDirection to "column"
+        >
+          <Text fontSize='medium'>
+            {`${props.name} (${
+              new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                maximumFractionDigits: 0,
+              }).format(props.price ?? 0) ?? ""
+            })`}
+          </Text>
+          <Text fontSize='small' color='gray.600'>
+            {`Estimasi ${props.duration ?? "-"} hari`}
+          </Text>
+        </VStack>
+      </Box>
+    </>
   );
 }

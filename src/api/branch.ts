@@ -10,3 +10,15 @@ export const getAllBranch = () => {
     },
   });
 };
+
+
+export const getBranchDetail = () => {
+  return adminServer.get<IApiResponse<IBranchResponseData>>(
+    `/api/branches/detail`,
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
+  );
+};

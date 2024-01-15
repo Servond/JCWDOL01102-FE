@@ -33,20 +33,8 @@ export const fetchOrderProduct = createAsyncThunk(
 
 const initialState: IOrderSlice = {
   courier: null,
-  cart: [
-    {
-      id: 14,
-      name: "Product 1",
-      price: 14000,
-      qty: 2,
-    },
-    {
-      id: 19,
-      name: "",
-      qty: 5,
-      price: 30000,
-    },
-  ],
+  cart: [],
+  promotion: [],
   branchId: 1,
   isOpenDrawer: false,
   dataOrder: {
@@ -54,6 +42,14 @@ const initialState: IOrderSlice = {
     branchId: 1,
     origin: 1,
     destination: 2,
+    courier: {
+      code: "-",
+      name: "-",
+      etd: "-",
+      image: "-",
+      price: 0,
+      shipper: "-",
+    },
   },
   products: [],
   statusCode: 0,
@@ -61,6 +57,7 @@ const initialState: IOrderSlice = {
   paymentCode: "",
   productAmount: 0,
   shippingAmount: 0,
+  cutPrice: 0,
   totalAmount: 0,
 };
 
@@ -96,6 +93,19 @@ const orderSlice = createSlice({
     },
     setTotalAmount: (state, action) => {
       state.totalAmount = action.payload;
+      state.dataOrder = {
+        ...state.dataOrder,
+        totalAmount: action.payload,
+      };
+    },
+    setCart: (state, action) => {
+      state.cart = action.payload;
+    },
+    setPromotion: (state, action) => {
+      state.promotion = action.payload;
+    },
+    setCutPrice: (state, action) => {
+      state.cutPrice = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -121,6 +131,9 @@ export const {
   setProductAmount,
   setShippingAmount,
   setTotalAmount,
+  setCart,
+  setPromotion,
+  setCutPrice,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

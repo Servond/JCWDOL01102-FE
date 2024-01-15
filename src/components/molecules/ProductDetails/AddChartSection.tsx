@@ -16,6 +16,7 @@ import { fetchProductCart } from "../../../app/redux/slice/cart/getProductCart";
 interface IAddChartSectionProps {
   flexGrow: string;
   productId: number;
+  stock: number;
 }
 
 export default function AddChartSection(props: IAddChartSectionProps) {
@@ -34,12 +35,17 @@ export default function AddChartSection(props: IAddChartSectionProps) {
     (state: RootState) => state.manageCart.apiState
   );
   const carts = useSelector((state: RootState) => state.getCart.cart);
+  const generateCheckoutFailCheck = () => {
+    if (!isAuthenticated) {
+      return "Please login to buy our grocery";
+    } else if (props.stock === 0) {
+      return "Sold Out";
+    }
+  };
   const onAddCart = () => {
-    console.log(quantity);
     const index = carts.findIndex(
       (item) => props.productId === item.product.id
     );
-    console.log("index : ", index);
     let quantityFinal: number;
     if (carts.length === 0 || index < 0) {
       quantityFinal = quantity;
@@ -98,9 +104,10 @@ export default function AddChartSection(props: IAddChartSectionProps) {
         justify={"space-between"}
         boxShadow={"0 -2px 6px -1px rgba(0, 0, 0, 0.1)"}
       >
-        {isAuthenticated ? (
+        {isAuthenticated && props.stock > 0 ? (
           <>
             <QuantityButton
+              stock={props.stock}
               onQuantityChange={setQuantity}
               variant="ProductDetail"
             />
@@ -110,7 +117,7 @@ export default function AddChartSection(props: IAddChartSectionProps) {
           </>
         ) : (
           <Heading fontSize={"16px"} color={"secondaryColor"}>
-            Please login to buy our grocery
+            {generateCheckoutFailCheck()}
           </Heading>
         )}
       </HStack>

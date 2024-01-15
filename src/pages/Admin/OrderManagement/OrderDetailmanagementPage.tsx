@@ -4,27 +4,33 @@ import {
   Card,
   CardBody,
   Divider,
+  Flex,
   HStack,
   Img,
   Spacer,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { FaAngleDoubleLeft } from "react-icons/fa";
+import { DateTime } from "luxon";
+import { useEffect, useState } from "react";
+import { FaAngleDoubleLeft, FaRegCalendarAlt } from "react-icons/fa";
+import { IoPerson } from "react-icons/io5";
+import { LiaMoneyBillWaveAltSolid } from "react-icons/lia";
+import { MdLocationPin, MdOutlinePhoneAndroid } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { getOrderDetailDashboard } from "../../../app/redux/slice/Admin/orderManagement/orderDetailSlice";
+import { AppDispatch, RootState } from "../../../app/redux/store";
 import ChakraTable, {
   Column,
   DataType,
 } from "../../../components/atoms/Table/Table";
-import { localeCurrency } from "../../../utils/function/localeCurrency";
-import { DateTime } from "luxon";
-import OrderStatus from "../../../components/organism/Admin/OrderStatus/OrderStatus";
+import InfoCard from "../../../components/molecules/Admin/Order/InfoCard";
 import OrderAction from "../../../components/organism/Admin/OrderAction/OrderAction";
+import OrderStatus from "../../../components/organism/Admin/OrderStatus/OrderStatus";
 import { orderStatusConstants } from "../../../data/order/orderStatusConstants";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../app/redux/store";
-import { useEffect, useState } from "react";
-import { getOrderDetailDashboard } from "../../../app/redux/slice/Admin/orderManagement/orderDetailSlice";
+import { localeCurrency } from "../../../utils/function/localeCurrency";
+
 interface IData extends DataType {
   id: number;
   image: string;
@@ -120,7 +126,7 @@ export default function OrderDetailmanagementPage() {
   return (
     <>
       <VStack gap={5} overflow={"auto"} minW={"800px"}>
-        <Card width={"100%"}>
+        <Card width={"100%"} paddingRight={"200px"}>
           <CardBody>
             <Box
               position={"absolute"}
@@ -162,36 +168,47 @@ export default function OrderDetailmanagementPage() {
               />
             </HStack>
             <Divider my={3} />
-            <Text fontSize={"xl"} fontWeight={"bold"}>
-              Pembeli
-            </Text>
-            <Text fontSize={"xl"}>
-              {orderDetailState.data?.data.receivedName ?? ""}
-            </Text>
-            <Text fontSize={"xl"} fontWeight={"bold"}>
-              Alamat
-            </Text>
-            <Text fontSize={"xl"}>
-              {orderDetailState.data?.data.address ?? ""}
-            </Text>
-            <Text fontSize={"xl"} fontWeight={"bold"}>
-              Nomor Telepon
-            </Text>
-            <Text fontSize={"xl"}>
-              {orderDetailState.data?.data.phone ?? ""}
-            </Text>
-            <Text fontSize={"xl"} fontWeight={"bold"}>
-              Tanggal Transaksi
-            </Text>
-            <Text fontSize={"xl"}>
-              {DateTime.fromISO(
-                orderDetailState.data?.data.createdAt ??
-                  new Date().toISOString()
-              ).toLocaleString(DateTime.DATETIME_MED)}
-            </Text>
+            <Flex width={"650px"} flexWrap={"wrap"} gap={2}>
+              <InfoCard
+                title={"Pembeli"}
+                value={orderDetailState.data?.data.receivedName ?? ""}
+                icon={<IoPerson size={"50px"} color={"#718096"} />}
+              />
+
+              <InfoCard
+                title={"Alamat"}
+                value={orderDetailState.data?.data.address ?? ""}
+                icon={<MdLocationPin size={"50px"} color={"#718096"} />}
+              />
+
+              <InfoCard
+                title={"Nomor Telepon"}
+                value={orderDetailState.data?.data.phone ?? ""}
+                icon={<MdOutlinePhoneAndroid size={"50px"} color={"#718096"} />}
+              />
+
+              <InfoCard
+                title='Tanggal Transaksi'
+                value={DateTime.fromISO(
+                  orderDetailState.data?.data.createdAt ??
+                    new Date().toISOString()
+                ).toLocaleString(DateTime.DATETIME_MED)}
+                icon={<FaRegCalendarAlt size={"50px"} color={"#718096"} />}
+              />
+              <InfoCard
+                title={"Total"}
+                value={localeCurrency(
+                  orderDetailState.data?.data.total ?? 0,
+                  "IDR"
+                )}
+                icon={
+                  <LiaMoneyBillWaveAltSolid size={"50px"} color={"#718096"} />
+                }
+              />
+            </Flex>
           </CardBody>
         </Card>
-        <Card width={"100%"}>
+        <Card width={"100%"} border={"1px solid #E2E8F0"}>
           <CardBody>
             <ChakraTable columns={columns} data={data} loading={false} />
           </CardBody>

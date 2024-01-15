@@ -50,7 +50,7 @@ export default function AppWrapper() {
   };
 
   const isShowNavbar = (path: string) => {
-    const whitelist = ["/", "/menu", "/cart", "/notification", "/explore"];
+    const whitelist = ["/", "/menu", "/cart", "/notifications", "/explore"];
     return whitelist.some((whitelist) => whitelist === path);
   };
 

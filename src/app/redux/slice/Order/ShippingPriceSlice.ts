@@ -111,9 +111,10 @@ const shippingPriceSlice = createSlice({
       })
       .addCase(fetchJnePrice.fulfilled, (state, action) => {
         state.statusJne = "done";
-        state.jneData = action.payload?.rajaongkir.results[0].costs!;
+        state.jneData = action.payload?.rajaongkir.results[0].costs! ?? [];
       })
       .addCase(fetchJnePrice.rejected, (state, action) => {
+        state.jneData = [];
         state.statusJne = "rejected";
         state.errorJne = action.payload as AxiosError;
       });
@@ -123,9 +124,10 @@ const shippingPriceSlice = createSlice({
       })
       .addCase(fetchTikiPrice.fulfilled, (state, action) => {
         state.statusTiki = "done";
-        state.tikiData = action.payload?.rajaongkir.results[0].costs!;
+        state.tikiData = action.payload?.rajaongkir.results[0].costs! ?? [];
       })
       .addCase(fetchTikiPrice.rejected, (state, action) => {
+        state.tikiData = [];
         state.statusTiki = "rejected";
         state.errorTiki = action.payload as AxiosError;
       });
@@ -135,9 +137,10 @@ const shippingPriceSlice = createSlice({
       })
       .addCase(fetchPosPrice.fulfilled, (state, action) => {
         state.statusPos = "done";
-        state.posData = action.payload?.rajaongkir.results[0].costs!;
+        state.posData = action.payload?.rajaongkir.results[0].costs! ?? [];
       })
       .addCase(fetchPosPrice.rejected, (state, action) => {
+        state.posData = [];
         state.statusPos = "rejected";
         state.errorPos = action.payload as AxiosError;
       });

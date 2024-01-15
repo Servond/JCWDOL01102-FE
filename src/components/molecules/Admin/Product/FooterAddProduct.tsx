@@ -14,13 +14,10 @@ export default function FooterAddProduct() {
         md: "flex-end",
       }}
     >
-      <Button onClick={handleCancel} colorScheme={"red"} variant={"outline"}>
+      <Button onClick={handleCancel} variant={"dashboardRejectButton"}>
         Batal
       </Button>
-      {/* <Button colorScheme={"green"} type='submit'>
-        Simpan & Tambah Produk
-      </Button> */}
-      <Button colorScheme={"green"} type='submit'>
+      <Button variant={"dashboardAccepButton"} type='submit'>
         Simpan Produk
       </Button>
     </HStack>

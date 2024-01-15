@@ -50,7 +50,6 @@ export default function ProductList() {
   };
   const prevSelectedPage = useRef<number>(0);
   useEffect(() => {
-    console.log(sortBy);
     if (branchId) {
       dispatch(
         fetchLandingpageProduct({

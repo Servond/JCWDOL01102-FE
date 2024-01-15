@@ -15,6 +15,7 @@ import LoadingCenter from "../../components/molecules/Loading";
 import LocationPermissionAlert from "../../components/molecules/LandingPage/LocationPermissionAlert";
 import { fetchProductCart } from "../../app/redux/slice/cart/getProductCart";
 import { updateUserById } from "../../app/redux/slice/User/updateUser";
+import { Navigate } from "react-router-dom";
 
 export default function LandingPage() {
   const isAuthenticated = useSelector(
@@ -24,6 +25,8 @@ export default function LandingPage() {
   const nearestBranchState = useSelector(
     (state: RootState) => state.nearestBranch.apiState
   );
+  const role = useSelector((state: RootState) => state.login.role);
+
   const dispatch = useDispatch<AppDispatch>();
   const { onClose, onOpen, isOpen } = useDisclosure();
   const [permissionValue, setPermission] = useState<string[]>([]);
@@ -48,18 +51,18 @@ export default function LandingPage() {
                   userId: user?.userId,
                   branchId: data.payload?.data?.id,
                 })
-              ).then((data) => console.log(data));
+              );
               dispatch(
                 updateUserById({
                   id: user?.userId,
                   branch_id: data.payload?.data?.id,
                 })
-              ).then((data) => console.log(data));
+              );
             }
           }
         );
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     };
     getLocation();
@@ -107,7 +110,9 @@ export default function LandingPage() {
     }
     return () => clearInterval(permissionListener);
   }, [isAuthenticated, dispatch, onClose, onOpen]);
-
+  if (["super_admin", "branch_admin"].includes(role)) {
+    return <Navigate to={"/dashboard"} />;
+  }
   return (
     <>
       <LocationPermissionAlert isOpen={isOpen} onClose={onClose} />

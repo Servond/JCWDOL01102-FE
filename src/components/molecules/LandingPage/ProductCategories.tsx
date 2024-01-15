@@ -11,9 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchLandingpageCategories } from "../../../app/redux/slice/LandingPage/getLandingpageCategories";
 import CarouselButton from "../../atoms/LandingPage/CarouselButton";
+import { AnimatePresence } from "framer-motion";
+import { setLandingpageProductFilterBy } from "../../../app/redux/slice/Explore/productPagination";
+import { useNavigate } from "react-router-dom";
+import { setCurrentCategoryIndex } from "../../../app/redux/slice/LandingPage/categories";
 
 export default function ProductCategories() {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,21 +46,59 @@ export default function ProductCategories() {
     (state: RootState) => state.landingPageCategories
   );
   const gridRef = useRef<HTMLDivElement>(null);
+  const [isFocused, setFocus] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const onFocus = () => setFocus(true);
+  const onBlur = () => setFocus(false);
+  const onClick = (filter: string, id: number) => {
+    return () => {
+      dispatch(setCurrentCategoryIndex(id));
+      dispatch(setLandingpageProductFilterBy(filter));
+      navigate("/explore");
+    };
+  };
   return (
-    <VStack spacing={"1rem"} w={"full"} align={"start"}>
+    <VStack
+      spacing={"1rem"}
+      w={"full"}
+      align={"start"}
+      position={"relative"}
+      onMouseEnter={onFocus}
+      onMouseLeave={onBlur}
+    >
       <Heading size={"md"}>Categories</Heading>
       <Skeleton
         isLoaded={apiState === "done" && categories.length > 0}
-        minH={"100px"}
+        minH={"50px"}
         borderRadius={"10px"}
+        w={"full"}
       >
         <Card
           w={"full"}
           maxWidth={`calc(${isMobile ? window.screen.width : "500"}px - 2rem)`}
           borderRadius={"10px"}
         >
-          <CarouselButton variant="next" onClick={onNext} />
-          <CarouselButton variant="previous" onClick={onPrev} />
+          <AnimatePresence>
+            {isFocused && categories.length > 0 && (
+              <>
+                <CarouselButton
+                  key={"next"}
+                  variant="next"
+                  onClick={onNext}
+                  gridHeight={gridRef.current?.offsetHeight}
+                  isFocused={isFocused}
+                />
+                <CarouselButton
+                  key={"previous"}
+                  variant="previous"
+                  onClick={onPrev}
+                  gridHeight={gridRef.current?.offsetHeight}
+                  isFocused={isFocused}
+                />
+              </>
+            )}
+          </AnimatePresence>
+
           <CardBody px={0}>
             <Grid
               gridTemplateColumns={"repeat(5, 1fr)"}
@@ -81,6 +123,7 @@ export default function ProductCategories() {
                     fontSize={"14px"}
                     noOfLines={1}
                     whiteSpace={"normal"}
+                    onClick={onClick(category.name, category.id)}
                   >
                     {category.name}
                   </Button>

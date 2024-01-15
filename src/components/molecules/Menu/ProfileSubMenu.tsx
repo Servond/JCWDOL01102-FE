@@ -13,7 +13,7 @@ export default function ProfileSubMenu(props: IProfileSubMenuProps) {
   return (
     <>
       <Divider />
-      <Link to={props.href ? props.href : ""}>
+      <Link to={props.href ? props.href : ""} replace={true}>
         <HStack
           py={"15px"}
           px={"25px"}

@@ -11,8 +11,15 @@ export default function ChangeAddressBtn(props: ChangeAddressBtnProps) {
       mt={"15px"}
       onClick={props.callback}
       isDisabled={props.isDisabled}
+      cursor={props.isDisabled ? "not-allowed" : "pointer"}
+      // _hover={{ bgColor: "rgba(226, 232, 240, 0.1)" }}
+      _disabled={{
+        bgColor: "gray.200",
+        cursor: "not-allowed",
+        color: "gray.500",
+      }}
     >
-      <Text color={"gray.600"}>Ubah Alamat</Text>
+      <Text>Ubah Alamat</Text>
     </Button>
   );
 }

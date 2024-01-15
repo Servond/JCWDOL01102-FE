@@ -1,24 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Box,
-  Center,
-  Divider,
-  Grid,
-  GridItem,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Divider, HStack, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { AiOutlineInbox } from "react-icons/ai";
-import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminProduct } from "../../../../app/redux/slice/Admin/getProduct/getProductSlice";
 import { AppDispatch, RootState } from "../../../../app/redux/store";
-import AdminProductItem from "../../../molecules/Admin/Product/AdminProduct";
-import HeaderAdminProduct from "../../../molecules/Admin/Product/HeaderAdminProduct";
+import { localeCurrency } from "../../../../utils/function/localeCurrency";
+import ChakraTable, { Column, DataType } from "../../../atoms/Table/Table";
+import ProductAction from "../../../molecules/Admin/Product/ProductDetail/ProductAction";
 import SearchAdminProduct from "../../../molecules/Admin/Product/SearchAdminProduct";
-import TitleAdminProduct from "../../../molecules/Admin/Product/TitleAdminProduct";
+import Paginate from "../../../molecules/Paginate";
 import "./../../../../paginate-style.css";
+
+interface IData extends DataType {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  category: string;
+  imageUrl: string;
+}
+
 export default function ProductListManagementWeb() {
   const getAdminProductState = useSelector(
     (state: RootState) => state.getAdminProduct
@@ -32,6 +33,7 @@ export default function ProductListManagementWeb() {
   const [pageOffset, setPageOffset] = useState(1);
   const [isRefresh, setIsRefresh] = useState(false);
   const [sortBy, setSortBy] = useState("id");
+  const [data, setData] = useState<IData[]>([]);
   const [orderDirection, setOrderDirection] = useState("asc");
   const handleRefresh = () => {
     setIsRefresh(!isRefresh);
@@ -60,6 +62,22 @@ export default function ProductListManagementWeb() {
     userState.token,
   ]);
 
+  useEffect(() => {
+    const payload: IData[] = [];
+    getAdminProductState.data.data.forEach((item: any) => {
+      payload.push({
+        key: item.id.toString(),
+        id: item.id as number,
+        name: item.name as string,
+        price: item.price as number,
+        stock: item.stock as number,
+        category: item.category.name,
+        imageUrl: `${import.meta.env.VITE_SERVER_URL}${item.imageUrl}`,
+      });
+    });
+    setData(payload);
+  }, [getAdminProductState.data.data]);
+
   const handlePageChange = (selectedItem: any) => {
     setPageOffset(selectedItem.selected + 1);
   };
@@ -68,94 +86,92 @@ export default function ProductListManagementWeb() {
     setProductName(value);
   };
 
-  return (
-    <Box w={"100%"} minH={"100vh"} overflowY={"scroll"} overflowX={"scroll"}>
-      <VStack
-        w={{ base: "100%", lg: "90%" }}
-        m={{ base: "0 auto", lg: "auto" }}
-        padding={"15px"}
-        minW={"800px"}
-      >
-        <TitleAdminProduct />
-        <VStack
-          w={"100%"}
-          bgColor={"white"}
-          minH={"100px"}
-          borderRadius={"10px"}
-          p={"15px"}
-        >
-          <SearchAdminProduct
-            handleSearch={handleSearch}
-            setCategoryId={setCategoryId}
-            setSortBy={setSortBy}
-            setOrderDirection={setOrderDirection}
-            key={"Search"}
+  const columns: Column[] = [
+    {
+      title: "Nama Produk",
+      dataIndex: "name",
+      key: "name",
+      maxWidth: "200px",
+      render(text, record) {
+        return (
+          <HStack>
+            <Box
+              w={"50px"}
+              h={"50px"}
+              bgImage={`url(${record.imageUrl})`}
+              bgSize={"cover"}
+              bgPosition={"center"}
+              borderRadius={"10px"}
+            />
+            <Text>{text}</Text>
+          </HStack>
+        );
+      },
+    },
+    {
+      title: "Harga",
+      dataIndex: "price",
+      key: "price",
+      render(_text, record) {
+        return <Text>{localeCurrency(record.price as number, "IDR")}</Text>;
+      },
+    },
+    {
+      title: "Stok",
+      dataIndex: "stock",
+      key: "stock",
+    },
+    {
+      title: "Kategori",
+      dataIndex: "category",
+      key: "category",
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      maxWidth: "120px",
+      render(_text, record) {
+        return (
+          <ProductAction
+            key={record.id?.toString()}
+            id={record.id as number}
+            refresh={handleRefresh}
+            name='Action'
           />
-          <Divider my={"5px"} />
-          <Grid
-            key={"Grid"}
-            templateColumns={"repeat(14, 1fr)"}
-            gap={"1rem"}
-            rowGap={"5px"}
-            // justifyContent={"space-around"}
-            w={"100%"}
-          >
-            <HeaderAdminProduct />
-            <GridItem colSpan={14}>
-              <Divider my={"15px"} />
-            </GridItem>
-            {getAdminProductState.data.data.length === 0 && (
-              <GridItem colSpan={14}>
-                <Box width={"100%"} mt={"25px"}>
-                  <Center>
-                    <VStack>
-                      <AiOutlineInbox size={"50px"} color={"#718096"} />
-                      <Text color={"gray.500"}>Product Not Found</Text>
-                    </VStack>
-                  </Center>
-                </Box>
-              </GridItem>
-            )}
+        );
+      },
+    },
+  ];
 
-            {getAdminProductState.data?.data.map((item: any) => (
-              <AdminProductItem
-                key={item.id}
-                imageUrl={`${import.meta.env.VITE_SERVER_URL}${item.imageUrl}`}
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                stock={item.stock}
-                refresh={handleRefresh}
-                category={item.category.name}
-              />
-            ))}
-          </Grid>
-          <div id='container'>
-            {getAdminProductState.data.data.length !== 0 && (
-              <ReactPaginate
-                previousLabel='Previous'
-                nextLabel='Next'
-                pageClassName='page-item'
-                pageLinkClassName='page-link'
-                previousClassName='page-item'
-                previousLinkClassName='page-link'
-                nextClassName='page-item'
-                nextLinkClassName='page-link'
-                breakLabel='...'
-                breakClassName='page-item'
-                breakLinkClassName='page-link'
-                pageCount={getAdminProductState.data.totalPages ?? 1}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={2}
-                onPageChange={handlePageChange}
-                containerClassName='pagination'
-                activeClassName='active'
-                // forcePage={pageOffset}
-              />
-            )}
-          </div>
-        </VStack>
-      </VStack>
-    </Box>
+  return (
+    <VStack height={"full"} width={"full"} overflow={"auto"} minW={"900px"}>
+      {/* <TitleAdminProduct /> */}
+      <HStack w={"100%"} my={"15px"}>
+        <SearchAdminProduct
+          handleSearch={handleSearch}
+          setCategoryId={setCategoryId}
+          setSortBy={setSortBy}
+          setOrderDirection={setOrderDirection}
+          key={"Search"}
+        />
+      </HStack>
+      <Divider my={"5px"} />
+
+      <Box width={"full"} height={"full"} overflowX={"auto"} overflowY={"auto"}>
+        <ChakraTable columns={columns} data={data} loading={false} />
+      </Box>
+      <Box
+        display={
+          (getAdminProductState.data.totalPages ?? 0) > 1 ? "flex" : "none"
+        }
+      >
+        <Paginate
+          pageCount={getAdminProductState.data.totalPages ?? 1}
+          onPageChange={handlePageChange}
+          forcePage={pageOffset - 1}
+        />
+      </Box>
+    </VStack>
   );
 }

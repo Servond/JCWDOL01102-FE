@@ -5,6 +5,7 @@ export const fetchAddressList = createAsyncThunk(
   "addressList/fetchAddressList",
   async (id: number) => {
     const response = await getAddressList(id);
+    // thunkAPI.dispatch(addCountAddressList());
     return response.data.data;
   }
 );
@@ -25,9 +26,11 @@ export interface Address {
   longitude: string;
   isDefault: boolean;
   isDeleted: boolean;
+  isDisabled?: boolean;
 }
 
 interface AddressListState {
+  count: number;
   addressList: Address[];
   selectedAddressId?: number;
   status: "idle" | "pending" | "done" | "rejected";
@@ -35,6 +38,7 @@ interface AddressListState {
 }
 
 const initialState: AddressListState = {
+  count: 0,
   addressList: [],
   selectedAddressId: undefined,
   status: "idle",
@@ -47,6 +51,12 @@ const addressListSlice = createSlice({
   reducers: {
     selectAddress: (state, action) => {
       state.selectedAddressId = action.payload;
+    },
+    setAddressList: (state, action) => {
+      state.addressList = action.payload;
+    },
+    addCountAddressList: (state) => {
+      state.count += 1;
     },
   },
   extraReducers: (builder) => {
@@ -67,4 +77,5 @@ const addressListSlice = createSlice({
 
 export default addressListSlice.reducer;
 
-export const { selectAddress } = addressListSlice.actions;
+export const { selectAddress, setAddressList, addCountAddressList } =
+  addressListSlice.actions;

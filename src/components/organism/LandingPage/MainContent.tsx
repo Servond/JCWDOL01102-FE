@@ -21,7 +21,7 @@ export default function MainContent() {
         <LandingpageSearchbar
           placeHolder="Search store..."
           onChange={() => {}}
-          onClick={() => navigate("/explore")}
+          onClick={() => navigate("/explore", { state: { focus: true } })}
         />
       </VStack>
       <ProductCategories />

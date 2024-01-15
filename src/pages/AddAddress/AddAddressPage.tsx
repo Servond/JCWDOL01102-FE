@@ -18,7 +18,7 @@ export default function AddAddressPage() {
   const animation = motion ? undefined : `${zoom} 0.2s ease-in-out`;
   const navigate = useNavigate();
   const handleBack = () => {
-    navigate("/my-address");
+    navigate("/my-address", { replace: true });
   };
   return (
     <VStack animation={animation}>

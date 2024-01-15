@@ -104,7 +104,7 @@ const adminGetProductSlice = createSlice({
       state.currentPage = action.payload.currentPage;
     });
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    builder.addCase(getAdminProduct.rejected, (state, action) => {
+    builder.addCase(getAdminProduct.rejected, (state) => {
       state.status = "rejected";
       state.error = "error";
     });

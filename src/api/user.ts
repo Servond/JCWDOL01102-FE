@@ -9,11 +9,12 @@ import {
   UserPaginateResponse,
 } from "../data/user/interfaces";
 import { IApiResponseStatic } from "../data/interfaces";
+import { getToken } from "./admin/product";
 
-export const getUserById = (id: number, token: string) => {
+export const getUserById = (id: number) => {
   return adminServer.get(`api/users/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: getToken(),
     },
   });
 };
