@@ -46,6 +46,7 @@ import haversine from "haversine-distance";
 import { fetchCities } from "../../app/redux/slice/MasterData/CitiesSlice";
 import { getBranchDetail } from "../../api/branch";
 import { IoStorefrontSharp } from "react-icons/io5";
+import { constants } from "../../data/constants";
 
 export default function OrderPage() {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ export default function OrderPage() {
         longitude: parseFloat(selectedAddress!.longitude),
       };
       const distance = haversine(userLocation, branchLocation);
-      if (distance < 35000) {
+      if (distance < constants.maxDistance) {
         setIsCoverage(true);
       } else {
         setIsCoverage(false);

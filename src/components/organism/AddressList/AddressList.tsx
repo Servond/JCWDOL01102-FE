@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "../../../app/redux/store";
 import AddressCard from "../../molecules/AddressList/AddressCard";
 import LoadingCenter from "../../molecules/Loading";
 import haversine from "haversine-distance";
+import { constants } from "../../../data/constants";
 
 export default function AddressList() {
   const addressListState = useSelector((state: RootState) => state.addressList);
@@ -36,7 +37,7 @@ export default function AddressList() {
         const distance = haversine(userLocation, branchLocation);
         return {
           ...address,
-          isDisabled: distance > 35000,
+          isDisabled: distance > constants.maxDistance,
         };
       });
 
