@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Address } from "../../app/redux/slice/AddressList/addressListSlice";
 import { RootState } from "../../app/redux/store";
 import TitleHeader from "../../components/molecules/MyDetails/TitleHeader";
@@ -43,8 +43,11 @@ export default function UpdateAddressPage() {
     [addressListState.addressList, params.id]
   );
 
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
   const handleBack = () => {
-    navigate("/my-address", { replace: true });
+    const backUrl = query.get("back") ? `/${query.get("back")}` : "/my-address";
+    navigate(backUrl);
   };
   return (
     <VStack animation={animation}>

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Checkout() {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const navigate = useNavigate();
-  const onClick = () => navigate("/order");
+  const onClick = () => navigate("/order", { replace: true });
   return (
     <HStack
       mx={"-1rem"}

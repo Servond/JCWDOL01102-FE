@@ -22,7 +22,7 @@ export default function AddressFormField(props: AddressFormFieldProps) {
     <FormControl isInvalid={!!props.error && props.touched}>
       <FormLabel>{props.label}</FormLabel>
       <Input
-        type='text'
+        type={props.name === "phoneNumber" ? "number" : "text"}
         placeholder={props.placeholder}
         name={props.name}
         onChange={props.handleChange}

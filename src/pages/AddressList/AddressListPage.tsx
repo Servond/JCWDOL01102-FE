@@ -26,7 +26,10 @@ export default function AddressListPage() {
   const animation = motion ? undefined : `${zoom} 0.2s ease-in-out`;
 
   const handleAddAddress = () => {
-    navigate("/add-address");
+    const addAddressUrl = query.get("back")
+      ? `/add-address?back=my-address?back=order`
+      : "/add-address";
+    navigate(addAddressUrl);
   };
 
 

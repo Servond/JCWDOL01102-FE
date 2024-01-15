@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import {
@@ -45,9 +46,12 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
   const orderState = useSelector((state: RootState) => state.order);
 
   useEffect(() => {
-    console.log("origin", props.origin);
-    console.log("destination", props.destination);
-    if (!props.origin || !props.destination) {
+    if (
+      !props.origin ||
+      !props.destination ||
+      props.origin === "null" ||
+      props.destination === "null"
+    ) {
       return;
     }
     const data = {
@@ -63,7 +67,7 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
 
   const getTotalWeight = () => {
     let totalWeight = 0;
-    orderState.cart.forEach((item) => {
+    orderState.cart.forEach((item: any) => {
       const product = orderState.products.find(
         (product) => product.id === item.id
       );
@@ -72,9 +76,6 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
     return totalWeight / 1000;
   };
 
-  useEffect(() => {
-    console.log("courierPriceState", courierPriceState);
-  }, [courierPriceState]);
   return (
     <Box
       position={"fixed"}

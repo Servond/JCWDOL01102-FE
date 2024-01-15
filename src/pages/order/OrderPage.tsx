@@ -45,6 +45,7 @@ import {
 import haversine from "haversine-distance";
 import { fetchCities } from "../../app/redux/slice/MasterData/CitiesSlice";
 import { getBranchDetail } from "../../api/branch";
+import { IoStorefrontSharp } from "react-icons/io5";
 
 export default function OrderPage() {
   const navigate = useNavigate();
@@ -63,8 +64,11 @@ export default function OrderPage() {
   const cities = useSelector((state: RootState) => state.cities);
   const loginState = useSelector((state: RootState) => state.login);
   const [isCoverage, setIsCoverage] = useState(false);
+  const [isCoverageLoading, setIsCoverageLoading] = useState(true);
   const [cityName, setCityName] = useState("");
   const [destinationId, setDestinationId] = useState<string>("null");
+  const [branchName, setBranchName] = useState<string>("");
+
   const getLocationAndUpdateList = async () => {
     try {
       const position = await new Promise<GeolocationPosition>(
@@ -82,12 +86,12 @@ export default function OrderPage() {
         longitude: parseFloat(selectedAddress!.longitude),
       };
       const distance = haversine(userLocation, branchLocation);
-      console.log(distance);
       if (distance < 35000) {
         setIsCoverage(true);
       } else {
         setIsCoverage(false);
       }
+      setIsCoverageLoading(false);
     } catch (e) {
       console.error(e);
     }
@@ -97,14 +101,16 @@ export default function OrderPage() {
     const address = addressListState.addressList.find(
       (item) => item.isDefault === true
     );
+    setSelectedAddress(address ?? null);
     if (address) {
       getLocationAndUpdateList();
     }
-    setSelectedAddress(address ?? null);
   }, [addressListState.addressList]);
 
   useEffect(() => {
-    dispatch(fetchCities(selectedAddress?.provinceId));
+    if (selectedAddress?.provinceId)
+      dispatch(fetchCities(selectedAddress?.provinceId));
+    getLocationAndUpdateList();
   }, [selectedAddress]);
 
   useEffect(() => {
@@ -125,6 +131,7 @@ export default function OrderPage() {
   );
   const user = useSelector((state: RootState) => state.login.user);
   const carts = useSelector((state: RootState) => state.getCart.cart);
+  const cartState = useSelector((state: RootState) => state.getCart);
   const branchId = useSelector(
     (state: RootState) => state.nearestBranch.branch.id
   );
@@ -132,14 +139,14 @@ export default function OrderPage() {
   const getBranch = async () => {
     try {
       const response = await getBranchDetail();
+      setBranchName(response.data.data?.name as string);
       setDestinationId(String(response.data.data?.cityId));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated || carts.length === 0) {
       return;
     }
     getBranch();
@@ -152,7 +159,7 @@ export default function OrderPage() {
         userId: user?.userId,
       })
     );
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (carts.length === 0) return;
@@ -192,7 +199,7 @@ export default function OrderPage() {
     dispatch(setCart(payload));
     dispatch(setPromotion(promotions));
     dispatch(setDataOrder({ promotions: promotions }));
-  }, [carts, dispatch]);
+  }, [cartState, dispatch]);
 
   useEffect(() => {
     dispatch(
@@ -248,7 +255,7 @@ export default function OrderPage() {
               <VStack width={"90%"} alignItems={"flex-start"}>
                 <HStack width={"100%"}>
                   <Text fontSize={"medium"}>Alamat pengiriman kamu</Text>
-                  {!isCoverage && (
+                  {!isCoverage && !isCoverageLoading && (
                     <Text
                       fontSize={"8pt"}
                       fontWeight={600}
@@ -291,15 +298,21 @@ export default function OrderPage() {
             display={"flex"}
             flexDir={"column"}
           >
-            <Text fontSize={"medium"} fontWeight={"bold"} my={"5px"}>
-              Nama Toko
-            </Text>
+            <HStack>
+              <IoStorefrontSharp />
+              <Text fontSize={"medium"} fontWeight={"bold"} my={"5px"}>
+                {`Branch ${branchName}` ?? "-"}
+              </Text>
+            </HStack>
             {orderState.statusFetchProduct === "pending" ? (
               <LoadingCenter />
             ) : orderState.statusFetchProduct === "done" ? (
               orderState.products.map((item) => {
                 const productFromCart = orderState.cart.find(
                   (cart) => cart.id === item.id
+                );
+                const promo = orderState.promotion.find(
+                  (promo) => promo.productId === item.id
                 );
                 return (
                   <OrderItem
@@ -310,6 +323,9 @@ export default function OrderPage() {
                     }`}
                     price={item.price}
                     quantity={productFromCart?.qty ?? 0}
+                    promoType={promo?.type}
+                    promoValue={promo?.value}
+                    promoTypeValue={promo?.valueType}
                   />
                 );
               })
@@ -377,7 +393,7 @@ export default function OrderPage() {
             </Box>
           </CardBody>
         </Card>
-        <Card width={"100%"} cursor={"pointer"}>
+        {/* <Card width={"100%"} cursor={"pointer"}>
           <CardBody padding={"10px"}>
             <HStack justifyContent={"space-between"}>
               <Text fontSize={"medium"} fontWeight={"bold"} my={"5px"}>
@@ -386,7 +402,7 @@ export default function OrderPage() {
               <FaChevronRight />
             </HStack>
           </CardBody>
-        </Card>
+        </Card> */}
         <VStack width={"100%"} gap={0}>
           <Text
             fontSize={"smaller"}

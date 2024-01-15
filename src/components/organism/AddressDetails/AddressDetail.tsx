@@ -14,7 +14,7 @@ import {
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import * as Yup from "yup";
 import { createAddress, updateAddress } from "../../../api/address";
@@ -80,6 +80,8 @@ export default function AddressDetail(props: AddressDetailProps) {
     agree: false,
   };
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
   const [isLoading, setIsLoading] = useState(false);
   const loginState = useSelector((state: RootState) => state.login);
   const handleFormSubmit = async (values: AddressFormValues) => {
@@ -117,7 +119,8 @@ export default function AddressDetail(props: AddressDetailProps) {
         isClosable: true,
         position: "top",
       });
-      navigate("/my-address", { replace: true });
+      const backUrl = query.get("back") ? `/${query.get("back")}` : "/menu";
+      navigate(backUrl, { replace: true });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       setIsLoading(false);

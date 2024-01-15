@@ -6,7 +6,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddressLabel from "../../atoms/MyAddress/AddressLabel";
 import AddressName from "../../atoms/MyAddress/AddressName";
 import ChangeAddressBtn from "../../atoms/MyAddress/ChangeAddressButton";
@@ -32,9 +32,15 @@ export default function AddressCard(props: Props) {
   const handleClick = () => {
     dispatch(selectAddress(props.id));
   };
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
 
   const handleUpdate = () => {
-    navigate(`/update-address/${props.id}`);
+    const updateAddressUrl = query.get("back")
+      ? `/update-address/${props.id}?back=my-address?back=order`
+      : `/update-address/${props.id}`;
+    navigate(updateAddressUrl);
+    // navigate(`/update-address/${props.id}`);
   };
 
   return (
