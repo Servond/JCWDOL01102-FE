@@ -44,14 +44,13 @@ const initialState: IUserState = {
 };
 interface IFetchUserById {
   id: number;
-  token: string;
 }
 
 export const fetchUserById_ = createAsyncThunk(
   "user/getbyid",
   async (input: IFetchUserById) => {
     try {
-      const res = await getUserById(input.id, input.token);
+      const res = await getUserById(input.id);
       return res.data?.data;
     } catch (e: any) {
       return e?.response;

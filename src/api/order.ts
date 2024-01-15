@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IOrderWithDetail } from "../data/OrderDetail/interface";
 import { IResponseApi } from "../data/interfaces";
-import { IPaymentGateway } from "../data/order.interface";
+import {
+  IPaymentGateway,
+  IResponseNotifications,
+} from "../data/order.interface";
 import { IDataOrder } from "../data/order/interface";
-import { IOrderDetail } from "../data/order/orderDetail.interface";
 import { IPostOrderResponse } from "../data/order/postOrder.interface";
 import { RajaOngkirResponse } from "../data/rajaongkir/interface";
 import { getToken } from "./admin/product";
@@ -41,6 +43,17 @@ export const createTransaction = (data: IDataOrder) => {
 export const getOrderWithDetail = (invoiceNo: string) => {
   return server.get<IResponseApi<IOrderWithDetail>>(
     `/api/order/detail/${invoiceNo}`,
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
+  );
+};
+
+export const getNotification = (page: number, limit: number) => {
+  return server.get<IResponseNotifications>(
+    `/api/order/notifications/?page=${page}&pageSize=${limit}`,
     {
       headers: {
         Authorization: getToken(),

@@ -15,18 +15,12 @@ import { useEffect, useState } from "react";
 import { FaBox, FaChevronDown, FaChevronUp } from "react-icons/fa6";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchJnePrice,
-  fetchPosPrice,
-  fetchTikiPrice,
-} from "../../../app/redux/slice/Order/ShippingPriceSlice";
+import { fetchJnePrice } from "../../../app/redux/slice/Order/ShippingPriceSlice";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import LoadingCenter from "../../molecules/Loading";
 import Shipper from "../../molecules/Order/Shipper";
 import { setIsOpenDrawer } from "../../../app/redux/slice/Order/OrderSlice";
 import jnelogo from "../../../assets/logo/jne.png";
-import tikilogo from "../../../assets/logo/tiki.png";
-import poslogo from "../../../assets/logo/pos.png";
 interface ShipperPriceListProps {
   showShipper: boolean;
   origin?: string;
@@ -37,8 +31,8 @@ interface ShipperPriceListProps {
 export default function ShipperPriceList(props: ShipperPriceListProps) {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
   const [isOpenJne, setIsOpenJne] = useState(false);
-  const [isOpenTiki, setIsOpenTiki] = useState(false);
-  const [isOpenPos, setIsOpenPos] = useState(false);
+  // const [isOpenTiki, setIsOpenTiki] = useState(false);
+  // const [isOpenPos, setIsOpenPos] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const courierPriceState = useSelector(
     (state: RootState) => state.courierPrice
@@ -118,8 +112,8 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           cursor={"pointer"}
           onClick={() => {
             setIsOpenJne(!isOpenJne);
-            setIsOpenTiki(false);
-            setIsOpenPos(false);
+            // setIsOpenTiki(false);
+            // setIsOpenPos(false);
           }}
         >
           <Img as='img' crossOrigin='anonymous' src={jnelogo} width={"50px"} />
@@ -151,7 +145,7 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           ))
         )}
       </Box>
-      <Box border={"1px solid #E2E2E2"} borderRadius={"10px"} padding={"10px"}>
+      {/* <Box border={"1px solid #E2E2E2"} borderRadius={"10px"} padding={"10px"}>
         <Stack
           direction={"row"}
           spacing={"10px"}
@@ -218,7 +212,7 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
             />
           ))
         )}
-      </Box>
+      </Box> */}
     </Box>
   );
 }

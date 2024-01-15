@@ -1,4 +1,4 @@
-import { Box, Button, useToast } from "@chakra-ui/react";
+import { Box, Button, useMediaQuery, useToast } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { changeDefaultAddress } from "../../../api/address";
 import { fetchAddressList } from "../../../app/redux/slice/AddressList/addressListSlice";
 
 export default function AddressButton() {
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
   const addressListState = useSelector((state: RootState) => state.addressList);
   const loginState = useSelector((state: RootState) => state.login);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,15 +48,8 @@ export default function AddressButton() {
       position={"absolute"}
       bottom={0}
       padding={"10px"}
-      width={{
-        base: "100%",
-        md: "500px",
-      }}
-      left={{
-        base: "0",
-        md: "calc(50% - 250px)",
-      }}
-      // maxW={"calc(100vw - 50px)"}
+      width={isMobile ? "100%" : "500px"}
+      left={isMobile ? "0" : "calc(50% - 250px)"}
       bgColor={"white"}
     >
       <Button

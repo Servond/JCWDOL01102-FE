@@ -61,7 +61,6 @@ export const postVoucher = (
   data: VoucherCreationAttributes,
   productId: number | null
 ) => {
-  console.log(data);
   return adminServer.post<IApiResponse<IVoucherAttributes>>(
     "api/vouchers",
     data,

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Button,
   Card,
   CardBody,
   FormControl,
@@ -16,14 +15,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { AxiosError } from "axios";
 import { ChangeEvent, FocusEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useDebounce } from "use-debounce";
+import { findDuplicateProduct } from "../../../../api/admin/product";
 import { getCategory } from "../../../../app/redux/slice/Admin/category/AdminCategorySlice";
 import { AppDispatch, RootState } from "../../../../app/redux/store";
 import "./style.scss";
-import { AxiosError } from "axios";
-import { findDuplicateProduct } from "../../../../api/admin/product";
-import { useDebounce } from "use-debounce";
 interface ProductInformationFormProps {
   handleChange: (e: ChangeEvent<any>) => void;
   handleBlur: (e: FocusEvent<any, Element>) => void;

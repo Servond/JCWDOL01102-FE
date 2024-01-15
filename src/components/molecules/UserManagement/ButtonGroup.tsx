@@ -30,7 +30,6 @@ export default function ButtonGroup() {
           theme={SelectTheme}
           onChange={(option) => {
             const opt = option as OptionType;
-            console.log(opt.value);
             dispatch(setFilterBy(opt.value));
           }}
         />
@@ -44,7 +43,6 @@ export default function ButtonGroup() {
           theme={SelectTheme}
           onChange={(option) => {
             const opt = option as OptionType;
-            console.log(opt.value);
             dispatch(setSortBy(opt.value));
           }}
         />

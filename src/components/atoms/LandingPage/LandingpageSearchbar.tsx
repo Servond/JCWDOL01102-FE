@@ -1,13 +1,7 @@
-import {
-  Box,
-  Input,
-  InputGroup,
-  InputRightElement,
-  useMediaQuery,
-} from "@chakra-ui/react";
+import { Box, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import debounce from "debounce";
 import { ChangeEvent, useState } from "react";
 import { MdSearch } from "react-icons/md";
-import debounce from "debounce";
 
 interface ISearchBarProps {
   onChange: (key: string) => void;

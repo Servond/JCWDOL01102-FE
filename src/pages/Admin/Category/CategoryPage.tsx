@@ -130,7 +130,7 @@ export default function CategoryPage() {
       dataIndex: "action",
       key: "action",
       maxWidth: "80px",
-      render(text, record) {
+      render(_text, record) {
         return (
           <CategoryAction
             id={record.id as number}
@@ -144,13 +144,7 @@ export default function CategoryPage() {
     },
   ];
   return (
-    <Box
-      maxW={"100vw"}
-      maxH={"100vh"}
-      overflowY={"scroll"}
-      overflowX={"hidden"}
-      margin={"0 15px"}
-    >
+    <Box maxW={"100vw"} maxH={"100vh"} overflow={"auto"} margin={"0 15px"}>
       <VStack height={"full"} width={"full"} overflow={"auto"} minW={"800px"}>
         <HStack w={"100%"} my={"15px"}>
           <Input

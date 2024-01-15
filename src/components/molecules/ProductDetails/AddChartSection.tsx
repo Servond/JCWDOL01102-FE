@@ -43,11 +43,9 @@ export default function AddChartSection(props: IAddChartSectionProps) {
     }
   };
   const onAddCart = () => {
-    console.log(quantity);
     const index = carts.findIndex(
       (item) => props.productId === item.product.id
     );
-    console.log("index : ", index);
     let quantityFinal: number;
     if (carts.length === 0 || index < 0) {
       quantityFinal = quantity;

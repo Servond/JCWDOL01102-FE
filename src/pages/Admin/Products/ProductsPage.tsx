@@ -6,12 +6,7 @@ export default function ProductsPage() {
   // const [isMobile] = useMediaQuery("(max-width: 600px)");
 
   return (
-    <Box
-      maxW={"100vw"}
-      maxH={"100vh"}
-      overflowY={"scroll"}
-      overflowX={"hidden"}
-    >
+    <Box maxW={"100vw"} maxH={"100vh"} overflow={"auto"}>
       {/* {isMobile ? (
         <ProductListManagementMobile />
       ) : (

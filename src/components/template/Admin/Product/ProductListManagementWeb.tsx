@@ -91,6 +91,7 @@ export default function ProductListManagementWeb() {
       title: "Nama Produk",
       dataIndex: "name",
       key: "name",
+      maxWidth: "200px",
       render(text, record) {
         return (
           <HStack>
@@ -111,7 +112,7 @@ export default function ProductListManagementWeb() {
       title: "Harga",
       dataIndex: "price",
       key: "price",
-      render(text, record) {
+      render(_text, record) {
         return <Text>{localeCurrency(record.price as number, "IDR")}</Text>;
       },
     },
@@ -130,7 +131,7 @@ export default function ProductListManagementWeb() {
       dataIndex: "action",
       key: "action",
       maxWidth: "120px",
-      render(text, record) {
+      render(_text, record) {
         return (
           <ProductAction
             key={record.id?.toString()}
@@ -144,7 +145,7 @@ export default function ProductListManagementWeb() {
   ];
 
   return (
-    <VStack height={"full"} width={"full"} overflow={"auto"} minW={"800px"}>
+    <VStack height={"full"} width={"full"} overflow={"auto"} minW={"900px"}>
       {/* <TitleAdminProduct /> */}
       <HStack w={"100%"} my={"15px"}>
         <SearchAdminProduct
