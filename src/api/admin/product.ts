@@ -14,7 +14,11 @@ export const postCreateProduct = (file: File, data: IProductRequest) => {
   formData.append("weight", data.weight!.toString()!);
   formData.append("desc", data.desc!);
   formData.append("categoryId", data.categoryId!.toString()!);
-  return adminServer.post(`api/product`, formData);
+  return adminServer.post(`api/product`, formData, {
+    headers: {
+      Authorization: getToken(),
+    },
+  });
 };
 
 // {{base_url}}/api/product?page=1&limit=10&name&categoryId=

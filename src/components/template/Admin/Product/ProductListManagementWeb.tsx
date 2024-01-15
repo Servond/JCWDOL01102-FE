@@ -91,6 +91,7 @@ export default function ProductListManagementWeb() {
       title: "Nama Produk",
       dataIndex: "name",
       key: "name",
+      maxWidth: "200px",
       render(text, record) {
         return (
           <HStack>
@@ -144,7 +145,7 @@ export default function ProductListManagementWeb() {
   ];
 
   return (
-    <VStack height={"full"} width={"full"} overflow={"auto"} minW={"800px"}>
+    <VStack height={"full"} width={"full"} overflow={"auto"} minW={"900px"}>
       {/* <TitleAdminProduct /> */}
       <HStack w={"100%"} my={"15px"}>
         <SearchAdminProduct
