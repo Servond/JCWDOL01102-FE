@@ -4,8 +4,6 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Grid,
-  GridItem,
   HStack,
   Input,
   Modal,
@@ -16,19 +14,28 @@ import {
   ModalHeader,
   ModalOverlay,
   Spacer,
-  Text,
   VStack,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../app/redux/store";
 import React, { useEffect, useState } from "react";
-import { getCategoryPage } from "../../../app/redux/slice/Admin/category/AdminCategorySlice";
-import { createCategory } from "../../../api/admin/category";
-import Category from "../../../components/organism/Admin/category/Category";
-import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
+import { createCategory } from "../../../api/admin/category";
+import { getCategoryPage } from "../../../app/redux/slice/Admin/category/AdminCategorySlice";
+import { AppDispatch, RootState } from "../../../app/redux/store";
+import ChakraTable, {
+  Column,
+  DataType,
+} from "../../../components/atoms/Table/Table";
+import Paginate from "../../../components/molecules/Paginate";
+import CategoryAction from "../../../components/organism/Admin/category/CategoryAction";
+
+interface IData extends DataType {
+  id: number;
+  name: string;
+  totalProduct: number;
+}
 
 export default function CategoryPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,6 +44,7 @@ export default function CategoryPage() {
   const [refresh, setRefresh] = React.useState(false);
   const [name, setName] = React.useState("");
   const [pageOffset, setPageOffset] = React.useState(1);
+  const [data, setData] = React.useState<IData[]>([]);
 
   const handlePageChange = (selectedItem: any) => {
     setPageOffset(selectedItem.selected + 1);
@@ -92,85 +100,94 @@ export default function CategoryPage() {
       })
     );
   }, [dispatch, refresh, pageOffset, searchValue]);
+
+  useEffect(() => {
+    const payload: IData[] = [];
+    categoryState.pageData?.data.forEach((item) => {
+      payload.push({
+        id: item.id,
+        name: item.name,
+        totalProduct: item.totalProduct!,
+        key: item.id.toString(),
+      });
+    });
+    setData(payload);
+  }, [categoryState.pageData?.data]);
+
+  const columns: Column[] = [
+    {
+      title: "Nama Kategori",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Jumlah Produk",
+      dataIndex: "totalProduct",
+      key: "totalProduct",
+    },
+    {
+      title: "Aksi",
+      dataIndex: "action",
+      key: "action",
+      maxWidth: "80px",
+      render(text, record) {
+        return (
+          <CategoryAction
+            id={record.id as number}
+            name={record.name as string}
+            totalItem={record.totalProduct as number}
+            setRefresh={() => setRefresh(!refresh)}
+            key={record.id?.toString()}
+          />
+        );
+      },
+    },
+  ];
   return (
     <Box
       maxW={"100vw"}
       maxH={"100vh"}
       overflowY={"scroll"}
       overflowX={"hidden"}
+      margin={"0 15px"}
     >
-      <VStack padding={"15px"} height={"fit-content"}>
+      <VStack height={"full"} width={"full"} overflow={"auto"} minW={"800px"}>
         <HStack w={"100%"} my={"15px"}>
-          <Text fontSize='2xl' fontWeight='bold'>
-            Daftar Kategori
-          </Text>
+          <Input
+            placeholder='Cari Kategori'
+            width={"450px"}
+            onChange={(e) => setSearchCategory(e.target.value)}
+            value={searchCategory}
+          />
           <Spacer />
           <Button onClick={onOpen} variant={"outline"}>
             Tambah Kategori
           </Button>
         </HStack>
-        <HStack w={"100%"} my={"5px"}>
-          <Input
-            placeholder='Cari Kategori'
-            width={"450px"}
-            margin={"0"}
-            onChange={(e) => setSearchCategory(e.target.value)}
-            value={searchCategory}
-          />
-        </HStack>
-        <Grid
-          templateColumns={"repeat(3, 1fr)"}
-          width={"100%"}
-          justifyContent={"center"}
-          rowGap={"10px"}
+        <Box
+          width={"full"}
+          height={"full"}
+          overflowX={"auto"}
+          overflowY={"auto"}
         >
-          <GridItem colSpan={1}>
-            <Text fontWeight={"bold"}>Nama Kategori</Text>
-          </GridItem>
-          <GridItem colSpan={1} margin={"0 auto"}>
-            <Text fontWeight={"bold"}>Jumlah Produk</Text>
-          </GridItem>
-          <GridItem colSpan={1} margin={"0 auto"}>
-            <Text fontWeight={"bold"}>Aksi</Text>
-          </GridItem>
-          {categoryState.pageData?.data.length !== 0 &&
-            categoryState.pageData?.data.map((item) => (
-              <Category
-                id={item.id}
-                key={item.id}
-                name={item.name}
-                totalItem={item.totalProduct!}
-                setRefresh={() => setRefresh(!refresh)}
-              />
-            ))}
-          <GridItem
-            colSpan={3}
-            style={{ display: "flex", justifyContent: "center" }}
-          >
-            {categoryState.pageData?.data.length !== 0 && (
-              <ReactPaginate
-                previousLabel='Previous'
-                nextLabel='Next'
-                pageClassName='page-item'
-                pageLinkClassName='page-link'
-                previousClassName='page-item'
-                previousLinkClassName='page-link'
-                nextClassName='page-item'
-                nextLinkClassName='page-link'
-                breakLabel='...'
-                breakClassName='page-item'
-                breakLinkClassName='page-link'
-                pageCount={categoryState.pageData?.totalPages ?? 1}
-                marginPagesDisplayed={1}
-                pageRangeDisplayed={2}
-                onPageChange={handlePageChange}
-                containerClassName='pagination'
-                activeClassName='active'
-                // forcePage={pageOffset}
-              />
-            )}
-          </GridItem>
-        </Grid>
+          <ChakraTable
+            columns={columns}
+            data={data}
+            key={"id"}
+            loading={false}
+          />
+        </Box>
+        <Box
+          display={
+            (categoryState.pageData?.totalPages ?? 0) > 1 ? "flex" : "none"
+          }
+        >
+          <Paginate
+            pageCount={categoryState.pageData?.totalPages ?? 1}
+            onPageChange={handlePageChange}
+            forcePage={pageOffset - 1}
+          />
+        </Box>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
@@ -187,7 +204,6 @@ export default function CategoryPage() {
                 />
               </FormControl>
             </ModalBody>
-
             <ModalFooter>
               <Button colorScheme='blue' mr={3} onClick={onClose}>
                 Batal

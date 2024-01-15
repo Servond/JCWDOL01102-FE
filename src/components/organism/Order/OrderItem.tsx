@@ -1,13 +1,41 @@
-import { Divider, HStack, Img, Text, VStack } from "@chakra-ui/react";
+import { HStack, Img, Tag, Text, VStack } from "@chakra-ui/react";
+import { localeCurrency } from "../../../utils/function/localeCurrency";
 
 interface OrderItemProps {
   name: string;
   imgUrl: string;
   price: number;
   quantity: number;
+  promoType?: string;
+  promoTypeValue?: string;
+  promoValue?: number;
 }
 
 export default function OrderItem(props: OrderItemProps) {
+  const promoTag = () => {
+    if (
+      props.promoType === "price_cut" &&
+      props.promoValue &&
+      props.promoTypeValue
+    ) {
+      if (props.promoTypeValue === "percentage") {
+        return (
+          <Tag colorScheme='yellow'>{`Discount ${props.promoValue}%`}</Tag>
+        );
+      }
+      if (props.promoTypeValue === "fixed_price") {
+        return (
+          <Tag colorScheme='yellow'>{`Discount ${localeCurrency(
+            props.promoValue,
+            "IDR"
+          )}`}</Tag>
+        );
+      }
+    }
+    if (props.promoType === "buy_one_get_one") {
+      return <Tag colorScheme='yellow'>{"Buy One Get One"}</Tag>;
+    }
+  };
   return (
     <>
       <HStack>
@@ -18,11 +46,14 @@ export default function OrderItem(props: OrderItemProps) {
           crossOrigin='anonymous'
           w={"75px"}
           h={"75px"}
-          objectFit={"contain"}
+          objectFit={"cover"}
           border={"1px solid #E2E2E2"}
         />
         <VStack alignItems={"flex-start"} width={"100%"}>
-          <Text fontSize={"medium"}>{props.name}</Text>
+          <HStack>
+            <Text fontSize={"medium"}>{props.name}</Text>
+            {promoTag()}
+          </HStack>
           <Text fontSize={"medium"} fontWeight={"bold"}>
             {`${props.quantity} x ${new Intl.NumberFormat("id-ID", {
               style: "currency",

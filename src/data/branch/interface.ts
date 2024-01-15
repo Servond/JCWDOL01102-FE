@@ -6,6 +6,8 @@ export interface IBranchResponseData {
   latitude: string;
   longitude: string;
   address?: string;
+  provinceId?: number;
+  cityId?: number;
 }
 export interface IBranchWithDistanceAttributes extends IBranchResponseData {
   distanceToUser: number;

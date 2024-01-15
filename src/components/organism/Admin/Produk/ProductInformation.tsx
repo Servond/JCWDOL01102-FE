@@ -223,11 +223,6 @@ export default function ProductInformationForm(
                   </HStack>
                 </FormControl>
               </HStack>
-              <HStack className='h-stack-add-product'>
-                <Button my={"1rem"} colorScheme={"blue"}>
-                  Tambah Kategori
-                </Button>
-              </HStack>
             </GridItem>
           </Grid>
         </VStack>

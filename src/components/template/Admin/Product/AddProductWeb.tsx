@@ -59,7 +59,9 @@ export default function AddProductWeb(
       categoryId: props.categoryId ?? null,
       name: props.name ?? "",
       price: props.price ?? null,
-      image: props.image ?? null,
+      image: props.image
+        ? `${import.meta.env.VITE_SERVER_URL}${props.image}`
+        : "",
       stock: props.stock ?? null,
       branchId: props.branchId ?? 1,
       weight: props.weight ?? null,

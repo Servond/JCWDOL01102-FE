@@ -47,8 +47,15 @@ export default function AddressButton() {
       position={"absolute"}
       bottom={0}
       padding={"10px"}
-      width={"450px"}
-      maxW={"calc(100vw - 50px)"}
+      width={{
+        base: "100%",
+        md: "500px",
+      }}
+      left={{
+        base: "0",
+        md: "calc(50% - 250px)",
+      }}
+      // maxW={"calc(100vw - 50px)"}
       bgColor={"white"}
     >
       <Button
