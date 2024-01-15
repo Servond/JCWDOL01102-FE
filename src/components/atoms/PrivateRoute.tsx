@@ -12,7 +12,7 @@ export default function PrivateRoute(props: PrivateRouteProps) {
   );
   const loginState = useSelector((state: RootState) => state.login);
 
-  if (!props.roleAccess.includes(loginState.role)) {
+  if (!props.roleAccess.includes(loginState.role) && isAuthenticated) {
     return <Navigate to={"/dashboard"} />;
   }
 
