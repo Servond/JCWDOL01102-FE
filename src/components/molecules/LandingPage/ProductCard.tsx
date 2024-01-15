@@ -94,7 +94,7 @@ export default function ProductCard(props: IProductCardProps) {
             <Image
               onLoad={onLoad}
               onError={onLoad}
-              src={`http://${import.meta.env.VITE_SERVER_HOST}${
+              src={`${import.meta.env.VITE_SERVER_URL}${
                 props.product.imageUrl
               }`}
               alt="product picture"

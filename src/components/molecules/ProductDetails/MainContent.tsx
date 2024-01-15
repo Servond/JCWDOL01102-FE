@@ -24,7 +24,7 @@ export default function MainContent(props: IMainContentProps) {
     <VStack mx={"-1rem"} ref={boxRef} h={"100dvh"}>
       <Skeleton w={"full"} isLoaded={isLoaded} h={isLoaded ? "auto" : "200px"}>
         <Image
-          src={`http://${import.meta.env.VITE_SERVER_HOST}${
+          src={`${import.meta.env.VITE_SERVER_URL}${
             props.product.imageUrl
           }`}
           alt="product picture"

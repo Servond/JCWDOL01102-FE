@@ -41,7 +41,7 @@ export default function ProductCart(props: IProductCartProps) {
             <Image
               onLoad={onLoad}
               onError={onLoad}
-              src={`http://${import.meta.env.VITE_SERVER_HOST}${
+              src={`${import.meta.env.VITE_SERVER_URL}${
                 props.product.imageUrl
               }`}
               alt="product picture"
