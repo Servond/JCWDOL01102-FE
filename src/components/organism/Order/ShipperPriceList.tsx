@@ -151,7 +151,7 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
           ))
         )}
       </Box>
-      <Box border={"1px solid #E2E2E2"} borderRadius={"10px"} padding={"10px"}>
+      {/* <Box border={"1px solid #E2E2E2"} borderRadius={"10px"} padding={"10px"}>
         <Stack
           direction={"row"}
           spacing={"10px"}
@@ -218,7 +218,7 @@ export default function ShipperPriceList(props: ShipperPriceListProps) {
             />
           ))
         )}
-      </Box>
+      </Box> */}
     </Box>
   );
 }

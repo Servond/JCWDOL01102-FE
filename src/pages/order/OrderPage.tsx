@@ -13,6 +13,7 @@ import {
   Stack,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
@@ -161,9 +162,19 @@ export default function OrderPage() {
       })
     );
   }, [dispatch]);
-
+  const toast = useToast();
   useEffect(() => {
-    if (carts.length === 0) return;
+    if (carts.length === 0) {
+      toast({
+        title: "Keranjang Kosong",
+        description: "Kamu belum memilih produk",
+        status: "info",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+      navigate("/");
+    }
     const payload: ICart[] = carts.map((item) => {
       return {
         id: item.productId,
@@ -243,7 +254,7 @@ export default function OrderPage() {
   return (
     <>
       <VStack gap={"10px"} paddingBottom={"30px"}>
-        <TitleHeader title="Pengiriman" callback={handleBack} />
+        <TitleHeader title='Pengiriman' callback={handleBack} />
         <Divider />
         <Card
           cursor={"pointer"}
@@ -269,7 +280,7 @@ export default function OrderPage() {
                 </HStack>
                 <Box width={"100%"}>
                   <HStack>
-                    <PiMapPinFill color="#53B175" />
+                    <PiMapPinFill color='#53B175' />
                     <Text
                       fontSize={"medium"}
                       fontWeight={"bold"}
@@ -319,9 +330,7 @@ export default function OrderPage() {
                   <OrderItem
                     key={item.id}
                     name={item.name}
-                    imgUrl={`${import.meta.env.VITE_SERVER_URL}${
-                      item.imageUrl
-                    }`}
+                    imgUrl={item.imageUrl}
                     price={item.price}
                     quantity={productFromCart?.qty ?? 0}
                     promoType={promo?.type}
@@ -359,11 +368,11 @@ export default function OrderPage() {
                   width={"100%"}
                 >
                   <Img
-                    as="img"
+                    as='img'
                     src={orderState.courier.image}
                     maxH={"40px"}
                     maxW={"70px"}
-                    crossOrigin="anonymous"
+                    crossOrigin='anonymous'
                     objectFit={"contain"}
                   />
                   <VStack
