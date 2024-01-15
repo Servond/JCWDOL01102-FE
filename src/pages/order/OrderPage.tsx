@@ -232,12 +232,14 @@ export default function OrderPage() {
         totalProductPrice + orderState.shippingAmount - orderState.cutPrice
       )
     );
+    dispatch(setDataOrder({ branchId }));
   }, [
     orderState.products,
     dispatch,
     orderState.cart,
     orderState.shippingAmount,
     orderState.cutPrice,
+    branchId,
   ]);
 
   return (

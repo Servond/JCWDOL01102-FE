@@ -226,7 +226,7 @@ export const constants = {
       icon: FaSortNumericDown,
     },
   ] as OptionTypeWithIcon[],
-  maxDistance: 10000,
+  maxDistance: 20000,
 };
 
 export enum Permission {
