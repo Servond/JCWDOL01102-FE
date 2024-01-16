@@ -1,9 +1,13 @@
-import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import { BsCartCheck } from "react-icons/bs";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { SlWallet } from "react-icons/sl";
 import { orderStatusConstants } from "../../../data/order/orderStatusConstants";
 import { DateTime } from "luxon";
+import { FaCreativeCommonsNc, FaHandHolding } from "react-icons/fa6";
+import { TbBoxOff } from "react-icons/tb";
+import { IoMdDoneAll } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 interface NotificationProps {
   type: string;
@@ -39,7 +43,10 @@ export default function Notification(props: NotificationProps) {
   const convertDate = (time: string) => {
     return DateTime.fromISO(time).toLocaleString(DateTime.DATETIME_MED);
   };
-
+  const navigate = useNavigate();
+  const handleDetail = () => {
+    navigate(`/order/${props.orderNumber}`);
+  };
   const bodyText = () => {
     switch (props.type) {
       case orderStatusConstants.created.code:
@@ -84,13 +91,77 @@ export default function Notification(props: NotificationProps) {
   const icon = () => {
     switch (props.type) {
       case orderStatusConstants.created.code:
-        return <BsCartCheck size={"30px"} color={"#FBBF24"} />;
+        return (
+          <Icon
+            as={BsCartCheck}
+            width={"35px"}
+            height={"35px"}
+            color={"#FBBF24"}
+          />
+        );
       case orderStatusConstants.payment_success.code:
-        return <SlWallet size={"30px"} color={"#FBBF24"} />;
+        return (
+          <Icon
+            as={SlWallet}
+            width={"35px"}
+            height={"35px"}
+            color={"primaryColor"}
+          />
+        );
       case orderStatusConstants.payment_failed.code:
-        return <CiDeliveryTruck size={"35px"} color={"#FBBF24"} />;
+        return (
+          <Icon
+            as={FaCreativeCommonsNc}
+            width={"35px"}
+            height={"35px"}
+            color={"errorColor"}
+          />
+        );
+      case orderStatusConstants.shipped.code:
+        return (
+          <Icon
+            as={CiDeliveryTruck}
+            width={"35px"}
+            height={"35px"}
+            color={"primaryColor"}
+          />
+        );
+      case orderStatusConstants.canceled.code:
+        return (
+          <Icon
+            as={TbBoxOff}
+            width={"35px"}
+            height={"35px"}
+            color={"errorColor"}
+          />
+        );
+      case orderStatusConstants.received.code:
+        return (
+          <Icon
+            as={FaHandHolding}
+            width={"35px"}
+            height={"35px"}
+            color={"#FBBF24"}
+          />
+        );
+      case orderStatusConstants.done.code:
+        return (
+          <Icon
+            as={IoMdDoneAll}
+            width={"35px"}
+            height={"35px"}
+            color={"primaryColor"}
+          />
+        );
       default:
-        return <BsCartCheck size={"30px"} color={"#FBBF24"} />;
+        return (
+          <Icon
+            as={BsCartCheck}
+            width={"35px"}
+            height={"35px"}
+            color={"#FBBF24"}
+          />
+        );
     }
   };
   return (
@@ -102,6 +173,8 @@ export default function Notification(props: NotificationProps) {
       padding={"10px"}
       position={"relative"}
       paddingRight={"50px"}
+      cursor={"pointer"}
+      onClick={handleDetail}
     >
       <Text fontSize={"medium"}>{titleText()}</Text>
       <Text fontSize={"small"}>{bodyText()}</Text>
