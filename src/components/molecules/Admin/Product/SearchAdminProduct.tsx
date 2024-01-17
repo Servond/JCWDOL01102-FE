@@ -93,7 +93,7 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
       </InputGroup>
       <Spacer />
       <Select
-        placeholder='Katergori'
+        placeholder='Category'
         maxW={"200px"}
         onChange={(e) => {
           props.setCategoryId(e.target.value as unknown as number);
@@ -108,20 +108,20 @@ export default function SearchAdminProduct(props: SearchAdminProductProps) {
         })}
       </Select>
       <Select
-        placeholder='Urutkan'
+        placeholder='Filter'
         maxW={"200px"}
         onChange={(e) => {
           handleOrderBy(e.target.value as unknown as string);
         }}
       >
-        <option value={"nameAZ"}>Nama: A-Z</option>
-        <option value={"nameZA"}>Nama: Z-A</option>
-        <option value={"terbaru"}>Produk Terbaru</option>
-        <option value={"terlama"}>Produk Terlama</option>
-        <option value={"termurah"}>Produk Termurah</option>
-        <option value={"termahal"}>Produk Termahal</option>
-        <option value={"stok-terbanyak"}>Stok Terbanyak</option>
-        <option value={"stok-terendah"}>Stok Terendah</option>
+        <option value={"nameAZ"}>Name: A-Z</option>
+        <option value={"nameZA"}>Name: Z-A</option>
+        <option value={"terbaru"}>Newest Product</option>
+        <option value={"terlama"}>Oldest Product</option>
+        <option value={"termurah"}>Cheapest Product</option>
+        <option value={"termahal"}>Most Expensive Product</option>
+        <option value={"stok-terbanyak"}>Most Stock</option>
+        <option value={"stok-terendah"}>Least Stock</option>
       </Select>
       <Button onClick={handleAddProduct} variant={"outline"}>
         Add Product

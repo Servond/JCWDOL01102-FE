@@ -34,7 +34,7 @@ export default function CategoryAction(props: Props) {
     try {
       const response = await updateCategory(props.id, name);
       toast({
-        title: "Berhasil Mengubah Kategori",
+        title: "Success Adding Category",
         description: response.data.message,
         status: "success",
         duration: 3000,
@@ -46,7 +46,7 @@ export default function CategoryAction(props: Props) {
       onCloseUpdate();
     } catch (error: any) {
       toast({
-        title: "Gagal Mengubah Kategori",
+        title: "Failed Adding Category",
         description: error.response.data.message,
         status: "error",
         duration: 3000,
@@ -62,7 +62,7 @@ export default function CategoryAction(props: Props) {
     try {
       const response = await deleteCategoryById(props.id);
       toast({
-        title: "Berhasil Menghapus Kategori",
+        title: "Success Deleting Category",
         description: response.data.message,
         status: "success",
         duration: 3000,
@@ -71,7 +71,7 @@ export default function CategoryAction(props: Props) {
       props.setRefresh();
     } catch (error: any) {
       toast({
-        title: "Gagal Menghapus Kategori",
+        title: "Failed Deleting Category",
         description: error.response.data.message,
         status: "error",
         duration: 3000,
@@ -119,11 +119,11 @@ export default function CategoryAction(props: Props) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Hapus Kategori
+              Delete Category
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Apakah anda yakin ingin menghapus kategori ini?
+              Are you sure? You can't undo this action afterwards.
             </AlertDialogBody>
 
             <AlertDialogFooter>
@@ -132,7 +132,7 @@ export default function CategoryAction(props: Props) {
                 onClick={onClose}
                 variant={"dashboardAccepButton"}
               >
-                Batal
+                Cancel
               </Button>
               <Button
                 colorScheme='red'
@@ -143,7 +143,7 @@ export default function CategoryAction(props: Props) {
                 ml={3}
                 variant={"dashboardDeleteButton"}
               >
-                Hapus
+                Delete
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -157,11 +157,11 @@ export default function CategoryAction(props: Props) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Update Kategori
+              Update Category
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Masukkan nama kategori yang baru
+              Please input new category name
               <Input
                 my={3}
                 type='text'
@@ -176,7 +176,7 @@ export default function CategoryAction(props: Props) {
                 onClick={onCloseUpdate}
                 variant={"dashboardRejectButton"}
               >
-                Batal
+                Cancel
               </Button>
               <Button
                 colorScheme='red'
