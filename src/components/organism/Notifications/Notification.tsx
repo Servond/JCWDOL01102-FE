@@ -4,6 +4,7 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import { SlWallet } from "react-icons/sl";
 import { orderStatusConstants } from "../../../data/order/orderStatusConstants";
 import { DateTime } from "luxon";
+import { useNavigate } from "react-router-dom";
 
 interface NotificationProps {
   type: string;
@@ -93,6 +94,11 @@ export default function Notification(props: NotificationProps) {
         return <BsCartCheck size={"30px"} color={"#FBBF24"} />;
     }
   };
+
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(`/order/${props.orderNumber}`);
+  };
   return (
     <Box
       width={"100%"}
@@ -102,10 +108,12 @@ export default function Notification(props: NotificationProps) {
       padding={"10px"}
       position={"relative"}
       paddingRight={"50px"}
+      _hover={{ cursor: "pointer" }}
+      onClick={onClick}
     >
       <Text fontSize={"medium"}>{titleText()}</Text>
       <Text fontSize={"small"}>{bodyText()}</Text>
-      <Flex alignItems='center' position='absolute' top='10px' right='10px'>
+      <Flex alignItems="center" position="absolute" top="10px" right="10px">
         <Spacer />
         {icon()}
       </Flex>

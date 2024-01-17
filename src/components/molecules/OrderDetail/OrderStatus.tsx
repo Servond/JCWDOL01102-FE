@@ -25,6 +25,20 @@ export default function OrderStatus(props: IOrderStatusProps) {
   });
 
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const generateColor = (orderStatus: IOrderStatus[], index: number) => {
+    if (index + 1 === orderStatus.length) {
+      return "#53B175";
+    }
+
+    if (
+      props.orderStatus[index + 1].status.includes("failed") ||
+      props.orderStatus[index + 1].status.includes("cancel")
+    ) {
+      return "#FF4545";
+    } else {
+      return "#53B175";
+    }
+  };
 
   return (
     <motion.div
@@ -76,13 +90,9 @@ export default function OrderStatus(props: IOrderStatusProps) {
                 key={index}
               />
               <StepSeparator
-                key={"index"}
+                key={index}
                 style={{
-                  backgroundColor:
-                    status.status.includes("failed") ||
-                    status.status.includes("cancel")
-                      ? "red"
-                      : "#53B175",
+                  backgroundColor: generateColor(props.orderStatus, index),
                 }}
               />
             </Step>
