@@ -102,7 +102,7 @@ export default function ImageForm(props: ImageFormProps) {
           type={"file"}
           ref={props.fileRef}
           display={"none"}
-          accept='image/png, image/jpeg, image/jpg, image/webp'
+          accept='image/png, image/jpeg, image/jpg, image/gif'
           onChange={props.handleFile}
         />
       </GridItem>
