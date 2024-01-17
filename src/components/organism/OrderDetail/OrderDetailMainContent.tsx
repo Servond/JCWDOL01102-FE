@@ -20,6 +20,7 @@ import { AnimatePresence } from "framer-motion";
 import OrderNotFound from "../../atoms/OrderDetail/OrderNotFound";
 import FinishOrderAlert from "../../molecules/OrderDetail/FinishOrderAlert";
 import { resetUpdateOrderStatusState } from "../../../app/redux/slice/OrderStatus/OrderStatus";
+import { IOrderDetail } from "../../../data/order/orderDetail.interface";
 
 export default function OrderDetailMainContent() {
   const [isShow, setIsShow] = useState<boolean>(false);
@@ -46,6 +47,45 @@ export default function OrderDetailMainContent() {
   const onOpenStatus = () => setIsShow(true);
   const onCloseStatus = () => {
     setIsShow(false);
+  };
+  const generateButton = (orderDetail: Partial<IOrderDetail>) => {
+    if (
+      Object.keys(orderDetail).length > 0 &&
+      orderDetail.status.includes("received")
+    ) {
+      return (
+        <>
+          <Button
+            w={"full"}
+            onClick={onClick}
+            isLoading={updateOrderState.apiState === "pending"}
+          >
+            Finish Order
+          </Button>
+          <FinishOrderAlert
+            isOpen={isOpen}
+            onClose={onClose}
+            orderId={orderDetail.id}
+          />
+        </>
+      );
+    } else if (
+      Object.keys(orderDetail).length > 0 &&
+      orderDetail.status.includes("created")
+    ) {
+      return (
+        <Button
+          as={"a"}
+          w={"full"}
+          onClick={onClick}
+          isLoading={updateOrderState.apiState === "pending"}
+          href={orderDetail.howToPay}
+          target="_blank"
+        >
+          How To Pay
+        </Button>
+      );
+    }
   };
   const onClick = () => onOpen();
   useEffect(() => {
@@ -97,7 +137,7 @@ export default function OrderDetailMainContent() {
       w={"full"}
       position={"relative"}
       pb={"1rem"}
-      h={"100dvh"}
+      h={"auto"}
     >
       <TitleHeader
         title={"Order Detail"}
@@ -133,7 +173,6 @@ export default function OrderDetailMainContent() {
             h={apiState === "done" ? "auto" : "280px"}
             w={"full"}
             isLoaded={apiState === "done"}
-            mb={"1rem"}
           >
             {Object.keys(orderDetail).length > 0 && (
               <OrderDetails details={orderDetail.orderDetails!} />
@@ -142,23 +181,7 @@ export default function OrderDetailMainContent() {
           {apiState === "pending" ? (
             <Skeleton w={"full"} borderRadius={"18px"} h={"40px"} p={0} />
           ) : (
-            Object.keys(orderDetail).length > 0 &&
-            orderDetail.status.includes("received") && (
-              <>
-                <Button
-                  w={"full"}
-                  onClick={onClick}
-                  isLoading={updateOrderState.apiState === "pending"}
-                >
-                  Finish Order
-                </Button>
-                <FinishOrderAlert
-                  isOpen={isOpen}
-                  onClose={onClose}
-                  orderId={orderDetail.id}
-                />
-              </>
-            )
+            generateButton(orderDetail)
           )}
 
           <AnimatePresence>

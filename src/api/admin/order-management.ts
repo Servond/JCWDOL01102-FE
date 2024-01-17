@@ -15,7 +15,7 @@ export const fetchOrderManagement = (query: IQuery) => {
 
 export const updateOrderStatus = (orderId: number, status: string) => {
   return server.put(
-    `api/order/status/${orderId}`,
+    `api/order/user/status/${orderId}`,
     { status },
     {
       headers: {
