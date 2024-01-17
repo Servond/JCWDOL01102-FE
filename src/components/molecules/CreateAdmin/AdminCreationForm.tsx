@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { createUser } from "../../../app/redux/slice/userSlicer";
 import { useEffect } from "react";
-import Loading from "../../atoms/Loading";
 import Select from "react-select";
 import {
   SelectTheme,
@@ -68,7 +67,7 @@ export default function AdminCreationForm() {
   }, [postUserState]);
 
   return (
-    <Box minW="300px" w={"70%"} h={"full"} ref={boxRef}>
+    <Box minW="300px" w={"100%"} h={"full"} ref={boxRef}>
       <form
         onSubmit={formik.handleSubmit}
         style={{
@@ -192,9 +191,9 @@ export default function AdminCreationForm() {
             <Button
               type="submit"
               w={"200px"}
-              disabled={postUserState === "pending"}
+              isLoading={postUserState === "pending"}
             >
-              {postUserState === "pending" ? <Loading /> : "Create Admin"}
+              Create Admin
             </Button>
           </Flex>
         </VStack>

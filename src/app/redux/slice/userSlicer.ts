@@ -57,12 +57,22 @@ export const createUser = createAsyncThunk<
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
-      return thunkApi.rejectWithValue({
-        statusCode: e.response?.status,
-        message: e.response?.statusText,
-      });
+      if (e.response) {
+        return thunkApi.rejectWithValue({
+          statusCode: e.response?.status,
+          message: e.response?.data.message,
+        });
+      } else if (e.request) {
+        return thunkApi.rejectWithValue({
+          statusCode: 500,
+          message: e.code,
+        });
+      }
     }
-    return thunkApi.rejectWithValue(e as CreateUserResponse);
+    return thunkApi.rejectWithValue({
+      statusCode: 500,
+      message: (e as Error).message,
+    });
   }
 });
 

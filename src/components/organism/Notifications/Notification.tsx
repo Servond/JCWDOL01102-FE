@@ -164,6 +164,7 @@ export default function Notification(props: NotificationProps) {
         );
     }
   };
+
   return (
     <Box
       width={"100%"}
@@ -178,7 +179,7 @@ export default function Notification(props: NotificationProps) {
     >
       <Text fontSize={"medium"}>{titleText()}</Text>
       <Text fontSize={"small"}>{bodyText()}</Text>
-      <Flex alignItems='center' position='absolute' top='10px' right='10px'>
+      <Flex alignItems="center" position="absolute" top="10px" right="10px">
         <Spacer />
         {icon()}
       </Flex>

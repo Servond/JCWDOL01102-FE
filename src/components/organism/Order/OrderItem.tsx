@@ -37,7 +37,7 @@ export default function OrderItem(props: OrderItemProps) {
   };
   return (
     <>
-      <HStack>
+      <HStack spacing={"1rem"} border={"1px solid"} borderColor={"gray.200"} w={"full"} p={"1rem"} borderRadius={"18px"}>
         <Img
           as={"img"}
           src={`${import.meta.env.VITE_SERVER_URL}${props.imgUrl}`}

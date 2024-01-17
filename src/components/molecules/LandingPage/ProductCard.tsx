@@ -20,6 +20,7 @@ interface IProductCardProps {
 
 export default function ProductCard(props: IProductCardProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isManaging, setIsManaging] = useState<boolean>(false);
   const [isMediumMobile] = useMediaQuery(
     "(min-width: 320px) and (max-width: 425px)"
   );
@@ -36,7 +37,9 @@ export default function ProductCard(props: IProductCardProps) {
     (state: RootState) => state.login.isAuthenticated
   );
   const carts = useSelector((state: RootState) => state.getCart.cart);
+
   const onAddCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setIsManaging(true);
     e.stopPropagation();
     const index = carts.findIndex(
       (item) => props.product.id === item.product.id
@@ -63,6 +66,7 @@ export default function ProductCard(props: IProductCardProps) {
           : JSON.parse(localStorage.getItem("branch")!).id,
       })
     ).then((data) => {
+      setIsManaging(false);
       const isSuccess = data.payload?.statusCode?.toString().startsWith("2");
       dispatch(fetchProductCart({ userId, branchId }));
       toast({
@@ -134,6 +138,7 @@ export default function ProductCard(props: IProductCardProps) {
               mt={isMediumMobile ? "1rem" : "none"}
               w={isMediumMobile ? "full" : "auto"}
               onClick={onAddCart}
+              isLoading={isManaging}
               icon={
                 <HStack>
                   <FaBagShopping />
