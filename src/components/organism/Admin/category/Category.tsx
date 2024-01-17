@@ -40,7 +40,7 @@ export default function Category(props: Props) {
       try {
         const response = await updateCategory(props.id, name);
         toast({
-          title: "Berhasil Mengubah Kategori",
+          title: "Success Adding Category",
           description: response.data.message,
           status: "success",
           duration: 9000,
@@ -51,7 +51,7 @@ export default function Category(props: Props) {
         setUpdateButton("Ubah");
       } catch (error: any) {
         toast({
-          title: "Gagal Mengubah Kategori",
+          title: "Failed Adding Category",
           description: error.response.data.message,
           status: "error",
           duration: 9000,
@@ -71,7 +71,7 @@ export default function Category(props: Props) {
     try {
       const response = await deleteCategoryById(props.id);
       toast({
-        title: "Berhasil Menghapus Kategori",
+        title: "Success deleting category",
         description: response.data.message,
         status: "success",
         duration: 3000,
@@ -80,7 +80,7 @@ export default function Category(props: Props) {
       props.setRefresh();
     } catch (error: any) {
       toast({
-        title: "Gagal Menghapus Kategori",
+        title: "Failed deleting category",
         description: error.response.data.message,
         status: "error",
         duration: 3000,

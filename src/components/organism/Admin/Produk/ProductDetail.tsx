@@ -25,6 +25,21 @@ export default function ProductDetailForm(props: ProductDetailFormProps) {
     const maxAllowedSize = 1000000;
     const file = e.target.files?.[0];
     if (file) {
+      const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      if (!allowedExtensions.includes(fileExtension)) {
+        toast({
+          title: "Format gambar tidak didukung",
+          description: "Format yang didukung adalah .jpg .jpeg .png .gif",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        e.target.value = lastFile ? lastFile.name : "";
+        return;
+      }
+
       if (file.size > maxAllowedSize) {
         toast({
           title: "Ukuran gambar terlalu besar",

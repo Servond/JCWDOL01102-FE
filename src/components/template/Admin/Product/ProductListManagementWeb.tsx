@@ -88,7 +88,7 @@ export default function ProductListManagementWeb() {
 
   const columns: Column[] = [
     {
-      title: "Nama Produk",
+      title: "Product name",
       dataIndex: "name",
       key: "name",
       maxWidth: "200px",
@@ -109,7 +109,7 @@ export default function ProductListManagementWeb() {
       },
     },
     {
-      title: "Harga",
+      title: "Price",
       dataIndex: "price",
       key: "price",
       render(_text, record) {
@@ -117,12 +117,12 @@ export default function ProductListManagementWeb() {
       },
     },
     {
-      title: "Stok",
+      title: "Stock",
       dataIndex: "stock",
       key: "stock",
     },
     {
-      title: "Kategori",
+      title: "Category",
       dataIndex: "category",
       key: "category",
     },
