@@ -25,6 +25,18 @@ export const updateOrderStatus = (orderId: number, status: string) => {
   );
 };
 
+export const updateOrderStatusUser = (orderId: number, status: string) => {
+  return server.put(
+    `api/order/user/status/${orderId}`,
+    { status },
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
+  );
+};
+
 export const cancelOrder = (orderId: number) => {
   return server.put(
     `api/order/cancel/${orderId}`,

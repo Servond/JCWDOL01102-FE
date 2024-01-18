@@ -1,4 +1,4 @@
-import { HStack, Skeleton } from "@chakra-ui/react";
+import { HStack, Skeleton, useDisclosure } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { useEffect } from "react";
@@ -6,6 +6,7 @@ import { fetchCategoriesWithLimit } from "../../../app/redux/slice/Explore/getCa
 import ProductCategoryItem from "../../atoms/LandingPage/ProductCategoryItem";
 import MoreButton from "../../atoms/LandingPage/MoreButton";
 import { IBranchWithDistanceAttributes } from "../../../data/branch/interface";
+import CategoriesModal from "./CategoriesModal";
 
 export default function Categories() {
   const currentCategories = useSelector(
@@ -19,6 +20,7 @@ export default function Categories() {
   );
   const branch = useSelector((state: RootState) => state.nearestBranch.branch);
   const dispatch = useDispatch<AppDispatch>();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   useEffect(() => {
     if (Object.keys(branch).length === 0) {
@@ -51,7 +53,12 @@ export default function Categories() {
       {apiState === "done"
         ? categories.map((category, index) => {
             if (index === 5) {
-              return <MoreButton key={index} />;
+              return (
+                <>
+                  <MoreButton key={index} onClick={onOpen} />
+                  <CategoriesModal isOpen={isOpen} onClose={onClose} />
+                </>
+              );
             }
             return (
               <ProductCategoryItem

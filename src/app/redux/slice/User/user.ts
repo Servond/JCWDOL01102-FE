@@ -9,6 +9,7 @@ export interface IUser {
   deletedAt: string;
   image_id: string;
   name: string;
+  gender: string;
   email: string;
   password: string;
   address: string;

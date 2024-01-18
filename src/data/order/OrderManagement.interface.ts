@@ -45,3 +45,7 @@ interface IProduct {
     uniqueId: string;
   };
 }
+
+export interface IUpdateOrderStatusInput extends Pick<IOrderData, "status"> {
+  orderId: number;
+}

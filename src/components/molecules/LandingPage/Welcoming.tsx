@@ -10,6 +10,7 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/redux/store";
 import { useNavigate } from "react-router-dom";
+import avatar from "../../../../public/default.jpg";
 
 export default function Welcoming() {
   const userName = useSelector((state: RootState) => state.login.user?.name);
@@ -30,7 +31,7 @@ export default function Welcoming() {
           What are you looking for?
         </Text>
       </VStack>
-      <Avatar w={"32px"} h={"32px"} />
+      <Avatar w={"32px"} h={"32px"} src={avatar} />
     </HStack>
   ) : (
     <Flex

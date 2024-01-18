@@ -36,3 +36,8 @@ export interface IDetailOrder {
   order_id: number;
   product: IProductLandingPage;
 }
+
+export interface IGetOrderDetailParam {
+  invoiceNo: string;
+  branchId: number;
+}

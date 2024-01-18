@@ -55,8 +55,8 @@ export default function CategoryPage() {
     try {
       if (name === "") {
         toast({
-          title: "Gagal Menambahkan Kategori",
-          description: "Nama Kategori tidak boleh kosong",
+          title: "Failed Add Category",
+          description: "Category Name Cannot Be Empty",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -66,7 +66,7 @@ export default function CategoryPage() {
       }
       const response = await createCategory(name);
       toast({
-        title: "Berhasil Menambahkan Kategori",
+        title: "Success Add Category",
         description: response.data.message,
         status: "success",
         duration: 3000,
@@ -77,8 +77,8 @@ export default function CategoryPage() {
       onClose();
     } catch (error: any) {
       toast({
-        title: "Gagal Menambahkan Kategori",
-        description: error?.response?.data?.message ?? "Terjadi Kesalahan",
+        title: "Failed Add Category",
+        description: error?.response?.data?.message ?? "Unknown Error",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -116,17 +116,17 @@ export default function CategoryPage() {
 
   const columns: Column[] = [
     {
-      title: "Nama Kategori",
+      title: "Category Name",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Jumlah Produk",
+      title: "Total Item",
       dataIndex: "totalProduct",
       key: "totalProduct",
     },
     {
-      title: "Aksi",
+      title: "Action",
       dataIndex: "action",
       key: "action",
       maxWidth: "80px",
@@ -155,7 +155,7 @@ export default function CategoryPage() {
           />
           <Spacer />
           <Button onClick={onOpen} variant={"outline"}>
-            Tambah Kategori
+            Add Category
           </Button>
         </HStack>
         <Box
