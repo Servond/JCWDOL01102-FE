@@ -1,11 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { IApiResponse } from "../../../../data/interfaces";
+import { AxiosError } from "axios";
+import { getNearestBranch } from "../../../../api/landingPage";
 import {
   IBranchWithDistanceAttributes,
   IGetNearestBranchInput,
 } from "../../../../data/branch/interface";
-import { IApiResponse } from "../../../../data/interfaces";
-import { AxiosError } from "axios";
-import { getNearestBranch } from "../../../../api/landingPage";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 interface IGetNearestBranchState {
   apiState: "idle" | "pending" | "rejected" | "done";

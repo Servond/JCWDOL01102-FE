@@ -137,7 +137,7 @@ export default function OrderDetailMainContent() {
       w={"full"}
       position={"relative"}
       pb={"1rem"}
-      h={"auto"}
+      h={"100dvh"}
     >
       <TitleHeader
         title={"Order Detail"}

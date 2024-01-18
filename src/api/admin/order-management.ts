@@ -15,6 +15,18 @@ export const fetchOrderManagement = (query: IQuery) => {
 
 export const updateOrderStatus = (orderId: number, status: string) => {
   return server.put(
+    `api/order/status/${orderId}`,
+    { status },
+    {
+      headers: {
+        Authorization: getToken(),
+      },
+    }
+  );
+};
+
+export const updateOrderStatusUser = (orderId: number, status: string) => {
+  return server.put(
     `api/order/user/status/${orderId}`,
     { status },
     {
