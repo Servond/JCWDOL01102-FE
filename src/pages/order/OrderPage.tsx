@@ -26,6 +26,7 @@ import PaymentMethod from "../../components/template/order/PaymentMethod";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/redux/store";
 import {
+  clearCourier,
   fetchOrderProduct,
   setCart,
   setCutPrice,
@@ -126,6 +127,7 @@ export default function OrderPage() {
     if (orderState.statusFetchProduct === "pending") return;
     const productid = orderState.cart.map((item) => item.id).join(",");
     dispatch(fetchOrderProduct(productid));
+    dispatch(clearCourier());
   }, [dispatch, orderState.cart]);
 
   const isAuthenticated = useSelector(
