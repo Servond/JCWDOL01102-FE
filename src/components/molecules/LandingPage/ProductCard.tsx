@@ -101,7 +101,7 @@ export default function ProductCard(props: IProductCardProps) {
               src={`${import.meta.env.VITE_SERVER_URL}${
                 props.product.imageUrl
               }`}
-              alt="product picture"
+              alt='product picture'
               h={"100%"}
               w={"100%"}
               objectFit={"contain"}
@@ -125,7 +125,7 @@ export default function ProductCard(props: IProductCardProps) {
             align={"center"}
           >
             <ProductPrice
-              variant="productCard"
+              variant='productCard'
               promo={props.product.promotion[0]}
               price={props.product.price}
             />
@@ -133,7 +133,7 @@ export default function ProductCard(props: IProductCardProps) {
               isDisabled={!isAuthentcated || props.product.stock === 0}
               _hover={{ fontSize: "24px", transition: "0.2s ease" }}
               transition={"0.2s ease"}
-              aria-label=""
+              aria-label=''
               borderRadius={isMediumMobile ? "10px" : "full"}
               mt={isMediumMobile ? "1rem" : "none"}
               w={isMediumMobile ? "full" : "auto"}

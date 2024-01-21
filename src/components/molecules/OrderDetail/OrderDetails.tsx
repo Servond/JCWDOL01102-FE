@@ -22,18 +22,13 @@ export default function OrderDetails(props: IOrderDetailsProps) {
         <VStack justify={"start"} align={"start"} spacing={"8px"}>
           {props.details &&
             props.details.map((product, index) => (
-              <>
-                <OrderItem
-                  key={index}
-                  imgUrl={product.product.imageUrl}
-                  name={product.product.name}
-                  price={product.product.price}
-                  quantity={product.qty}
-                />
-                {/* {index < props.details.length - 1 ? (
-                    <Divider key={index} />
-                  ) : null} */}
-              </>
+              <OrderItem
+                key={index}
+                imgUrl={product.product.imageUrl}
+                name={product.product.name}
+                price={product.product.price}
+                quantity={product.qty}
+              />
             ))}
         </VStack>
       </CardBody>

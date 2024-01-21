@@ -80,7 +80,7 @@ export default function OrderDetailMainContent() {
           onClick={onClick}
           isLoading={updateOrderState.apiState === "pending"}
           href={orderDetail.howToPay}
-          target="_blank"
+          target='_blank'
         >
           How To Pay
         </Button>

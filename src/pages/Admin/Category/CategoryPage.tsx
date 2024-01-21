@@ -185,28 +185,32 @@ export default function CategoryPage() {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Tambah Kategori</ModalHeader>
+            <ModalHeader>Add Category</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormControl>
-                <FormLabel>Nama Kategori</FormLabel>
+                <FormLabel>Category Name</FormLabel>
                 <Input
                   isRequired
                   type='text'
-                  placeholder='Masukkan nama kategori'
+                  placeholder='Input category name'
                   onChange={(e) => setName(e.target.value)}
                 />
               </FormControl>
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme='blue' mr={3} onClick={onClose}>
-                Batal
+              <Button
+                mr={3}
+                onClick={onClose}
+                variant={"dashboardRejectButton"}
+              >
+                Cancel
               </Button>
               <Button
-                colorScheme='green'
+                variant={"dashboardAccepButton"}
                 onClick={() => handleCreateCategory(name)}
               >
-                Simpan
+                Save
               </Button>
             </ModalFooter>
           </ModalContent>

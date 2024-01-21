@@ -20,29 +20,36 @@ export default function OrderItem(props: OrderItemProps) {
     ) {
       if (props.promoTypeValue === "percentage") {
         return (
-          <Tag colorScheme="yellow">{`Discount ${props.promoValue}%`}</Tag>
+          <Tag colorScheme='yellow'>{`Discount ${props.promoValue}%`}</Tag>
         );
       }
       if (props.promoTypeValue === "fixed_price") {
         return (
-          <Tag colorScheme="yellow">{`Discount ${convertToRupiah(
+          <Tag colorScheme='yellow'>{`Discount ${convertToRupiah(
             props.promoValue
           )}`}</Tag>
         );
       }
     }
     if (props.promoType === "buy_one_get_one") {
-      return <Tag colorScheme="yellow">{"Buy One Get One"}</Tag>;
+      return <Tag colorScheme='yellow'>{"Buy One Get One"}</Tag>;
     }
   };
   return (
     <>
-      <HStack spacing={"1rem"} border={"1px solid"} borderColor={"gray.200"} w={"full"} p={"1rem"} borderRadius={"18px"}>
+      <HStack
+        spacing={"1rem"}
+        border={"1px solid"}
+        borderColor={"gray.200"}
+        w={"full"}
+        p={"1rem"}
+        borderRadius={"18px"}
+      >
         <Img
           as={"img"}
           src={`${import.meta.env.VITE_SERVER_URL}${props.imgUrl}`}
           borderRadius={"5px"}
-          crossOrigin="anonymous"
+          crossOrigin='anonymous'
           w={"75px"}
           h={"75px"}
           objectFit={"cover"}
