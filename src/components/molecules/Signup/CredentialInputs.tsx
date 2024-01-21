@@ -65,7 +65,8 @@ export default function CredetialInputs() {
         return (
           <AppInputPasword
             onChange={(e) => {
-              dispatch(setPasswordInputValue(e.target.value));
+              const data = e.target.value;
+              dispatch(setPasswordInputValue(data));
               formik.handleChange(e);
             }}
             onBlur={formik.handleBlur}
@@ -76,6 +77,10 @@ export default function CredetialInputs() {
         return (
           <AppInputPhoneNumber
             onChange={(e) => {
+              const data = e.target.value;
+              if (data.trim() === "" && data.length > 0) {
+                return;
+              }
               formik.handleChange(e);
             }}
             onBlur={() => formik.handleBlur}
@@ -87,6 +92,10 @@ export default function CredetialInputs() {
             prefixIcon={<MdOutlinePerson />}
             name="name"
             onChange={(e) => {
+              const data = e.target.value;
+              if (data.trim() === "" && data.length > 0) {
+                return;
+              }
               dispatch(setNameInputValue(e.target.value));
               formik.handleChange(e);
             }}
@@ -98,6 +107,10 @@ export default function CredetialInputs() {
         return (
           <AppInputEmail
             onChange={(e) => {
+              const data = e.target.value;
+              if (data.trim() === "" && data.length > 0) {
+                return;
+              }
               dispatch(setEmailInputValue(e.target.value));
               formik.handleChange(e);
             }}
