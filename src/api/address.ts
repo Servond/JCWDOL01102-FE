@@ -1,6 +1,6 @@
 import { AddressAttributes } from "../data/address/interface";
 import { getToken } from "./admin/product";
-import { adminServer, server } from "./server";
+import { adminServer } from "./server";
 
 export const createAddress = (id: number, data: AddressAttributes) => {
   return adminServer.post(`api/address/${id}`, data, {
@@ -19,16 +19,11 @@ export const getAddressList = (id: number) => {
 };
 
 export const changeDefaultAddress = (id: number, addressId: number) => {
-  const token = getToken();
-  return server.put(
-    `api/address/${id}/${addressId}`,
-    {},
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  );
+  return adminServer.put(`api/address/${id}/${addressId}`, {
+    headers: {
+      Authorization: getToken(),
+    },
+  });
 };
 
 export const updateAddress = (
@@ -36,7 +31,7 @@ export const updateAddress = (
   addressId: number,
   data: AddressAttributes
 ) => {
-  return server.patch(`api/address/${id}/${addressId}`, data, {
+  return adminServer.patch(`api/address/${id}/${addressId}`, data, {
     headers: {
       Authorization: getToken(),
     },

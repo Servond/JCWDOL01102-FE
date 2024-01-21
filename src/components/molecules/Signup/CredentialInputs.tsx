@@ -90,7 +90,7 @@ export default function CredetialInputs() {
         return (
           <AppInput
             prefixIcon={<MdOutlinePerson />}
-            name="name"
+            name='name'
             onChange={(e) => {
               const data = e.target.value;
               if (data.trim() === "" && data.length > 0) {
@@ -182,7 +182,7 @@ export default function CredetialInputs() {
                         isEmailAvailable === false
                       : !!generateError(field) && generateTouch(field)
                   }
-                  w="full"
+                  w='full'
                   key={index}
                 >
                   <FormLabel htmlFor={field.toLowerCase()} color={"forthColor"}>
@@ -195,7 +195,7 @@ export default function CredetialInputs() {
             })}
           </VStack>
           <SignupPolicy />
-          <PrimaryButton type="submit">
+          <PrimaryButton type='submit'>
             {postUserStatus === "pending" ? <Loading /> : "Sign Up"}
           </PrimaryButton>
         </VStack>

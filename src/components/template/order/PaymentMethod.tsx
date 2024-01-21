@@ -124,7 +124,7 @@ export default function PaymentMethod(props: PaymentMethodProps) {
       >
         <VStack gap={"10px"}>
           <TitleHeader
-            title="Metode Pembayaran"
+            title='Metode Pembayaran'
             callback={() => props.setShowPayment(false)}
           />
           <Divider />
@@ -154,7 +154,7 @@ export default function PaymentMethod(props: PaymentMethodProps) {
                 <img
                   src={paymentMethod.logoUrl}
                   alt={paymentMethod.name}
-                  crossOrigin="anonymous"
+                  crossOrigin='anonymous'
                   width={"80px"}
                   // height={"5px"}
                 />

@@ -71,7 +71,7 @@ export default function OrderStatus(props: IOrderStatusProps) {
 
         <Stepper
           index={activeStep}
-          orientation="vertical"
+          orientation='vertical'
           gap={"0px"}
           overflowY={"auto"}
           w={"full"}

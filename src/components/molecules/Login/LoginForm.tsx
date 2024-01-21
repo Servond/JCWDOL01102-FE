@@ -47,7 +47,7 @@ export default function LoginForm() {
             <FormControl
               isInvalid={!!formik.errors.email && formik.touched.email}
             >
-              <FormLabel htmlFor="email" color={"forthColor"}>
+              <FormLabel htmlFor='email' color={"forthColor"}>
                 Email
               </FormLabel>
               <LoginInputEmail
@@ -72,7 +72,7 @@ export default function LoginForm() {
             <FormControl
               isInvalid={!!formik.errors.password && formik.touched.password}
             >
-              <FormLabel htmlFor="password" color={"forthColor"}>
+              <FormLabel htmlFor='password' color={"forthColor"}>
                 Password
               </FormLabel>
               <AppInputPasword
@@ -90,7 +90,7 @@ export default function LoginForm() {
             <ForgetPassword />
           </VStack>
         </VStack>
-        <PrimaryButton type="submit">
+        <PrimaryButton type='submit'>
           {loginState === "pending" ? <Loading /> : "Login"}
         </PrimaryButton>
       </form>
