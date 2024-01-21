@@ -52,7 +52,11 @@ export default function LoginForm() {
               </FormLabel>
               <LoginInputEmail
                 onChange={(e) => {
-                  dispatch(setLoginEmail(e.target.value));
+                  const data = e.target.value;
+                  if (data.trim() === "" && data.length > 0) {
+                    return;
+                  }
+                  dispatch(setLoginEmail(data));
                   formik.handleChange(e);
                 }}
                 onBlur={formik.handleBlur}
