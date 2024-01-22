@@ -53,14 +53,7 @@ export default function AddProductWeb(
   const toast = useToast();
   const navigate = useNavigate();
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [isImageChanged, setIsImageChanged] = useState(false);
-  const defaultImage = `${import.meta.env.VITE_SERVER_URL}${props.image}` ?? "";
 
-  useEffect(() => {
-    if (props.image !== defaultImage) {
-      setIsImageChanged(true);
-    }
-  }, [props.image, defaultImage]);
 
   const formik = useFormik({
     initialValues: {
