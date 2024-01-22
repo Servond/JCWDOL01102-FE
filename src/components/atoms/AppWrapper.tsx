@@ -81,7 +81,7 @@ export default function AppWrapper() {
 
   useEffect(() => {
     const determineNavbarIndex = (path: string) => {
-      const whitelist = ["/", "/explore", "/cart", "/notification", "/menu"];
+      const whitelist = ["/", "/explore", "/cart", "/notifications", "/menu"];
       const index = whitelist.indexOf(path);
       if (index === -1) {
         return;
