@@ -110,6 +110,9 @@ const orderSlice = createSlice({
     clearCourier(state) {
       state.courier = null;
     },
+    resetCourierPrice(state) {
+      state.shippingAmount = 0;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchOrderProduct.pending, (state) => {
@@ -138,6 +141,7 @@ export const {
   setPromotion,
   setCutPrice,
   clearCourier,
+  resetCourierPrice,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;
