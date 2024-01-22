@@ -48,4 +48,5 @@ interface IProduct {
 
 export interface IUpdateOrderStatusInput extends Pick<IOrderData, "status"> {
   orderId: number;
+  branchId?: number;
 }

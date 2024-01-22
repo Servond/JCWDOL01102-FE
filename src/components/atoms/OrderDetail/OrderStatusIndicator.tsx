@@ -14,7 +14,7 @@ export default function OrderStatusIndicator(
   props: IOrderStatusIndicatorProps
 ) {
   const generateIndocatorBgColor = () => {
-    if (props.status.includes("failed")) {
+    if (props.status.includes("failed") || props.status.includes("canceled")) {
       return "#FF4545";
     } else if (props.currentIndex > props.index) {
       return "#53B175";
@@ -24,7 +24,7 @@ export default function OrderStatusIndicator(
   };
 
   const generateIndocatorBorderColor = () => {
-    if (props.status.includes("failed")) {
+    if (props.status.includes("failed") || props.status.includes("canceled")) {
       return "#FF4545";
     } else if (props.currentIndex >= props.index) {
       return "#53B175";
@@ -34,7 +34,11 @@ export default function OrderStatusIndicator(
   };
 
   const generateColor = () => {
-    if (props.currentIndex > props.index || props.status.includes("failed")) {
+    if (
+      props.currentIndex > props.index ||
+      props.status.includes("failed") ||
+      props.status.includes("canceled")
+    ) {
       return "white";
     } else if (props.currentIndex === props.index) {
       return "#53B175";
@@ -52,7 +56,12 @@ export default function OrderStatusIndicator(
     >
       <StepStatus
         complete={
-          props.status.includes("failed") ? <MdOutlineClose /> : <MdDone />
+          props.status.includes("failed") ||
+          props.status.includes("canceled") ? (
+            <MdOutlineClose />
+          ) : (
+            <MdDone />
+          )
         }
         incomplete={<MdOutlineClose />}
         active={<MdModeStandby />}
