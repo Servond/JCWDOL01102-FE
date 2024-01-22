@@ -32,7 +32,7 @@ export default function OrderStatus(props: IOrderStatusProps) {
 
     if (
       props.orderStatus[index + 1].status.includes("failed") ||
-      props.orderStatus[index + 1].status.includes("cancel")
+      props.orderStatus[index + 1].status.includes("canceled")
     ) {
       return "#FF4545";
     } else {

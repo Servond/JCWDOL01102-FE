@@ -37,13 +37,16 @@ export const updateOrderStatusUser = (orderId: number, status: string) => {
   );
 };
 
-export const cancelOrder = (orderId: number) => {
+export const cancelOrder = (orderId: number, branchId?: number) => {
   return server.put(
     `api/order/cancel/${orderId}`,
     {},
     {
       headers: {
         Authorization: getToken(),
+      },
+      params: {
+        branchId,
       },
     }
   );

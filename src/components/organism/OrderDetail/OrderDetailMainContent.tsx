@@ -21,10 +21,13 @@ import OrderNotFound from "../../atoms/OrderDetail/OrderNotFound";
 import FinishOrderAlert from "../../molecules/OrderDetail/FinishOrderAlert";
 import { resetUpdateOrderStatusState } from "../../../app/redux/slice/OrderStatus/OrderStatus";
 import { IOrderDetail } from "../../../data/order/orderDetail.interface";
+import CancelOrderAlert from "../../molecules/OrderDetail/CancelOrderAlert";
+import { resetCancelOrderStatusState } from "../../../app/redux/slice/OrderStatus/CancelOrder";
 
 export default function OrderDetailMainContent() {
   const [isShow, setIsShow] = useState<boolean>(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const cancelDisclosure = useDisclosure();
   const dispatch = useDispatch<AppDispatch>();
   const param = useParams();
   const navigate = useNavigate();
@@ -38,6 +41,7 @@ export default function OrderDetailMainContent() {
   const updateOrderState = useSelector(
     (state: RootState) => state.updateOrderStatus
   );
+  const cancelOrderState = useSelector((state: RootState) => state.cancelOrder);
   const message = useSelector(
     (state: RootState) => state.getOrderDetail.resp.message
   );
@@ -58,7 +62,10 @@ export default function OrderDetailMainContent() {
           <Button
             w={"full"}
             onClick={onClick}
-            isLoading={updateOrderState.apiState === "pending"}
+            isLoading={
+              updateOrderState.apiState === "pending" ||
+              cancelOrderState.apiState === "pending"
+            }
           >
             Finish Order
           </Button>
@@ -74,20 +81,86 @@ export default function OrderDetailMainContent() {
       orderDetail.status.includes("created")
     ) {
       return (
-        <Button
-          as={"a"}
-          w={"full"}
-          onClick={onClick}
-          isLoading={updateOrderState.apiState === "pending"}
-          href={orderDetail.howToPay}
-          target='_blank'
-        >
-          How To Pay
-        </Button>
+        <VStack w={"full"}>
+          <Button
+            bg={"errorColor"}
+            w={"full"}
+            onClick={onCancel}
+            isLoading={
+              updateOrderState.apiState === "pending" ||
+              cancelOrderState.apiState === "pending"
+            }
+          >
+            Cancel Order
+          </Button>
+          <Button
+            as={"a"}
+            w={"full"}
+            onClick={onClick}
+            href={orderDetail.howToPay}
+            target="_blank"
+          >
+            How To Pay
+          </Button>
+          <CancelOrderAlert
+            isOpen={cancelDisclosure.isOpen}
+            onClose={cancelDisclosure.onClose}
+            orderId={orderDetail.id}
+          />
+        </VStack>
+      );
+    } else if (
+      Object.keys(orderDetail).length > 0 &&
+      (orderDetail.status.includes("payment_success") ||
+        orderDetail.status.includes("process"))
+    ) {
+      return (
+        <VStack w={"full"}>
+          <Button
+            bg={"errorColor"}
+            w={"full"}
+            onClick={onCancel}
+            isLoading={
+              updateOrderState.apiState === "pending" ||
+              cancelOrderState.apiState === "pending"
+            }
+          >
+            Cancel Order
+          </Button>
+          <CancelOrderAlert
+            isOpen={cancelDisclosure.isOpen}
+            onClose={cancelDisclosure.onClose}
+            orderId={orderDetail.id}
+          />
+        </VStack>
       );
     }
   };
+
   const onClick = () => onOpen();
+  const onCancel = () => cancelDisclosure.onOpen();
+  const generateToastStatus = () => {
+    if (
+      Object.keys(updateOrderState.resp).length === 0 &&
+      Object.keys(cancelOrderState.resp).length === 0
+    ) {
+      return "error";
+    }
+
+    if (Object.keys(updateOrderState.resp).length > 0) {
+      if (updateOrderState.resp?.statusCode.toString().startsWith("2")) {
+        return "success";
+      } else {
+        return "error";
+      }
+    } else if (Object.keys(cancelOrderState.resp).length > 0) {
+      if (cancelOrderState.resp?.statusCode.toString().startsWith("2")) {
+        return "success";
+      } else {
+        return "error";
+      }
+    }
+  };
   useEffect(() => {
     dispatch(
       fetchOrderWithDetail({
@@ -101,9 +174,12 @@ export default function OrderDetailMainContent() {
 
   useEffect(() => {
     if (
-      Object.keys(updateOrderState.resp).length === 0 ||
-      updateOrderState.apiState === "idle" ||
-      updateOrderState.apiState === "pending"
+      (Object.keys(updateOrderState.resp).length === 0 &&
+        Object.keys(cancelOrderState.resp).length === 0) ||
+      (updateOrderState.apiState === "idle" &&
+        cancelOrderState.apiState === "idle") ||
+      (cancelOrderState.apiState === "pending" &&
+        updateOrderState.apiState === "pending")
     ) {
       return;
     }
@@ -112,14 +188,16 @@ export default function OrderDetailMainContent() {
       duration: 3000,
       position: "top",
       title: "Order",
-      description: updateOrderState.resp.message,
-      status: updateOrderState.resp.statusCode.toString().startsWith("2")
-        ? "success"
-        : "error",
+      description: updateOrderState.resp.message
+        ? updateOrderState.resp.message
+        : cancelOrderState.resp.message,
+      status: generateToastStatus(),
     });
 
-    dispatch(resetUpdateOrderStatusState());
-    if (updateOrderState.resp.statusCode.toString().startsWith("2")) {
+    if (
+      Object.keys(updateOrderState.resp).length > 0 ||
+      Object.keys(cancelOrderState.resp).length > 0
+    ) {
       dispatch(
         fetchOrderWithDetail({
           invoiceNo: param.invoiceNo!,
@@ -129,7 +207,21 @@ export default function OrderDetailMainContent() {
         })
       );
     }
-  }, [toast, updateOrderState.apiState, updateOrderState.resp, dispatch]);
+
+    if (Object.keys(updateOrderState.resp).length > 0) {
+      dispatch(resetUpdateOrderStatusState());
+    } else {
+      dispatch(resetCancelOrderStatusState());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    toast,
+    updateOrderState.apiState,
+    updateOrderState.resp,
+    dispatch,
+    cancelOrderState.apiState,
+    cancelOrderState.resp,
+  ]);
 
   return (
     <VStack
