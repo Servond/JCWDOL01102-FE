@@ -65,7 +65,8 @@ export default function CredetialInputs() {
         return (
           <AppInputPasword
             onChange={(e) => {
-              dispatch(setPasswordInputValue(e.target.value));
+              const data = e.target.value;
+              dispatch(setPasswordInputValue(data));
               formik.handleChange(e);
             }}
             onBlur={formik.handleBlur}
@@ -76,6 +77,10 @@ export default function CredetialInputs() {
         return (
           <AppInputPhoneNumber
             onChange={(e) => {
+              const data = e.target.value;
+              if (data.trim() === "" && data.length > 0) {
+                return;
+              }
               formik.handleChange(e);
             }}
             onBlur={() => formik.handleBlur}
@@ -85,8 +90,12 @@ export default function CredetialInputs() {
         return (
           <AppInput
             prefixIcon={<MdOutlinePerson />}
-            name="name"
+            name='name'
             onChange={(e) => {
+              const data = e.target.value;
+              if (data.trim() === "" && data.length > 0) {
+                return;
+              }
               dispatch(setNameInputValue(e.target.value));
               formik.handleChange(e);
             }}
@@ -98,6 +107,10 @@ export default function CredetialInputs() {
         return (
           <AppInputEmail
             onChange={(e) => {
+              const data = e.target.value;
+              if (data.trim() === "" && data.length > 0) {
+                return;
+              }
               dispatch(setEmailInputValue(e.target.value));
               formik.handleChange(e);
             }}
@@ -169,7 +182,7 @@ export default function CredetialInputs() {
                         isEmailAvailable === false
                       : !!generateError(field) && generateTouch(field)
                   }
-                  w="full"
+                  w='full'
                   key={index}
                 >
                   <FormLabel htmlFor={field.toLowerCase()} color={"forthColor"}>
@@ -182,7 +195,7 @@ export default function CredetialInputs() {
             })}
           </VStack>
           <SignupPolicy />
-          <PrimaryButton type="submit">
+          <PrimaryButton type='submit'>
             {postUserStatus === "pending" ? <Loading /> : "Sign Up"}
           </PrimaryButton>
         </VStack>

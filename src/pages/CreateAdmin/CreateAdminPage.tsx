@@ -62,7 +62,7 @@ export default function CreateAdminPage() {
         </Container>
       ) : (
         <>
-          <Navigation pageBefore="User List" />
+          <Navigation pageBefore='User List' />
           <HStack w={"full"} align={"start"} h={"full"} spacing={"1rem"}>
             <AdminCreationForm />
             {/* <UploadPhoto /> */}
