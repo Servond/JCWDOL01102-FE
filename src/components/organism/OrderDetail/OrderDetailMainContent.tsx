@@ -213,6 +213,7 @@ export default function OrderDetailMainContent() {
     } else {
       dispatch(resetCancelOrderStatusState());
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     toast,
     updateOrderState.apiState,
