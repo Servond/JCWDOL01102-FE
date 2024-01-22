@@ -80,7 +80,7 @@ export default function AddProductWeb(
       try {
         let response;
         if (props.isUpdate) {
-          if (isImageChanged) {
+          if (!imageFile) {
             response = await updateProduct(props.id!, {
               branchId: formik.values.branchId,
               categoryId: formik.values.categoryId!,
