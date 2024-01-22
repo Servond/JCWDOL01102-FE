@@ -36,14 +36,14 @@ export default function OrderInfo(props: IOrderInfoProps) {
           position={"relative"}
           spacing={"8px"}
         >
-          <OrderInfoItem label="Order Number" value={props.invoiceNo} />
-          <OrderInfoItem label="Address" value={props.address} />
+          <OrderInfoItem label='Order Number' value={props.invoiceNo} />
+          <OrderInfoItem label='Address' value={props.address} />
           <OrderInfoItem
-            label="Order Date"
+            label='Order Date'
             value={toGMT7(props.transactionDate)}
           />
           <OrderInfoItem
-            label="Order Total"
+            label='Order Total'
             value={convertToRupiah(props.total)}
           />
           <Button variant={"tertiaryButton"} p={0} onClick={props.onOpenStatus}>
