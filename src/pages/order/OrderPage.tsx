@@ -28,6 +28,7 @@ import { AppDispatch, RootState } from "../../app/redux/store";
 import {
   clearCourier,
   fetchOrderProduct,
+  resetCourierPrice,
   setCart,
   setCutPrice,
   setDataOrder,
@@ -128,6 +129,7 @@ export default function OrderPage() {
     const productid = orderState.cart.map((item) => item.id).join(",");
     dispatch(fetchOrderProduct(productid));
     dispatch(clearCourier());
+    dispatch(resetCourierPrice());
   }, [dispatch, orderState.cart]);
 
   const isAuthenticated = useSelector(
