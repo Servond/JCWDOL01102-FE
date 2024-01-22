@@ -10,6 +10,7 @@ import {
   Heading,
   Image,
   VStack,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { resetUserLoginState } from "../../../app/redux/slice/User/login";
@@ -34,6 +35,16 @@ export default function LogoutAlert(props: ILogoutAlertProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const userRole = useSelector((state: RootState) => state.login.role);
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
+  const calculateWidth = (isMobile: boolean) => {
+    if (location.pathname.includes("/dashboard")) {
+      return "80%";
+    } else if (!isMobile) {
+      return "calc(500px - 10%)";
+    } else {
+      return `calc(${window.screen.width}px - 10%)`;
+    }
+  };
   const onLogout = () => {
     localStorage.clear();
     if (userRole === Role.USER) {
@@ -54,15 +65,20 @@ export default function LogoutAlert(props: ILogoutAlertProps) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       leastDestructiveRef={cancelRef}
+      isCentered
     >
       <AlertDialogOverlay>
-        <AlertDialogContent p={"1rem"}>
+        <AlertDialogContent p={"1rem"} w={calculateWidth(isMobile)}>
           <AlertDialogBody>
             <VStack spacing={"2rem"}>
-              <Container w={"300px"}>
+              <Container
+                w={location.pathname.includes("/dashboard") ? "300px" : "full"}
+              >
                 <Image src={logoutSvg} />
               </Container>
-              <Heading size={"md"}>Are you sure you want to log out?</Heading>
+              <Heading textAlign={"center"} size={"md"}>
+                Are you sure you want to log out?
+              </Heading>
             </VStack>
           </AlertDialogBody>
 

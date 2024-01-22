@@ -6,7 +6,6 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import AdminCreationForm from "../../components/molecules/CreateAdmin/AdminCreationForm";
-import UploadPhoto from "../../components/atoms/CreateAdmin/UploadPhoto";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/redux/store";
 import { useEffect } from "react";
@@ -33,15 +32,17 @@ export default function CreateAdminPage() {
       postUserResp?.message === "" ||
       postUserResp === undefined ||
       Object.keys(postUserResp).length === 0
-    )
+    ) {
       return;
+    }
+    console.log(postUserResp?.message);
     toast({
       isClosable: true,
       position: "top",
       title: "Admin Creation",
       description: postUserResp?.message,
       status: postUserResp?.statusCode === 200 ? "success" : "error",
-      duration: 5000,
+      duration: 3000,
     });
     dispatch(resetUserState());
   }, [postUserResp, toast, dispatch]);
@@ -61,10 +62,10 @@ export default function CreateAdminPage() {
         </Container>
       ) : (
         <>
-          <Navigation pageBefore="Admin List" />
+          <Navigation pageBefore='User List' />
           <HStack w={"full"} align={"start"} h={"full"} spacing={"1rem"}>
             <AdminCreationForm />
-            <UploadPhoto />
+            {/* <UploadPhoto /> */}
           </HStack>
         </>
       )}

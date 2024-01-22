@@ -1,31 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IApiResponse } from "../../../../data/interfaces";
-import { getOrderWithDetail } from "../../../../api/order";
 import { AxiosError } from "axios";
+
 import {
-  IGetOrderDetailParam,
-  IOrderWithDetail,
-} from "../../../../data/OrderDetail/interface";
+  IOrderData,
+  IUpdateOrderStatusInput,
+} from "../../../../data/order/OrderManagement.interface";
+import { updateOrderStatusUser } from "../../../../api/admin/order-management";
 
 interface IOrderDetailState {
   apiState: "idle" | "pending" | "rejected" | "done";
-  resp: IApiResponse<IOrderWithDetail>;
-  orderDetail: Partial<IOrderWithDetail>;
+  resp: IApiResponse<IOrderData>;
 }
 
 const initialState: IOrderDetailState = {
   apiState: "idle",
   resp: {},
-  orderDetail: {},
 };
 
-export const fetchOrderWithDetail = createAsyncThunk<
-  IApiResponse<IOrderWithDetail>,
-  IGetOrderDetailParam,
-  { rejectValue: IApiResponse<IOrderWithDetail> }
->("orderDetail/get", async (param, thunkApi) => {
+export const updateOrderStatusById = createAsyncThunk<
+  IApiResponse<IOrderData>,
+  IUpdateOrderStatusInput,
+  { rejectValue: IApiResponse<IOrderData> }
+>("updateOrderStatus/put", async (param, thunkApi) => {
   try {
-    const res = await getOrderWithDetail(param);
+    const res = await updateOrderStatusUser(param.orderId, param.status);
     return res.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -48,28 +47,33 @@ export const fetchOrderWithDetail = createAsyncThunk<
   }
 });
 
-const orderDetailSLice = createSlice({
-  name: "orderDetail",
+const updateOrderStatusSlice = createSlice({
+  name: "updateOrderStatus",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUpdateOrderStatusState(state) {
+      state.apiState = "idle";
+      state.resp = {};
+    },
+  },
   extraReducers(builder) {
-    builder.addCase(fetchOrderWithDetail.fulfilled, (state, action) => {
+    builder.addCase(updateOrderStatusById.fulfilled, (state, action) => {
       if (action.payload?.statusCode?.toString().startsWith("2")) {
         state.apiState = "done";
         state.resp = action.payload;
-        state.orderDetail = action.payload.data as Partial<IOrderWithDetail>;
       }
     });
 
-    builder.addCase(fetchOrderWithDetail.pending, (state) => {
+    builder.addCase(updateOrderStatusById.pending, (state) => {
       state.apiState = "pending";
     });
 
-    builder.addCase(fetchOrderWithDetail.rejected, (state, action) => {
+    builder.addCase(updateOrderStatusById.rejected, (state, action) => {
       state.apiState = "rejected";
-      state.resp = action.payload as IApiResponse<IOrderWithDetail>;
+      state.resp = action.payload as IApiResponse<IOrderData>;
     });
   },
 });
 
-export default orderDetailSLice.reducer;
+export const { resetUpdateOrderStatusState } = updateOrderStatusSlice.actions;
+export default updateOrderStatusSlice.reducer;

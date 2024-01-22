@@ -2,6 +2,7 @@ import {
   Button,
   Divider,
   Input,
+  Select,
   Text,
   VStack,
   keyframes,
@@ -51,7 +52,7 @@ export default function ChangeProfileField() {
           .required("Wajib diisi !");
       case "email":
         return Yup.string()
-          .matches(/^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/g, "Invalid email format")
+          .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email format")
           .email("Invalid email format")
           .required("Wajib diisi !");
       case "phoneNumber":
@@ -66,6 +67,8 @@ export default function ChangeProfileField() {
             "Invalid date format"
           )
           .required("Wajib diisi !");
+      case "gender":
+        return Yup.string().required("Wajib diisi !");
       default:
         return Yup.string().required("Wajib diisi !");
     }
@@ -184,10 +187,24 @@ export default function ChangeProfileField() {
           placeholder={changeProfile.label}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name={"value"}
+          display={changeProfile.field !== "gender" ? "block" : "none"}
+          name={changeProfile.field !== "gender" ? "value" : "_value"}
           value={formik.values.value}
           isInvalid={!!formik.errors.value && formik.touched.value}
         />
+        <Select
+          mt={"18px"}
+          mb={"5px"}
+          placeholder={"Gender"}
+          display={changeProfile.field === "gender" ? "block" : "none"}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          name={changeProfile.field === "gender" ? "value" : "_value"}
+          value={formik.values.value}
+        >
+          <option value='Male'>Male</option>
+          <option value='Female'>Female</option>
+        </Select>
         <Text
           color={"red"}
           fontSize={"small"}
@@ -201,6 +218,11 @@ export default function ChangeProfileField() {
           width={"100%"}
           isDisabled={!!formik.errors.value && formik.touched.value}
           type={"submit"}
+          _disabled={{
+            _hover: {
+              bgColor: "#BAE0C8",
+            },
+          }}
           isLoading={isLoading}
         >
           Simpan

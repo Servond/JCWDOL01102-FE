@@ -20,6 +20,7 @@ interface IProductCardProps {
 
 export default function ProductCard(props: IProductCardProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isManaging, setIsManaging] = useState<boolean>(false);
   const [isMediumMobile] = useMediaQuery(
     "(min-width: 320px) and (max-width: 425px)"
   );
@@ -36,7 +37,9 @@ export default function ProductCard(props: IProductCardProps) {
     (state: RootState) => state.login.isAuthenticated
   );
   const carts = useSelector((state: RootState) => state.getCart.cart);
+
   const onAddCart = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setIsManaging(true);
     e.stopPropagation();
     const index = carts.findIndex(
       (item) => props.product.id === item.product.id
@@ -63,6 +66,7 @@ export default function ProductCard(props: IProductCardProps) {
           : JSON.parse(localStorage.getItem("branch")!).id,
       })
     ).then((data) => {
+      setIsManaging(false);
       const isSuccess = data.payload?.statusCode?.toString().startsWith("2");
       dispatch(fetchProductCart({ userId, branchId }));
       toast({
@@ -97,7 +101,7 @@ export default function ProductCard(props: IProductCardProps) {
               src={`${import.meta.env.VITE_SERVER_URL}${
                 props.product.imageUrl
               }`}
-              alt="product picture"
+              alt='product picture'
               h={"100%"}
               w={"100%"}
               objectFit={"contain"}
@@ -121,7 +125,7 @@ export default function ProductCard(props: IProductCardProps) {
             align={"center"}
           >
             <ProductPrice
-              variant="productCard"
+              variant='productCard'
               promo={props.product.promotion[0]}
               price={props.product.price}
             />
@@ -129,11 +133,12 @@ export default function ProductCard(props: IProductCardProps) {
               isDisabled={!isAuthentcated || props.product.stock === 0}
               _hover={{ fontSize: "24px", transition: "0.2s ease" }}
               transition={"0.2s ease"}
-              aria-label=""
+              aria-label=''
               borderRadius={isMediumMobile ? "10px" : "full"}
               mt={isMediumMobile ? "1rem" : "none"}
               w={isMediumMobile ? "full" : "auto"}
               onClick={onAddCart}
+              isLoading={isManaging}
               icon={
                 <HStack>
                   <FaBagShopping />

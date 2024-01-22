@@ -34,7 +34,6 @@ export default function NotificationPage() {
       setNotifications(result.data.data.data);
       setTotalPage(result.data.data.totalPages);
     } catch (error) {
-      console.error(error);
       setIsLoading(false);
       toast({
         title: "Gagal memuat data",
@@ -56,7 +55,6 @@ export default function NotificationPage() {
       <VStack gap={"10px"} height={"calc(100dvh - 80px)"}>
         <TitleHeader title={"Notifications"} callback={handleBack} />
         <Divider />
-
         <Stack spacing={"5px"} width={"100%"} height={"100%"}>
           {notifications.length > 0 &&
             notifications.map((notification, index) => {

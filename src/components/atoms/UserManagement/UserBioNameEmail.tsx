@@ -67,7 +67,7 @@ export default function UserBioNameEmail(props: IUserBioNameEmailProps) {
               value={value}
               onBlur={handleBlur}
               onChange={handleChange}
-              px={"4px"}
+              p={"12px"}
             />
           ) : (
             <Text fontWeight={"semibold"} size={"16px"}>

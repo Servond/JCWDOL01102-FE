@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Button,
@@ -15,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../app/redux/store";
 import { createUser } from "../../../app/redux/slice/userSlicer";
 import { useEffect } from "react";
-import Loading from "../../atoms/Loading";
 import Select from "react-select";
 import {
   SelectTheme,
@@ -68,7 +68,7 @@ export default function AdminCreationForm() {
   }, [postUserState]);
 
   return (
-    <Box minW="300px" w={"70%"} h={"full"} ref={boxRef}>
+    <Box minW='300px' w={"100%"} h={"full"} ref={boxRef}>
       <form
         onSubmit={formik.handleSubmit}
         style={{
@@ -82,7 +82,7 @@ export default function AdminCreationForm() {
             <FormControl
               isInvalid={Boolean(formik.errors.name && formik.touched.name)}
             >
-              <FormLabel htmlFor="name" color={"forthColor"} fontSize={"1rem"}>
+              <FormLabel htmlFor='name' color={"forthColor"} fontSize={"1rem"}>
                 Name
               </FormLabel>
               <Input
@@ -92,8 +92,8 @@ export default function AdminCreationForm() {
                     : "createAdmin"
                 }
                 onChange={formik.handleChange}
-                name="name"
-                id="name"
+                name='name'
+                id='name'
                 value={formik.values.name}
               />
               {formik.submitCount > 0 && formik.errors.name ? (
@@ -106,7 +106,7 @@ export default function AdminCreationForm() {
             <FormControl
               isInvalid={Boolean(formik.errors.email && formik.touched.email)}
             >
-              <FormLabel htmlFor="email" color={"forthColor"} fontSize={"1rem"}>
+              <FormLabel htmlFor='email' color={"forthColor"} fontSize={"1rem"}>
                 Email
               </FormLabel>
               <Input
@@ -116,8 +116,8 @@ export default function AdminCreationForm() {
                     : "createAdmin"
                 }
                 onChange={formik.handleChange}
-                name="email"
-                id="email"
+                name='email'
+                id='email'
                 value={formik.values.email}
               />
               {formik.submitCount > 0 && formik.errors.email ? (
@@ -133,7 +133,7 @@ export default function AdminCreationForm() {
               )}
             >
               <FormLabel
-                htmlFor="password"
+                htmlFor='password'
                 color={"forthColor"}
                 fontSize={"1rem"}
               >
@@ -145,10 +145,10 @@ export default function AdminCreationForm() {
                     ? "error"
                     : "createAdmin"
                 }
-                type="password"
+                type='password'
                 onChange={formik.handleChange}
-                name="password"
-                id="password"
+                name='password'
+                id='password'
                 value={formik.values.password}
               />
               {formik.submitCount > 0 && formik.errors.password ? (
@@ -162,7 +162,7 @@ export default function AdminCreationForm() {
               isInvalid={Boolean(formik.errors.branch && formik.touched.branch)}
             >
               <FormLabel
-                htmlFor="branch"
+                htmlFor='branch'
                 color={"forthColor"}
                 fontSize={"1rem"}
               >
@@ -190,11 +190,11 @@ export default function AdminCreationForm() {
           </VStack>
           <Flex w={"full"} justify={"end"} mt={"1rem"}>
             <Button
-              type="submit"
+              type='submit'
               w={"200px"}
-              disabled={postUserState === "pending"}
+              isLoading={postUserState === "pending"}
             >
-              {postUserState === "pending" ? <Loading /> : "Create Admin"}
+              Create Admin
             </Button>
           </Flex>
         </VStack>

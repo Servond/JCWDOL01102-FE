@@ -1,12 +1,14 @@
 import { Box, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import debounce from "debounce";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { MdSearch } from "react-icons/md";
+import { useLocation } from "react-router-dom";
 
 interface ISearchBarProps {
-  onChange: (key: string) => void;
+  onChange?: (key: string) => void;
   onClick?: () => void;
   placeHolder?: string;
+  isFocused?: boolean;
 }
 
 export default function LandingpageSearchbar(props: ISearchBarProps) {
@@ -19,6 +21,17 @@ export default function LandingpageSearchbar(props: ISearchBarProps) {
     debouncedSearch.clear();
     debouncedSearch(e.target.value);
   };
+
+  const searchRef = useRef<HTMLInputElement | null>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (searchRef.current === null || !location.state) {
+      return;
+    }
+    searchRef.current.focus();
+  }, [location, searchRef]);
+
   return (
     <InputGroup w={"full"} onFocus={props.onClick}>
       <Input
@@ -29,6 +42,7 @@ export default function LandingpageSearchbar(props: ISearchBarProps) {
         borderRadius={"10px"}
         bg={"white"}
         variant={"createAdmin"}
+        ref={searchRef}
       />
       <InputRightElement
         fontSize={"20px"}

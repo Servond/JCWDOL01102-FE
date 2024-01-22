@@ -107,6 +107,9 @@ const orderSlice = createSlice({
     setCutPrice: (state, action) => {
       state.cutPrice = action.payload;
     },
+    clearCourier(state) {
+      state.courier = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchOrderProduct.pending, (state) => {
@@ -134,6 +137,7 @@ export const {
   setCart,
   setPromotion,
   setCutPrice,
+  clearCourier,
 } = orderSlice.actions;
 
 export default orderSlice.reducer;

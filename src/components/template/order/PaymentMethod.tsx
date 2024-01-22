@@ -103,7 +103,7 @@ export default function PaymentMethod(props: PaymentMethodProps) {
         )
       ) {
         dispatch(fetchProductCart({ userId, branchId }));
-        navigate("/cart", { replace: true });
+        navigate("/order", { replace: true });
       }
     }
   };

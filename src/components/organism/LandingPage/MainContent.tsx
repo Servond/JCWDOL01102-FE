@@ -19,8 +19,7 @@ export default function MainContent() {
         shadow={"sm"}
       >
         <LandingpageSearchbar
-          placeHolder="Search store..."
-          onChange={() => {}}
+          placeHolder='Search store...'
           onClick={() => navigate("/explore", { state: { focus: true } })}
         />
       </VStack>
